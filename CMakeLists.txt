@@ -15,6 +15,8 @@ set(DIR ${CMAKE_CURRENT_SOURCE_DIR})
 project(cpplox LANGUAGES CXX)
 
 add_executable(${PROJECT_NAME} 
-	${DIR}/main.cpp)
+	${DIR}/main.cpp
+	${DIR}/src/Main.h
+	${DIR}/src/Main.cpp)
 	
 set_target_cpp_standard(${PROJECT_NAME} 17)
