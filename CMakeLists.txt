@@ -17,6 +17,11 @@ project(cpplox LANGUAGES CXX)
 add_executable(${PROJECT_NAME} 
 	${DIR}/main.cpp
 	${DIR}/src/Main.h
-	${DIR}/src/Main.cpp)
+	${DIR}/src/Main.cpp
+	${DIR}/src/logging/Logger.h
+	${DIR}/src/logging/StdLogger.h
+	${DIR}/src/logging/StdLogger.cpp)
 	
 set_target_cpp_standard(${PROJECT_NAME} 17)
+
+target_include_directories(${PROJECT_NAME} PRIVATE ${DIR})

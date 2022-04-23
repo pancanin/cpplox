@@ -3,21 +3,28 @@
 #include <cstdint>
 #include <string>
 
+#include "src/logging/StdLogger.h"
 #include "src/Main.h"
 
+#include "src/logging/StdLogger.h"
+
 int32_t main(int32_t argc, char **argv) {
-  Main main;
-
-
+  const int32_t INVALID_COMMAND_CODE = 64;
+  StdLogger stdLogger;
+  Main main(stdLogger);
 
   if (argc > 2) {
     std::cout << "Correct usage: cpplox [script] or just cpplox for REPL" << std::endl;
 
-    return 64;
+    return INVALID_COMMAND_CODE;
   } else if (argc == 2) {
     std::string fileName(argv[1]);
-    std::cout << "Filename is " << fileName << std::endl;
+
     main.runFile(fileName);
+
+    if (main.hasError()) {
+      return INVALID_COMMAND_CODE;
+    }
   } else {
     main.runREPL();
   }
