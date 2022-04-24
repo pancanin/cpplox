@@ -20,7 +20,8 @@ add_executable(${PROJECT_NAME}
 	${DIR}/src/Main.cpp
 	${DIR}/src/logging/Logger.h
 	${DIR}/src/logging/StdLogger.h
-	${DIR}/src/logging/StdLogger.cpp)
+	${DIR}/src/logging/StdLogger.cpp
+	${DIR}/stc/scanner/TokenType.h)
 	
 set_target_cpp_standard(${PROJECT_NAME} 17)
 
