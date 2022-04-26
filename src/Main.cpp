@@ -2,8 +2,14 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
 
-Main::Main(Logger& logger): logger(logger), errored(false) {}
+#include "src/scanner/Scanner.h"
+#include "src/scanner/Token.h"
+#include "src/logging/Logger.h"
+#include "src/logging/LangErrorLogger.h"
+
+Main::Main(Logger& logger, LangErrorLogger& langErrorLogger): logger(logger), langErrorLogger(langErrorLogger) {}
 
 void Main::runFile(const std::string& fileName) const {
   std::ifstream ifs(fileName);
@@ -15,26 +21,23 @@ void Main::runFile(const std::string& fileName) const {
 void Main::runREPL() {
   for (;;) {
     std::cout << "> ";
+
     std::string command;
     std::cin >> command;
+
     run(command);
-    errored = false;
+
+    langErrorLogger.clearError();
   }
 }
 
 void Main::run(const std::string& sourceCode) const {
-  std::cout << sourceCode << std::endl;
-}
+  Scanner scanner(sourceCode);
 
-void Main::error(int32_t line, const std::string& msg) {
-  report(line, "", msg);
-  errored = true;
-}
+  std::vector<Token> tokens = scanner.scanTokens();
 
-void Main::report(int32_t line, const std::string& where, const std::string& msg) const {
-  std::cout << "[[line " << line << "]] Error: " << where << ": " << msg << std::endl;
-}
+  for (Token t : tokens) {
+    std::cout << t << std::endl;
+  }
 
-bool Main::hasError() const {
-  return errored;
 }

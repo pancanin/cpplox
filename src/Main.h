@@ -4,21 +4,17 @@
 #include <string>
 #include <cstdint>
 
-#include "src/logging/Logger.h"
+struct Logger;
+struct LangErrorLogger;
 
 class Main {
 public:
-  Main(Logger&);
+  Main(Logger&, LangErrorLogger&);
   void runFile(const std::string& fileName) const;
   void runREPL();
-
-  void error(int32_t line, const std::string& msg);
-  void report(int32_t line, const std::string& where, const std::string& msg) const;
-
-  bool hasError() const;
 private:
   Logger& logger;
-  bool errored;
+  LangErrorLogger& langErrorLogger;
 
   void run(const std::string& sourceCode) const;
 };

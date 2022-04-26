@@ -7,6 +7,7 @@ class Logger {
 public:
   virtual ~Logger() = default;
   virtual void error(const std::string& msg) const = 0;
+  virtual void info(const std::string& msg) const = 0;
 };
 
 #endif /* SRC_LOGGING_LOGGER_H_ */

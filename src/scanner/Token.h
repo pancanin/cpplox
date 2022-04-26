@@ -8,9 +8,11 @@
 #include "src/scanner/TokenType.h"
 
 class Token {
+public:
+  Token();
   Token(TokenType type, const std::string& lexeme, const std::string& literal, int32_t line);
 
-  friend std::ostream& operator<<(std::ostream& os, const Token&) const;
+  friend std::ostream& operator<<(std::ostream& os, const Token&);
 private:
   TokenType type;
   std::string lexeme;

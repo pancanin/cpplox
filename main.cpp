@@ -7,11 +7,13 @@
 #include "src/Main.h"
 
 #include "src/logging/StdLogger.h"
+#include "src/logging/LangErrorLogger.h"
 
 int32_t main(int32_t argc, char **argv) {
   const int32_t INVALID_COMMAND_CODE = 64;
   StdLogger stdLogger;
-  Main main(stdLogger);
+  LangErrorLogger errorLogger(stdLogger);
+  Main main(stdLogger, errorLogger);
 
   if (argc > 2) {
     std::cout << "Correct usage: cpplox [script] or just cpplox for REPL" << std::endl;
@@ -22,7 +24,7 @@ int32_t main(int32_t argc, char **argv) {
 
     main.runFile(fileName);
 
-    if (main.hasError()) {
+    if (errorLogger.hasError()) {
       return INVALID_COMMAND_CODE;
     }
   } else {
