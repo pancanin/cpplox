@@ -27,7 +27,9 @@ add_executable(${PROJECT_NAME}
 	${DIR}/src/scanner/Scanner.h
 	${DIR}/src/scanner/Scanner.cpp
 	${DIR}/src/scanner/Token.h
-	${DIR}/src/scanner/Token.cpp)
+	${DIR}/src/scanner/Token.cpp
+	${DIR}/src/syntax/Expr.h
+	${DIR}/src/syntax/ExprVisitor.h)
 	
 set_target_cpp_standard(${PROJECT_NAME} 17)
 
