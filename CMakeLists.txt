@@ -32,3 +32,5 @@ add_executable(${PROJECT_NAME}
 set_target_cpp_standard(${PROJECT_NAME} 17)
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${DIR})
+add_subdirectory(tst)
+add_subdirectory(lib/googletest)
