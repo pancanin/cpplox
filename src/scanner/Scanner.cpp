@@ -1,8 +1,10 @@
 #include "Scanner.h"
 
 #include "src/scanner/TokenType.h"
+#include "src/logging/LangErrorLogger.h"
 
-Scanner::Scanner(const std::string& source): source(source), start(0), current(0), line(1) {}
+Scanner::Scanner(const std::string& source, LangErrorLogger& logger)
+	: errorLogger(logger), source(source), start(0), current(0), line(1) {}
 
 bool Scanner::isAtEnd() const {
   return current >= source.size();
@@ -33,17 +35,50 @@ void Scanner::scanToken() {
     case '+': addToken(PLUS); break;
     case ';': addToken(SEMICOLON); break;
     case '*': addToken(STAR); break;
+    case '!': addToken(matchNextCharacter('=') ? BANG_EQUAL : BANG); break;
+    case '=': addToken(matchNextCharacter('=') ? EQUAL_EQUAL : EQUAL); break;
+    case '>': addToken(matchNextCharacter('=') ? GREATER_EQUAL : GREATER); break;
+    case '<': addToken(matchNextCharacter('=') ? LESS_EQUAL : LESS); break;
+    case '/': matchNextCharacter('/') ? handleComments() : addToken(SLASH); break;
+    case ' ':
+    case '\t':
+    case '\r':
+    	break;
+    case '\n':
+    	line++;
+    	break;
+    default: errorLogger.error(line, "Unexpected token.");
   }
+}
+
+void Scanner::handleComments() {
+	while (!isAtEnd() && peek() != '\n') {
+		advance();
+	}
 }
 
 char Scanner::advance() {
   return source.at(current++);
 }
 
+char Scanner::peek() {
+	return source[current];
+}
+
+bool Scanner::matchNextCharacter(char next) {
+	if (isAtEnd()) return false;
+	if (source[current] == next) {
+		current++;
+		return true;
+	}
+
+	return false;
+}
+
 void Scanner::addToken(TokenType type) {
   addToken(type, "");
 }
 void Scanner::addToken(TokenType type, const std::string& literal) {
-  std::string text = source.substr(start, current);
+  std::string text = source.substr(start, current - start);
   tokens.emplace_back(type, text, literal, line);
 }

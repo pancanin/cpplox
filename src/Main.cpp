@@ -20,10 +20,10 @@ void Main::runFile(const std::string& fileName) const {
 
 void Main::runREPL() {
   for (;;) {
-    std::cout << "> ";
+    logger.info("> ");
 
     std::string command;
-    std::cin >> command;
+    getline(std::cin, command);
 
     run(command);
 
@@ -32,7 +32,7 @@ void Main::runREPL() {
 }
 
 void Main::run(const std::string& sourceCode) const {
-  Scanner scanner(sourceCode);
+  Scanner scanner(sourceCode, langErrorLogger);
 
   std::vector<Token> tokens = scanner.scanTokens();
 

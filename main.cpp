@@ -16,7 +16,7 @@ int32_t main(int32_t argc, char **argv) {
   Main main(stdLogger, errorLogger);
 
   if (argc > 2) {
-    std::cout << "Correct usage: cpplox [script] or just cpplox for REPL" << std::endl;
+    stdLogger.info("Correct usage: cpplox [script] or just cpplox for REPL");
 
     return INVALID_COMMAND_CODE;
   } else if (argc == 2) {
