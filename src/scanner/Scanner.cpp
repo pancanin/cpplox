@@ -40,6 +40,18 @@ void Scanner::scanToken() {
     case '>': addToken(matchNextCharacter('=') ? GREATER_EQUAL : GREATER); break;
     case '<': addToken(matchNextCharacter('=') ? LESS_EQUAL : LESS); break;
     case '/': matchNextCharacter('/') ? handleComments() : addToken(SLASH); break;
+    case '"': handleString(); break;
+    case '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+    	handleNumber(); break;
     case ' ':
     case '\t':
     case '\r':
@@ -55,6 +67,36 @@ void Scanner::handleComments() {
 	while (!isAtEnd() && peek() != '\n') {
 		advance();
 	}
+}
+
+void Scanner::handleString() {
+	while (!isAtEnd() && peek() != '"') {
+		if (peek() == '\n') line++;
+		advance();
+	}
+
+	if (isAtEnd()) {
+		errorLogger.error(line, "Unterminated string.");
+		return;
+	}
+
+	advance(); // closing quote
+
+	std::string val = source.substr(start + 1, current - start - 2);
+	addToken(STRING, val);
+}
+
+void Scanner::handleNumber() {
+	while (isDigit(peek())) advance();
+
+	if (!isAtEnd() && peek() == '.') {
+		advance();
+
+		while (isDigit(peek())) advance();
+	}
+
+	std::string number = source.substr(start, current - start);
+	addToken(NUMBER, number);
 }
 
 char Scanner::advance() {
@@ -81,4 +123,8 @@ void Scanner::addToken(TokenType type) {
 void Scanner::addToken(TokenType type, const std::string& literal) {
   std::string text = source.substr(start, current - start);
   tokens.emplace_back(type, text, literal, line);
+}
+
+bool Scanner::isDigit(char c) const {
+	return c >= '0' && c <= '9';
 }

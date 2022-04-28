@@ -28,7 +28,12 @@ private:
   void addToken(TokenType type);
   void addToken(TokenType type, const std::string& literal);
   bool matchNextCharacter(char next);
+
   void handleComments();
+  void handleString();
+  void handleNumber();
+
+  bool isDigit(char c) const;
 };
 
 #endif /* SRC_SCANNER_SCANNER_H_ */
