@@ -13,6 +13,7 @@
 #include "src/syntax/BinaryExpr.h"
 #include "src/syntax/UnaryExpr.h"
 #include "src/syntax/LiteralExpr.h"
+#include "src/syntax/GroupingExpr.h"
 #include "src/syntax/AstPrinter.h"
 
 int32_t main(int32_t argc, char **argv) {
@@ -30,9 +31,11 @@ int32_t main(int32_t argc, char **argv) {
 			c
 	);
 
+	Expr* grouped = new GroupingExpr(*expr);
+
 	AstPrinter p = AstPrinter();
 
-	std::string res = p.print(*expr);
+	std::string res = p.print(*grouped);
 
 	std::cout << res << std::endl;
 //  const int32_t INVALID_COMMAND_CODE = 64;

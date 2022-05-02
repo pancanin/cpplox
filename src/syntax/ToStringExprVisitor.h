@@ -6,12 +6,14 @@
 struct BinaryExpr;
 struct LiteralExpr;
 struct UnaryExpr;
+struct GroupingExpr;
 
 class ToStringExprVisitor {
 public:
 	virtual std::string visitBinaryExpr(BinaryExpr&) = 0;
 	virtual std::string visitLiteralExpr(LiteralExpr&) = 0;
 	virtual std::string visitUnaryExpr(UnaryExpr&) = 0;
+	virtual std::string visitGroupingExpr(GroupingExpr&) = 0;
 
 	virtual ~ToStringExprVisitor() {};
 };

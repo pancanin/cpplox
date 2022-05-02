@@ -18,8 +18,9 @@ private:
 	std::string visitBinaryExpr(BinaryExpr&);
 	std::string visitLiteralExpr(LiteralExpr&);
 	std::string visitUnaryExpr(UnaryExpr&);
+	std::string visitGroupingExpr(GroupingExpr&);
 
-	std::string parentesize(std::string& name, std::initializer_list<Expr*> expressions);
+	std::string parentesize(std::string name, std::initializer_list<Expr*> expressions);
 };
 
 #endif /* SRC_SYNTAX_ASTPRINTER_H_ */

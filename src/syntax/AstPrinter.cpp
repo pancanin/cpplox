@@ -3,6 +3,7 @@
 #include "src/syntax/BinaryExpr.h"
 #include "src/syntax/LiteralExpr.h"
 #include "src/syntax/UnaryExpr.h"
+#include "src/syntax/GroupingExpr.h"
 #include "src/scanner/Token.h"
 
 std::string AstPrinter::print(Expr& expr) {
@@ -21,7 +22,11 @@ std::string AstPrinter::visitUnaryExpr(UnaryExpr& expr) {
 	return parentesize(expr.op.lexeme, {&expr.expr});
 }
 
-std::string AstPrinter::parentesize(std::string& name, std::initializer_list<Expr*> expressions) {
+std::string AstPrinter::visitGroupingExpr(GroupingExpr& expr) {
+	return parentesize("group", {&expr.expr});
+}
+
+std::string AstPrinter::parentesize(std::string name, std::initializer_list<Expr*> expressions) {
 	std::string p;
 
 	p += "(" + name;
