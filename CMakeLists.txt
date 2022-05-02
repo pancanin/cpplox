@@ -29,7 +29,11 @@ add_executable(${PROJECT_NAME}
 	${DIR}/src/scanner/Token.h
 	${DIR}/src/scanner/Token.cpp
 	${DIR}/src/syntax/Expr.h
-	${DIR}/src/syntax/ExprVisitor.h)
+	${DIR}/src/syntax/ToStringExprVisitor.h
+	${DIR}/src/syntax/BinaryExpr.h
+	${DIR}/src/syntax/LiteralExpr.h
+	${DIR}/src/syntax/AstPrinter.h
+	${DIR}/src/syntax/AstPrinter.cpp)
 	
 set_target_cpp_standard(${PROJECT_NAME} 17)
 

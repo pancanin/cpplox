@@ -4,14 +4,22 @@
 #include <string>
 #include <initializer_list>
 
-#include "src/syntax/ExprVisitor.h"
+#include "src/syntax/ToStringExprVisitor.h"
+#include "src/syntax/Expr.h"
 
-class AstPrinter : public ExprVisitor<std::string> {
+struct BinaryExpr;
+struct LiteralExpr;
+struct UnaryExpr;
+
+class AstPrinter : public ToStringExprVisitor {
 public:
-	std::string print(Expr expr);
-	std::string visitBinaryExpr(Expr::Binary&);
+	std::string print(Expr& expr);
 private:
-	std::string parentesize(std::string& name, std::initializer_list<Expr> expressions);
+	std::string visitBinaryExpr(BinaryExpr&);
+	std::string visitLiteralExpr(LiteralExpr&);
+	std::string visitUnaryExpr(UnaryExpr&);
+
+	std::string parentesize(std::string& name, std::initializer_list<Expr*> expressions);
 };
 
 #endif /* SRC_SYNTAX_ASTPRINTER_H_ */

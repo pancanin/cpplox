@@ -1,14 +1,37 @@
-/*
- * AstPrinter.cpp
- *
- *  Created on: Apr 28, 2022
- *      Author: Freeware Sys
- */
-
 #include "AstPrinter.h"
 
-AstPrinter::AstPrinter() {
-	// TODO Auto-generated constructor stub
+#include "src/syntax/BinaryExpr.h"
+#include "src/syntax/LiteralExpr.h"
+#include "src/syntax/UnaryExpr.h"
+#include "src/scanner/Token.h"
 
+std::string AstPrinter::print(Expr& expr) {
+	return expr.accept(*this);
 }
 
+std::string AstPrinter::visitBinaryExpr(BinaryExpr& biExpr) {
+	return parentesize(biExpr.operand.lexeme, {&biExpr.left, &biExpr.right});
+}
+
+std::string AstPrinter::visitLiteralExpr(LiteralExpr& expr) {
+	return expr.value.lexeme;
+}
+
+std::string AstPrinter::visitUnaryExpr(UnaryExpr& expr) {
+	return parentesize(expr.op.lexeme, {&expr.expr});
+}
+
+std::string AstPrinter::parentesize(std::string& name, std::initializer_list<Expr*> expressions) {
+	std::string p;
+
+	p += "(" + name;
+
+	for (Expr* e : expressions) {
+		p += " ";
+		p += e->accept(*this);
+	}
+
+	p += ")";
+
+	return p;
+}
