@@ -133,6 +133,7 @@ Expr* Parser::parse() {
 	try {
 		return expression();
 	} catch (const ParseError& err) {
+		logger.error(1, "Invalid expression");
 		return nullptr;
 	}
 }
