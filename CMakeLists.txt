@@ -33,7 +33,11 @@ add_executable(${PROJECT_NAME}
 	${DIR}/src/syntax/BinaryExpr.h
 	${DIR}/src/syntax/LiteralExpr.h
 	${DIR}/src/syntax/AstPrinter.h
-	${DIR}/src/syntax/AstPrinter.cpp)
+	${DIR}/src/syntax/AstPrinter.cpp
+	
+	${DIR}/src/parser/Parser.h
+	${DIR}/src/parser/Parser.cpp
+	${DIR}/src/parser/ParseError.h)
 	
 set_target_cpp_standard(${PROJECT_NAME} 17)
 

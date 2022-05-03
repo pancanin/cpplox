@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <string>
 
+#include "src/scanner/Token.h"
+
 struct Logger;
 
 class LangErrorLogger {
@@ -11,6 +13,7 @@ public:
   LangErrorLogger(Logger&);
 
   void error(int32_t line, const std::string& msg);
+  void error(Token token, std::string msg);
   void report(int32_t line, const std::string& where, const std::string& msg) const;
   bool hasError() const;
   void clearError();

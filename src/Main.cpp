@@ -9,6 +9,9 @@
 #include "src/logging/Logger.h"
 #include "src/logging/LangErrorLogger.h"
 
+#include "src/parser/Parser.h"
+#include "src/syntax/AstPrinter.h"
+
 Main::Main(Logger& logger, LangErrorLogger& langErrorLogger): logger(logger), langErrorLogger(langErrorLogger) {}
 
 void Main::runFile(const std::string& fileName) const {
@@ -35,9 +38,10 @@ void Main::run(const std::string& sourceCode) const {
   Scanner scanner(sourceCode, langErrorLogger);
 
   std::vector<Token> tokens = scanner.scanTokens();
+  Parser parser(tokens, langErrorLogger);
 
-  for (Token t : tokens) {
-    std::cout << t << std::endl;
-  }
+  Expr* expr = parser.parse();
+  AstPrinter printer;
 
+  logger.info(printer.print(*expr));
 }

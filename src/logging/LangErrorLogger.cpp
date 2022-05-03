@@ -20,3 +20,11 @@ void LangErrorLogger::report(int32_t line, const std::string& where, const std::
 void LangErrorLogger::clearError() {
   errored = false;
 }
+
+void LangErrorLogger::error(Token token, std::string msg) {
+	if (token.type == TokenType::EOFILE) {
+		report(token.line, "end of file", msg);
+	} else {
+		report(token.line, " at " + token.lexeme, msg);
+	}
+}
