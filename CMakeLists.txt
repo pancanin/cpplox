@@ -37,7 +37,9 @@ add_executable(${PROJECT_NAME}
 	
 	${DIR}/src/parser/Parser.h
 	${DIR}/src/parser/Parser.cpp
-	${DIR}/src/parser/ParseError.h)
+	${DIR}/src/parser/ParseError.h
+	
+	${DIR}/src/interpreter/LoxType.h)
 	
 set_target_cpp_standard(${PROJECT_NAME} 17)
 

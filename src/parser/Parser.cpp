@@ -11,7 +11,13 @@ Parser::Parser(std::vector<Token>& tokens, LangErrorLogger& logger):
 	tokens(tokens), currentTokenIndex(0), logger(logger) {}
 
 Expr* Parser::expression() {
-	return equality();
+	Expr* left = equality();
+
+	while (match({TokenType::COMMA})) {
+		left = equality();
+	}
+
+	return left;
 }
 
 Expr* Parser::equality() {

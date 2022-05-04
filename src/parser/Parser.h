@@ -36,8 +36,8 @@ private:
 	Token advance();
 	bool checkIfCurrentTokenIs(TokenType) const;
 	bool match(std::initializer_list<TokenType>);
-
 	Token consume(TokenType type, std::string msg);
+
 	ParseError error(Token token, std::string msg);
 };
 

@@ -1,0 +1,14 @@
+#ifndef SRC_INTERPRETER_LOXTYPE_H_
+#define SRC_INTERPRETER_LOXTYPE_H_
+
+
+enum LoxType {
+	ANY,
+	NIL,
+	BOOLEAN,
+	NUMBER,
+	STRING
+};
+
+
+#endif /* SRC_INTERPRETER_LOXTYPE_H_ */

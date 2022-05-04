@@ -6,10 +6,12 @@
 
 #include "src/scanner/Scanner.h"
 #include "src/scanner/Token.h"
+
 #include "src/logging/Logger.h"
 #include "src/logging/LangErrorLogger.h"
 
 #include "src/parser/Parser.h"
+
 #include "src/syntax/AstPrinter.h"
 
 Main::Main(Logger& logger, LangErrorLogger& langErrorLogger): logger(logger), langErrorLogger(langErrorLogger) {}
@@ -36,10 +38,9 @@ void Main::runREPL() {
 
 void Main::run(const std::string& sourceCode) const {
   Scanner scanner(sourceCode, langErrorLogger);
-
   std::vector<Token> tokens = scanner.scanTokens();
-  Parser parser(tokens, langErrorLogger);
 
+  Parser parser(tokens, langErrorLogger);
   Expr* expr = parser.parse();
 
   if (langErrorLogger.hasError()) return;
