@@ -37,7 +37,7 @@ LoxValue Interpreter::visitGroupingExpr(GroupingExpr& expr) {
 LoxValue Interpreter::visitUnaryExpr(UnaryExpr& expr) {
   LoxValue right = evaluate(expr.expr);
 
-  if (expr.op.type == TokenType::MINUS && right.type == LoxType::NUMBER) {
+  if (expr.op.type == TokenType::BANG && right.type == LoxType::NUMBER) {
     double value = std::stod(right.value);
 
     return LoxValue(LoxType::NUMBER, std::to_string(-value));
@@ -63,7 +63,8 @@ LoxValue Interpreter::visitBinaryExpr(BinaryExpr& expr) {
   }
 
   if (expr.operand.type == TokenType::EQUAL_EQUAL) {
-    checkSameType(expr.operand, left.type, right.type);
+    checkStringOperand(expr.operand, left.type);
+    checkStringOperand(expr.operand, right.type);
     return LoxValue(LoxType::BOOLEAN, left.value == right.value ? "true" : "false");
   }
 
@@ -132,6 +133,11 @@ LoxValue Interpreter::evaluate(Expr& expr) {
 void Interpreter::checkNumberOperand(Token op, LoxType operandType) {
   if (operandType == LoxType::NUMBER) return;
   throw RuntimeError(op, "Operand must be a number.");
+}
+
+void Interpreter::checkStringOperand(Token op, LoxType operandType) {
+  if (operandType == LoxType::STRING) return;
+  throw RuntimeError(op, "Operand allows for string comparisons only.");
 }
 
 void Interpreter::checkSameType(Token op, LoxType o1Type, LoxType o2Type) {

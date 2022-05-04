@@ -69,7 +69,7 @@ Expr* Parser::factor() {
 }
 
 Expr* Parser::unary() {
-	if (match({TokenType::BANG, TokenType::MINUS})) {
+	if (match({TokenType::BANG})) {
 		Token op = getPreviousToken();
 		Expr* right = unary();
 		return new UnaryExpr(op, *right);

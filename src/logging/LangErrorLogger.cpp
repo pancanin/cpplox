@@ -25,6 +25,6 @@ void LangErrorLogger::error(Token token, std::string msg) {
 	if (token.type == TokenType::EOFILE) {
 		report(token.line, "end of file", msg);
 	} else {
-		report(token.line, " at " + token.lexeme, msg);
+		report(token.line, " at " + token.literal, msg);
 	}
 }

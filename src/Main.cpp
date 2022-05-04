@@ -45,9 +45,11 @@ void Main::run(const std::string& sourceCode) const {
   Parser parser(tokens, langErrorLogger);
   Expr* expr = parser.parse();
   Interpreter interpreter(logger, langErrorLogger);
-  interpreter.interpret(*expr);
+
 
   if (langErrorLogger.hasError()) return;
+
+  interpreter.interpret(*expr);
 
   AstPrinter printer;
 

@@ -28,6 +28,7 @@ private:
   LoxValue visitGroupingExpr(GroupingExpr&);
 
   void checkNumberOperand(Token op, LoxType operandType);
+  void checkStringOperand(Token op, LoxType operandType);
   void checkSameType(Token op, LoxType o1Type, LoxType o2Type);
 };
 
