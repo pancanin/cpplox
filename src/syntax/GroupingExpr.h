@@ -2,6 +2,8 @@
 #define SRC_SYNTAX_GROUPINGEXPR_H_
 
 #include "src/syntax/Expr.h"
+#include "src/interpreter/LoxValue.h"
+#include "src/interpreter/LoxValueExprVisitor.h"
 
 class GroupingExpr : public Expr {
 public:
@@ -12,6 +14,10 @@ public:
 	std::string accept(ToStringExprVisitor& visitor) {
 		return visitor.visitGroupingExpr(*this);
 	}
+
+	LoxValue accept(LoxValueExprVisitor& visitor) {
+    return visitor.visitGroupingExpr(*this);
+  }
 };
 
 

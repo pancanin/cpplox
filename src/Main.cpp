@@ -14,6 +14,8 @@
 
 #include "src/syntax/AstPrinter.h"
 
+#include "src/interpreter/Interpreter.h"
+
 Main::Main(Logger& logger, LangErrorLogger& langErrorLogger): logger(logger), langErrorLogger(langErrorLogger) {}
 
 void Main::runFile(const std::string& fileName) const {
@@ -42,6 +44,8 @@ void Main::run(const std::string& sourceCode) const {
 
   Parser parser(tokens, langErrorLogger);
   Expr* expr = parser.parse();
+  Interpreter interpreter(logger, langErrorLogger);
+  interpreter.interpret(*expr);
 
   if (langErrorLogger.hasError()) return;
 

@@ -3,11 +3,15 @@
 
 #include <string>
 
+#include "src/interpreter/LoxValue.h"
+
 struct ToStringExprVisitor;
+struct LoxValueExprVisitor;
 
 class Expr {
 public:
 	virtual std::string accept(ToStringExprVisitor&) = 0;
+	virtual LoxValue accept(LoxValueExprVisitor&) = 0;
 
 	virtual ~Expr() {};
 };

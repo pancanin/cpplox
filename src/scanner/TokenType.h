@@ -1,7 +1,7 @@
 #ifndef SRC_SCANNER_TOKENTYPE_H_
 #define SRC_SCANNER_TOKENTYPE_H_
 
-enum TokenType {
+enum class TokenType {
   // Single-character tokens.
   LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE,
   COMMA, DOT, MINUS, PLUS, SEMICOLON, SLASH, STAR,

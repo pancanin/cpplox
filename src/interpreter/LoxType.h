@@ -2,7 +2,7 @@
 #define SRC_INTERPRETER_LOXTYPE_H_
 
 
-enum LoxType {
+enum class LoxType {
 	ANY,
 	NIL,
 	BOOLEAN,

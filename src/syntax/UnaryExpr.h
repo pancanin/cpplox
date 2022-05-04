@@ -6,6 +6,8 @@
 #include "src/scanner/Token.h"
 #include "src/syntax/Expr.h"
 #include "src/syntax/ToStringExprVisitor.h"
+#include "src/interpreter/LoxValue.h"
+#include "src/interpreter/LoxValueExprVisitor.h"
 
 class UnaryExpr : public Expr {
 public:
@@ -17,6 +19,10 @@ public:
 	std::string accept(ToStringExprVisitor& visitor) {
 		return visitor.visitUnaryExpr(*this);
 	}
+
+	LoxValue accept(LoxValueExprVisitor& visitor) {
+    return visitor.visitUnaryExpr(*this);
+  }
 };
 
 

@@ -4,6 +4,8 @@
 #include "src/syntax/Expr.h"
 #include "src/scanner/Token.h"
 #include "src/syntax/ToStringExprVisitor.h"
+#include "src/interpreter/LoxValue.h"
+#include "src/interpreter/LoxValueExprVisitor.h"
 
 class BinaryExpr : public Expr {
 public:
@@ -15,6 +17,10 @@ public:
 
 	std::string accept(ToStringExprVisitor& visitor) {
 		return visitor.visitBinaryExpr(*this);
+	}
+
+	LoxValue accept(LoxValueExprVisitor& visitor) {
+	  return visitor.visitBinaryExpr(*this);
 	}
 };
 

@@ -3,6 +3,8 @@
 
 #include "src/syntax/Expr.h"
 #include "src/scanner/Token.h"
+#include "src/interpreter/LoxValue.h"
+#include "src/interpreter/LoxValueExprVisitor.h"
 
 class LiteralExpr : public Expr {
 public:
@@ -13,6 +15,10 @@ public:
 	std::string accept(ToStringExprVisitor& visitor) {
 		return visitor.visitLiteralExpr(*this);
 	}
+
+	LoxValue accept(LoxValueExprVisitor& visitor) {
+    return visitor.visitLiteralExpr(*this);
+  }
 };
 
 #endif /* SRC_SYNTAX_LITERALEXPR_H_ */

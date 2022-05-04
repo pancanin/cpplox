@@ -3,18 +3,10 @@
 
 #include <string>
 
-struct BinaryExpr;
-struct LiteralExpr;
-struct UnaryExpr;
-struct GroupingExpr;
+#include "src/syntax/ExprVisitor.h"
 
-class ToStringExprVisitor {
+class ToStringExprVisitor : public ExprVisitor<std::string> {
 public:
-	virtual std::string visitBinaryExpr(BinaryExpr&) = 0;
-	virtual std::string visitLiteralExpr(LiteralExpr&) = 0;
-	virtual std::string visitUnaryExpr(UnaryExpr&) = 0;
-	virtual std::string visitGroupingExpr(GroupingExpr&) = 0;
-
 	virtual ~ToStringExprVisitor() {};
 };
 

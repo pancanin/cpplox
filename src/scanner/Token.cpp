@@ -9,5 +9,5 @@ Token::Token(TokenType type, const std::string& lexeme, const std::string& liter
 Token::Token(): Token(TokenType::NA, "", "", 1) {}
 
 std::ostream& operator<<(std::ostream& os, const Token& token) {
-  return os << token.type << " " << token.lexeme << " " << token.literal;
+  return os << " " << token.lexeme << " " << token.literal;
 }

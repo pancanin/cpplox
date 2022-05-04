@@ -4,22 +4,22 @@
 #include "src/logging/LangErrorLogger.h"
 
 std::unordered_map<std::string, TokenType> Scanner::keywords = {
-		{"and",    AND},
-		{"class",  CLASS},
-		{"else",   ELSE},
-		{"false",  FALSE},
-		{"for",    FOR},
-		{"fun",    FUN},
-		{"if",     IF},
-		{"nil",    NIL},
-		{"or",     OR},
-		{"print",  PRINT},
-		{"return", RETURN},
-		{"super",  SUPER},
-		{"this",   THIS},
-		{"true",   TRUE},
-		{"var",    VAR},
-		{"while",  WHILE}
+		{"and",    TokenType::AND},
+		{"class",  TokenType::CLASS},
+		{"else",   TokenType::ELSE},
+		{"false",  TokenType::FALSE},
+		{"for",    TokenType::FOR},
+		{"fun",    TokenType::FUN},
+		{"if",     TokenType::IF},
+		{"nil",    TokenType::NIL},
+		{"or",     TokenType::OR},
+		{"print",  TokenType::PRINT},
+		{"return", TokenType::RETURN},
+		{"super",  TokenType::SUPER},
+		{"this",   TokenType::THIS},
+		{"true",   TokenType::TRUE},
+		{"var",    TokenType::VAR},
+		{"while",  TokenType::WHILE}
 };
 
 Scanner::Scanner(const std::string& source, LangErrorLogger& logger)
@@ -44,21 +44,21 @@ void Scanner::scanToken() {
   char c = advance();
 
   switch (c) {
-    case '(': addToken(LEFT_PAREN); break;
-    case ')': addToken(RIGHT_PAREN); break;
-    case '{': addToken(LEFT_BRACE); break;
-    case '}': addToken(RIGHT_BRACE); break;
-    case ',': addToken(COMMA); break;
-    case '.': addToken(DOT); break;
-    case '-': addToken(MINUS); break;
-    case '+': addToken(PLUS); break;
-    case ';': addToken(SEMICOLON); break;
-    case '*': addToken(STAR); break;
-    case '!': addToken(matchNextCharacter('=') ? BANG_EQUAL : BANG); break;
-    case '=': addToken(matchNextCharacter('=') ? EQUAL_EQUAL : EQUAL); break;
-    case '>': addToken(matchNextCharacter('=') ? GREATER_EQUAL : GREATER); break;
-    case '<': addToken(matchNextCharacter('=') ? LESS_EQUAL : LESS); break;
-    case '/': matchNextCharacter('/') ? consumeComments() : addToken(SLASH); break;
+    case '(': addToken(TokenType::LEFT_PAREN); break;
+    case ')': addToken(TokenType::RIGHT_PAREN); break;
+    case '{': addToken(TokenType::LEFT_BRACE); break;
+    case '}': addToken(TokenType::RIGHT_BRACE); break;
+    case ',': addToken(TokenType::COMMA); break;
+    case '.': addToken(TokenType::DOT); break;
+    case '-': addToken(TokenType::MINUS); break;
+    case '+': addToken(TokenType::PLUS); break;
+    case ';': addToken(TokenType::SEMICOLON); break;
+    case '*': addToken(TokenType::STAR); break;
+    case '!': addToken(matchNextCharacter('=') ? TokenType::BANG_EQUAL : TokenType::BANG); break;
+    case '=': addToken(matchNextCharacter('=') ? TokenType::EQUAL_EQUAL : TokenType::EQUAL); break;
+    case '>': addToken(matchNextCharacter('=') ? TokenType::GREATER_EQUAL : TokenType::GREATER); break;
+    case '<': addToken(matchNextCharacter('=') ? TokenType::LESS_EQUAL : TokenType::LESS); break;
+    case '/': matchNextCharacter('/') ? consumeComments() : addToken(TokenType::SLASH); break;
     case '"': consumeString(); break;
     case '0':
     case '1':
@@ -107,7 +107,7 @@ void Scanner::consumeString() {
 	advance(); // closing quote
 
 	std::string val = source.substr(start + 1, current - start - 2);
-	addToken(STRING, val);
+	addToken(TokenType::STRING, val);
 }
 
 void Scanner::consumeNumber() {
@@ -120,7 +120,7 @@ void Scanner::consumeNumber() {
 	}
 
 	std::string number = source.substr(start, current - start);
-	addToken(NUMBER, number);
+	addToken(TokenType::NUMBER, number);
 }
 
 void Scanner::consumeIdentifier() {
@@ -128,7 +128,7 @@ void Scanner::consumeIdentifier() {
 
 	std::string identifier = source.substr(start, current - start);
 
-	TokenType type = IDENTIFIER;
+	TokenType type = TokenType::IDENTIFIER;
 
 	if (keywords.find(identifier) != keywords.end()) {
 		type = keywords[identifier];
