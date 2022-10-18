@@ -63,8 +63,10 @@ LoxValue Interpreter::visitBinaryExpr(BinaryExpr& expr) {
   }
 
   if (expr.operand.type == TokenType::EQUAL_EQUAL) {
-    checkStringOperand(expr.operand, left.type);
-    checkStringOperand(expr.operand, right.type);
+    checkSameType(expr.operand, left.type, right.type);
+
+    std::cout << "We are comparing a left value of " << left.value << " and a right value of " << right.value << std::endl;
+
     return LoxValue(LoxType::BOOLEAN, left.value == right.value ? "true" : "false");
   }
 
@@ -137,7 +139,7 @@ void Interpreter::checkNumberOperand(Token op, LoxType operandType) {
 
 void Interpreter::checkStringOperand(Token op, LoxType operandType) {
   if (operandType == LoxType::STRING) return;
-  throw RuntimeError(op, "Operand allows for string comparisons only.");
+  throw RuntimeError(op, "Operand allows for string type only.");
 }
 
 void Interpreter::checkSameType(Token op, LoxType o1Type, LoxType o2Type) {

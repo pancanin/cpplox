@@ -41,7 +41,6 @@ void Main::runREPL() {
 void Main::run(const std::string& sourceCode) const {
   Scanner scanner(sourceCode, langErrorLogger);
   std::vector<Token> tokens = scanner.scanTokens();
-
   Parser parser(tokens, langErrorLogger);
   Expr* expr = parser.parse();
   Interpreter interpreter(logger, langErrorLogger);

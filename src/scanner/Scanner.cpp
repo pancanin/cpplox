@@ -134,7 +134,7 @@ void Scanner::consumeIdentifier() {
 		type = keywords[identifier];
 	}
 
-	addToken(type);
+	addToken(type, identifier);
 }
 
 char Scanner::advance() {
