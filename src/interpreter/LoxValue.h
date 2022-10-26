@@ -7,6 +7,7 @@
 
 struct LoxValue {
 	LoxValue(LoxType type, const std::string& value): type(type), value(value) {}
+	LoxValue(bool boolCondition): type(LoxType::BOOLEAN), value(boolCondition ? "true" : "false") {}
 
 	LoxType type;
 	std::string value;

@@ -8,7 +8,7 @@
 
 class RuntimeError : public std::runtime_error {
 public:
-  RuntimeError(Token op, const std::string& msg): token(token), std::runtime_error(msg) {}
+  RuntimeError(Token token, const std::string& msg): token(token), std::runtime_error(msg) {}
 
   char const* what() const throw() {
     return std::runtime_error::what();

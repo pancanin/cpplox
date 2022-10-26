@@ -21,6 +21,7 @@ private:
   int32_t start;
   int32_t current;
   int32_t line;
+  int32_t lineOffset;
   std::vector<Token> tokens;
   static std::unordered_map<std::string, TokenType> keywords;
 

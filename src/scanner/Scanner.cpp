@@ -23,7 +23,7 @@ std::unordered_map<std::string, TokenType> Scanner::keywords = {
 };
 
 Scanner::Scanner(const std::string& source, LangErrorLogger& logger)
-	: errorLogger(logger), source(source), start(0), current(0), line(1) {}
+	: errorLogger(logger), source(source), start(0), current(0), line(1), lineOffset(0) {}
 
 bool Scanner::isAtEnd() const {
   return current >= source.size();
@@ -35,7 +35,7 @@ const std::vector<Token> Scanner::scanTokens() {
     scanToken();
   }
 
-  tokens.emplace_back(TokenType::EOFILE, "", "", line);
+  addToken(TokenType::EOFILE);
 
   return tokens;
 }
@@ -77,6 +77,7 @@ void Scanner::scanToken() {
     	break;
     case '\n':
     	line++;
+		lineOffset = 0;
     	break;
     default:
     	if (isAlpha(c)) {
@@ -138,6 +139,7 @@ void Scanner::consumeIdentifier() {
 }
 
 char Scanner::advance() {
+	lineOffset++;
   return source.at(current++);
 }
 
@@ -163,9 +165,10 @@ bool Scanner::matchNextCharacter(char next) {
 void Scanner::addToken(TokenType type) {
   addToken(type, "");
 }
+
 void Scanner::addToken(TokenType type, const std::string& literal) {
   std::string text = source.substr(start, current - start);
-  tokens.emplace_back(type, text, literal, line);
+  tokens.emplace_back(type, text, literal, line, lineOffset);
 }
 
 bool Scanner::isDigit(char c) const {

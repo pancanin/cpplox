@@ -42,13 +42,7 @@ LoxValue Interpreter::visitUnaryExpr(UnaryExpr& expr) {
 
     return LoxValue(LoxType::NUMBER, std::to_string(-value));
   } else if (expr.op.type == TokenType::BANG && right.type == LoxType::BOOLEAN) {
-    bool isTrue = "true" == right.value;
-
-    if (isTrue) {
-      return LoxValue(LoxType::BOOLEAN, "false");
-    } else {
-      return LoxValue(LoxType::BOOLEAN, "true");
-    }
+    return LoxValue("true" != right.value);
   }
 
   return LoxValue(LoxType::NIL, "");
@@ -65,48 +59,46 @@ LoxValue Interpreter::visitBinaryExpr(BinaryExpr& expr) {
   if (expr.operand.type == TokenType::EQUAL_EQUAL) {
     checkSameType(expr.operand, left.type, right.type);
 
-    std::cout << "We are comparing a left value of " << left.value << " and a right value of " << right.value << std::endl;
-
-    return LoxValue(LoxType::BOOLEAN, left.value == right.value ? "true" : "false");
+    return LoxValue(left.value == right.value);
   }
 
   if (expr.operand.type == TokenType::BANG_EQUAL) {
     checkSameType(expr.operand, left.type, right.type);
-    return LoxValue(LoxType::BOOLEAN, left.value != right.value ? "true" : "false");
+    return LoxValue(left.value != right.value);
   }
 
   if (expr.operand.type == TokenType::GREATER) {
     checkSameType(expr.operand, left.type, right.type);
 
     if (left.type == LoxType::NUMBER && right.type == LoxType::NUMBER) {
-      return LoxValue(LoxType::BOOLEAN, std::stod(left.value) > std::stod(right.value) ? "true" : "false");
+      return LoxValue(std::stod(left.value) > std::stod(right.value));
     }
 
-    return LoxValue(LoxType::BOOLEAN, left.value > right.value ? "true" : "false");
+    return LoxValue(left.value > right.value);
   } else if (expr.operand.type == TokenType::GREATER_EQUAL) {
     checkSameType(expr.operand, left.type, right.type);
 
     if (left.type == LoxType::NUMBER && right.type == LoxType::NUMBER) {
-      return LoxValue(LoxType::BOOLEAN, std::stod(left.value) >= std::stod(right.value) ? "true" : "false");
+      return LoxValue(std::stod(left.value) >= std::stod(right.value));
     }
 
-    return LoxValue(LoxType::BOOLEAN, left.value >= right.value ? "true" : "false");
+    return LoxValue(left.value >= right.value);
   } else if (expr.operand.type == TokenType::LESS) {
     checkSameType(expr.operand, left.type, right.type);
 
     if (left.type == LoxType::NUMBER && right.type == LoxType::NUMBER) {
-      return LoxValue(LoxType::BOOLEAN, std::stod(left.value) < std::stod(right.value) ? "true" : "false");
+      return LoxValue(std::stod(left.value) < std::stod(right.value));
     }
 
-    return LoxValue(LoxType::BOOLEAN, left.value < right.value ? "true" : "false");
+    return LoxValue(left.value < right.value);
   } else if (expr.operand.type == TokenType::LESS_EQUAL) {
     checkSameType(expr.operand, left.type, right.type);
 
     if (left.type == LoxType::NUMBER && right.type == LoxType::NUMBER) {
-      return LoxValue(LoxType::BOOLEAN, std::stod(left.value) <= std::stod(right.value) ? "true" : "false");
+      return LoxValue(std::stod(left.value) <= std::stod(right.value));
     }
 
-    return LoxValue(LoxType::BOOLEAN, left.value <= right.value ? "true" : "false");
+    return LoxValue(left.value <= right.value);
   }
 
   checkNumberOperand(expr.operand, left.type);
@@ -134,7 +126,7 @@ LoxValue Interpreter::evaluate(Expr& expr) {
 
 void Interpreter::checkNumberOperand(Token op, LoxType operandType) {
   if (operandType == LoxType::NUMBER) return;
-  throw RuntimeError(op, "Operand must be a number.");
+  throw RuntimeError(op, "Operands must be a number.");
 }
 
 void Interpreter::checkStringOperand(Token op, LoxType operandType) {
