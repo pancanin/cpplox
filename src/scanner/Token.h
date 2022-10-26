@@ -10,7 +10,7 @@
 class Token {
 public:
   Token();
-  Token(TokenType type, const std::string& lexeme, const std::string& literal, int32_t line);
+  Token(TokenType type, const std::string& lexeme, const std::string& literal, int32_t line, int32_t lineOffset);
 
   friend std::ostream& operator<<(std::ostream& os, const Token&);
 
@@ -18,6 +18,7 @@ public:
   std::string lexeme;
   std::string literal;
   int32_t line;
+  int32_t lineOffset;
 };
 
 #endif /* SRC_SCANNER_TOKEN_H_ */
