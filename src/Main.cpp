@@ -27,7 +27,7 @@ void Main::runFile(const std::string& fileName) const {
 
 void Main::runREPL() {
   for (;;) {
-    logger.info("> ");
+    logger.info("> ", false);
 
     std::string command;
     getline(std::cin, command);

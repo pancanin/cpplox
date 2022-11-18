@@ -4,8 +4,8 @@
 #include <string>
 #include <cstdint>
 
-struct Logger;
-struct LangErrorLogger;
+#include "src/logging/LangErrorLogger.h"
+#include "src/logging/Logger.h"
 
 class Main {
 public:

@@ -5,6 +5,7 @@
 #include "src/syntax/UnaryExpr.h"
 #include "src/syntax/GroupingExpr.h"
 #include "src/scanner/Token.h"
+#include "src/syntax/Expr.h"
 
 std::string AstPrinter::print(Expr& expr) {
 	return expr.accept(*this);

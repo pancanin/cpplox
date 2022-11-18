@@ -23,3 +23,13 @@ The order is:
 Walk the tree, but this time start with the most concrete category of expressions - primary (literals). In tree language, that means start from the leafs.
 So we go the other way, compared to the parsing stage.
 The result of evaluating the tree could be a value or a side-effect, i.e. storing a variable.
+
+## Bugs
+
+- When the process is terminated with Ctrl + C, the program crashes.
+
+
+## Lessons learned
+
+- Never ignore the warnings from the compiler. Really odd linking errors could happen and some compilers are more strict than others.
+- In visual studio compiler, when you have reference to an object fields in classes, you must import the header files of these classes. Forward declarations won't work for fields.

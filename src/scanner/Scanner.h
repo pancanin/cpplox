@@ -6,8 +6,7 @@
 #include <vector>
 
 #include "src/scanner/Token.h"
-
-struct LangErrorLogger;
+#include "src/logging/LangErrorLogger.h"
 
 class Scanner {
 public:

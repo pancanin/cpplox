@@ -4,9 +4,8 @@
 #include "src/scanner/Token.h"
 #include "src/interpreter/LoxValueExprVisitor.h"
 #include "src/syntax/Expr.h"
-
-struct Logger;
-struct LangErrorLogger;
+#include "src/logging/Logger.h"
+#include "src/logging/LangErrorLogger.h"
 
 class Interpreter : public LoxValueExprVisitor {
 public:

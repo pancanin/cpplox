@@ -3,9 +3,9 @@
 #include <iostream>
 
 void StdLogger::error(const std::string& msg) const {
-  std::cerr << msg << std::endl;
+  std::cerr << msg;
 }
 
-void StdLogger::info(const std::string& msg) const {
-  std::cout << msg << std::endl;
+void StdLogger::info(const std::string& msg, bool insertNewLine) const {
+	std::cout << msg << (insertNewLine ? "\n" : "");
 }

@@ -5,11 +5,11 @@
 #include <initializer_list>
 
 #include "src/syntax/ToStringExprVisitor.h"
-#include "src/syntax/Expr.h"
 
 struct BinaryExpr;
 struct LiteralExpr;
 struct UnaryExpr;
+class Expr;
 
 class AstPrinter : public ToStringExprVisitor {
 public:

@@ -5,8 +5,7 @@
 #include <string>
 
 #include "src/scanner/Token.h"
-
-struct Logger;
+#include "src/logging/Logger.h"
 
 class LangErrorLogger {
 public:

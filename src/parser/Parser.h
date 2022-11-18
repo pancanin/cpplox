@@ -10,7 +10,7 @@
 #include "src/syntax/Expr.h"
 #include "src/parser/ParseError.h"
 
-struct LangErrorLogger;
+class LangErrorLogger;
 
 class Parser {
 public:

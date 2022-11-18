@@ -1,10 +1,10 @@
 #ifndef SRC_SYNTAX_EXPRVISITOR_H_
 #define SRC_SYNTAX_EXPRVISITOR_H_
 
-struct BinaryExpr;
-struct LiteralExpr;
-struct UnaryExpr;
-struct GroupingExpr;
+class BinaryExpr;
+class LiteralExpr;
+class UnaryExpr;
+class GroupingExpr;
 
 template <typename R>
 class ExprVisitor {
