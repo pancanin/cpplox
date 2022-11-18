@@ -79,7 +79,13 @@ Expr* Parser::unary() {
 }
 
 Expr* Parser::primary() {
-	if (match({TokenType::TRUE, TokenType::FALSE, TokenType::NIL, TokenType::STRING, TokenType::NUMBER})) {
+	std::initializer_list<TokenType> primaryTokenTypes = { TokenType::TRUE, TokenType::FALSE, TokenType::NIL, TokenType::STRING, TokenType::NUMBER, TokenType::IDENTIFIER };
+
+	if (match(primaryTokenTypes)) {
+		if (match(primaryTokenTypes)) {
+			throw error(getCurrentToken(), "Found a primary expression after a primary expression.");
+		}
+
 		return new LiteralExpr(getPreviousToken());
 	}
 
@@ -88,6 +94,11 @@ Expr* Parser::primary() {
 		consume(TokenType::RIGHT_PAREN, "missing )");
 		return new GroupingExpr(*expr);
 	}
+
+	// Another primary expression? That does not make sense...
+	// TODO: Fix this check, it does not work. We have to peek forward and see whether we have another primary.
+	// The method will be similar to 'match' but 
+	
 
 	throw error(getCurrentToken(), "Expression expected.");
 }
@@ -108,7 +119,7 @@ bool Parser::hasReachedEnd() const {
 	return currentTokenIndex >= tokens.size();
 }
 
-bool Parser::match(std::initializer_list<TokenType> types) {
+bool Parser::match(std::initializer_list<TokenType>&& types) {
 	for (TokenType t : types) {
 		if (checkIfCurrentTokenIs(t)) {
 			advance();
@@ -117,6 +128,11 @@ bool Parser::match(std::initializer_list<TokenType> types) {
 	}
 
 	return false;
+}
+
+bool Parser::match(std::initializer_list<TokenType>& types)
+{
+	return match(std::move(types));
 }
 
 Token Parser::advance() {
