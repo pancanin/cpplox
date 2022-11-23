@@ -40,6 +40,11 @@ private:
 	Token consume(TokenType type, std::string msg);
 
 	ParseError error(Token token, std::string msg);
+
+	/// <summary>
+	/// When an error occurs we want to move to the next statement. This method moves the token cursor to the next statement.
+	/// </summary>
+	void synchronize();
 };
 
 #endif /* SRC_PARSER_PARSER_H_ */

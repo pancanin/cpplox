@@ -37,7 +37,7 @@ LoxValue Interpreter::visitGroupingExpr(GroupingExpr& expr) {
 LoxValue Interpreter::visitUnaryExpr(UnaryExpr& expr) {
   LoxValue right = evaluate(expr.expr);
 
-  if (expr.op.type == TokenType::BANG && right.type == LoxType::NUMBER) {
+  if (expr.op.type == TokenType::MINUS && right.type == LoxType::NUMBER) {
     double value = std::stod(right.value);
 
     return LoxValue(LoxType::NUMBER, std::to_string(-value));
@@ -45,7 +45,7 @@ LoxValue Interpreter::visitUnaryExpr(UnaryExpr& expr) {
     return LoxValue("true" != right.value);
   }
 
-  return LoxValue(LoxType::NIL, "");
+  throw RuntimeError(expr.op, "Invalid unary expression.");
 }
 
 LoxValue Interpreter::visitBinaryExpr(BinaryExpr& expr) {

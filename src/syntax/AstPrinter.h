@@ -6,9 +6,9 @@
 
 #include "src/syntax/ToStringExprVisitor.h"
 
-struct BinaryExpr;
-struct LiteralExpr;
-struct UnaryExpr;
+class BinaryExpr;
+class LiteralExpr;
+class UnaryExpr;
 class Expr;
 
 class AstPrinter : public ToStringExprVisitor {

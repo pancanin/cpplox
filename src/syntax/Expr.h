@@ -5,8 +5,8 @@
 
 #include "src/interpreter/LoxValue.h"
 
-struct ToStringExprVisitor;
-struct LoxValueExprVisitor;
+class ToStringExprVisitor;
+class LoxValueExprVisitor;
 
 class Expr {
 public:

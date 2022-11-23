@@ -26,8 +26,7 @@ The result of evaluating the tree could be a value or a side-effect, i.e. storin
 
 ## Bugs
 
-- When the process is terminated with Ctrl + C, the program crashes.
-- "123asd" as input prints 123 and ignores the "asd" part.
+- When the process is terminated with Ctrl + C, the program crashes. When adding Windows.h to handle the Ctrl+C, the project goes wild.
 
 
 ## Lessons learned
