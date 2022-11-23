@@ -11,16 +11,21 @@
 #include "src/parser/ParseError.h"
 
 class LangErrorLogger;
+class Statement;
 
 class Parser {
 public:
 	Parser(std::vector<Token>&, LangErrorLogger&);
 
-	Expr* parse();
+	std::vector<Statement*> parse();
 private:
 	std::vector<Token>& tokens;
 	int32_t currentTokenIndex;
 	LangErrorLogger& logger;
+
+	std::vector<Statement*> program();
+	Statement* statement();
+	Statement* printStatement();
 
 	Expr* expression();
 	Expr* equality();

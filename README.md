@@ -27,6 +27,9 @@ The result of evaluating the tree could be a value or a side-effect, i.e. storin
 ## Bugs
 
 - When the process is terminated with Ctrl + C, the program crashes. When adding Windows.h to handle the Ctrl+C, the project goes wild.
+- It would be good to warn users if they input a floating point number which overflows the supported precision in our language. For this, we have to introduce a BigDecimal
+type of object.
+- Statement visitor does not get loaded - maybe it is a problem with cmake.
 
 
 ## Lessons learned

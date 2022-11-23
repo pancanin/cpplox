@@ -5,10 +5,44 @@
 #include "src/syntax/GroupingExpr.h"
 #include "src/syntax/LiteralExpr.h"
 
+#include "src/syntax/Statement.h"
+#include "src/syntax/PrintStatement.h"
+
 #include "src/logging/LangErrorLogger.h"
 
 Parser::Parser(std::vector<Token>& tokens, LangErrorLogger& logger):
   tokens(tokens), currentTokenIndex(0), logger(logger) {}
+
+std::vector<Statement*> Parser::program()
+{
+  std::vector<Statement*> statements;
+
+  while (!hasReachedEnd()) {
+    statements.push_back(statement());
+  }
+
+  return statements;
+}
+
+Statement* Parser::statement()
+{
+  if (match({ TokenType::PRINT })) {
+    return printStatement();
+  }
+
+  consume(TokenType::SEMICOLON, "; expected at the end of statement.");
+
+  return nullptr; // TODO: Return a ExprStatement here
+}
+
+Statement* Parser::printStatement()
+{
+  Expr* right = expression();
+
+  consume(TokenType::SEMICOLON, "; expected at the end of statement.");
+
+  return new PrintStatement(*right);
+}
 
 Expr* Parser::expression() {
   Expr* left = equality();
@@ -169,11 +203,11 @@ void Parser::synchronize()
   }
 }
 
-Expr* Parser::parse() {
+std::vector<Statement*> Parser::parse() {
   try {
-    return expression();
+    return program();
   } catch (const ParseError& err) {
     logger.error(tokens[currentTokenIndex].line, "Invalid expression");
-    return nullptr;
+    return {};
   }
 }

@@ -1,17 +1,23 @@
 #ifndef SRC_INTERPRETER_INTERPRETER_H_
 #define SRC_INTERPRETER_INTERPRETER_H_
 
+#include <vector>
+
 #include "src/scanner/Token.h"
 #include "src/interpreter/LoxValueExprVisitor.h"
 #include "src/syntax/Expr.h"
 #include "src/logging/Logger.h"
 #include "src/logging/LangErrorLogger.h"
+#include "src/syntax/LoxStatementVisitor.h"
 
-class Interpreter : public LoxValueExprVisitor {
+class Statement;
+class PrintStatement;
+
+class Interpreter : public LoxValueExprVisitor, public LoxStatementVisitor {
 public:
   Interpreter(Logger&, LangErrorLogger&);
 
-  void interpret(Expr& expr);
+  void interpret(std::vector<Statement*>);
 
   ~Interpreter() = default;
 
@@ -20,11 +26,14 @@ private:
   LangErrorLogger& errorLogger;
 
   LoxValue evaluate(Expr& expr);
+  void execute(Statement*);
 
   LoxValue visitBinaryExpr(BinaryExpr&);
   LoxValue visitLiteralExpr(LiteralExpr&);
   LoxValue visitUnaryExpr(UnaryExpr&);
   LoxValue visitGroupingExpr(GroupingExpr&);
+
+  void visitPrintStatement(PrintStatement*);
 
   void checkNumberOperand(Token op, LoxType operandType);
   void checkStringOperand(Token op, LoxType operandType);

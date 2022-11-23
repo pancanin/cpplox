@@ -35,6 +35,11 @@ add_executable(${PROJECT_NAME}
 	${DIR}/src/syntax/AstPrinter.h
 	${DIR}/src/syntax/AstPrinter.cpp
 	${DIR}/src/syntax/ExprVisitor.h
+	${DIR}/src/syntax/Statement.h
+	${DIR}/src/syntax/PrintStatement.h
+	${DIR}/src/syntax/ExprStatement.h
+	${DIR}/src/syntax/StatementVisitor.h
+	${DIR}/src/syntax/LoxStatementVisitor.h
 	
 	${DIR}/src/parser/Parser.h
 	${DIR}/src/parser/Parser.cpp
@@ -42,6 +47,7 @@ add_executable(${PROJECT_NAME}
 	
 	${DIR}/src/interpreter/LoxType.h
 	${DIR}/src/interpreter/LoxValueExprVisitor.h
+	
 	${DIR}/src/interpreter/RuntimeError.h
 	${DIR}/src/interpreter/Interpreter.h
 	${DIR}/src/interpreter/Interpreter.cpp)

@@ -34,6 +34,13 @@ LoxValue Interpreter::visitGroupingExpr(GroupingExpr& expr) {
   return evaluate(expr.expr);
 }
 
+void Interpreter::visitPrintStatement(PrintStatement* printStatement)
+{
+  LoxValue value = evaluate(printStatement->_expr);
+
+  std::cout << value.value << std::endl;
+}
+
 LoxValue Interpreter::visitUnaryExpr(UnaryExpr& expr) {
   LoxValue right = evaluate(expr.expr);
 
@@ -112,6 +119,7 @@ LoxValue Interpreter::visitBinaryExpr(BinaryExpr& expr) {
   case TokenType::MINUS:
     return LoxValue(LoxType::NUMBER, std::to_string(leftVal - rightVal));
   case TokenType::SLASH:
+    if (rightVal == 0) { throw RuntimeError(expr.operand, "Division by zero."); } // TODO: This comparison is fishy. Let's improve it once we include BigDecimal class
     return LoxValue(LoxType::NUMBER, std::to_string(leftVal / rightVal));
   case TokenType::STAR:
     return LoxValue(LoxType::NUMBER, std::to_string(leftVal * rightVal));
@@ -122,6 +130,11 @@ LoxValue Interpreter::visitBinaryExpr(BinaryExpr& expr) {
 
 LoxValue Interpreter::evaluate(Expr& expr) {
   return expr.accept(*this);
+}
+
+void Interpreter::execute(Statement* statement)
+{
+  statement->accept(*this);
 }
 
 void Interpreter::checkNumberOperand(Token op, LoxType operandType) {
@@ -139,10 +152,12 @@ void Interpreter::checkSameType(Token op, LoxType o1Type, LoxType o2Type) {
   throw RuntimeError(op, "Operands must be of same type.");
 }
 
-void Interpreter::interpret(Expr& expr) {
+void Interpreter::interpret(std::vector<Statement*> statements) {
   try {
-    LoxValue value = evaluate(expr);
-    logger.info(value.value);
+    for (auto* statement : statements) {
+      execute(statement);
+    }
+
   } catch (const RuntimeError& err) {
     errorLogger.error(err.token, err.what());
   }

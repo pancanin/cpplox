@@ -66,15 +66,13 @@ void Main::run(const std::string& sourceCode) const {
   Scanner scanner(sourceCode, langErrorLogger);
   std::vector<Token> tokens = scanner.scanTokens();
   Parser parser(tokens, langErrorLogger);
-  Expr* expr = parser.parse();
+  std::vector<Statement*> statements = parser.parse();
   Interpreter interpreter(logger, langErrorLogger);
 
 
   if (langErrorLogger.hasError()) return;
 
-  interpreter.interpret(*expr);
+  interpreter.interpret(statements);
 
   AstPrinter printer;
-
-  logger.info(printer.print(*expr));
 }
