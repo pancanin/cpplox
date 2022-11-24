@@ -1,7 +1,7 @@
 #ifndef SRC_SYNTAX_STATEMENT_H
 #define SRC_SYNTAX_STATEMENT_H
 
-#include "src/syntax/LoxStatementVisitor.h"
+class LoxStatementVisitor;
 
 class Statement {
 public:

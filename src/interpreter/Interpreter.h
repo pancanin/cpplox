@@ -8,6 +8,7 @@
 #include "src/syntax/Expr.h"
 #include "src/logging/Logger.h"
 #include "src/logging/LangErrorLogger.h"
+
 #include "src/syntax/LoxStatementVisitor.h"
 
 class Statement;
@@ -34,6 +35,7 @@ private:
   LoxValue visitGroupingExpr(GroupingExpr&);
 
   void visitPrintStatement(PrintStatement*);
+  void visitExprStatement(ExprStatement*);
 
   void checkNumberOperand(Token op, LoxType operandType);
   void checkStringOperand(Token op, LoxType operandType);

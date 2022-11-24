@@ -1,18 +1,16 @@
 #ifndef SRC_SYNTAX_PRINT_STATEMENT_H
 #define SRC_SYNTAX_PRINT_STATEMENT_H
 
-#include "Statement.h"
-#include "Expr.h"
+#include "src/syntax/Statement.h"
+#include "src/syntax/Expr.h"
 
-#include "src/syntax/LoxStatementVisitor.h"
+class LoxStatementVisitor;
 
 class PrintStatement : public Statement {
 public:
-  PrintStatement(Expr& expr) : _expr(expr) {};
+  PrintStatement(Expr& expr);
 
-  void accept(LoxStatementVisitor& visitor) {
-    visitor.visitPrintStatement(this);
-  }
+  void accept(LoxStatementVisitor& visitor);
 
   Expr& _expr;
 };

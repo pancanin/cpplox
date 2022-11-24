@@ -7,6 +7,7 @@
 
 #include "src/syntax/Statement.h"
 #include "src/syntax/PrintStatement.h"
+#include "src/syntax/ExprStatement.h"
 
 #include "src/logging/LangErrorLogger.h"
 
@@ -30,18 +31,20 @@ Statement* Parser::statement()
     return printStatement();
   }
 
-  consume(TokenType::SEMICOLON, "; expected at the end of statement.");
+  Expr* expr = expression();
 
-  return nullptr; // TODO: Return a ExprStatement here
+  //consume(TokenType::SEMICOLON, "; expected at the end of statement.");
+
+  return reinterpret_cast<Statement*>(new ExprStatement(*expr));
 }
 
 Statement* Parser::printStatement()
 {
   Expr* right = expression();
 
-  consume(TokenType::SEMICOLON, "; expected at the end of statement.");
+  //consume(TokenType::SEMICOLON, "; expected at the end of statement.");
 
-  return new PrintStatement(*right);
+  return reinterpret_cast<Statement*>(new PrintStatement(*right));
 }
 
 Expr* Parser::expression() {
@@ -145,7 +148,7 @@ bool Parser::checkIfCurrentTokenIs(TokenType type) const {
 }
 
 bool Parser::hasReachedEnd() const {
-  return currentTokenIndex >= tokens.size();
+  return currentTokenIndex >= tokens.size() || tokens[currentTokenIndex].type == TokenType::EOFILE;
 }
 
 bool Parser::match(std::initializer_list<TokenType>&& types) {

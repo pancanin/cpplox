@@ -10,6 +10,8 @@
 #include "src/logging/LangErrorLogger.h"
 #include "src/logging/Logger.h"
 
+#include "src/syntax/Statement.h"
+
 Interpreter::Interpreter(Logger& logger, LangErrorLogger& errorLogger): logger(logger), errorLogger(errorLogger) {}
 
 LoxValue Interpreter::visitLiteralExpr(LiteralExpr& expr) {
@@ -39,6 +41,11 @@ void Interpreter::visitPrintStatement(PrintStatement* printStatement)
   LoxValue value = evaluate(printStatement->_expr);
 
   std::cout << value.value << std::endl;
+}
+
+void Interpreter::visitExprStatement(ExprStatement* exprStatement)
+{
+  evaluate(exprStatement->_expr);
 }
 
 LoxValue Interpreter::visitUnaryExpr(UnaryExpr& expr) {
