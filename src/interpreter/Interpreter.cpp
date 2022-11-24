@@ -10,8 +10,6 @@
 #include "src/logging/LangErrorLogger.h"
 #include "src/logging/Logger.h"
 
-#include "src/syntax/Statement.h"
-
 Interpreter::Interpreter(Logger& logger, LangErrorLogger& errorLogger): logger(logger), errorLogger(errorLogger) {}
 
 LoxValue Interpreter::visitLiteralExpr(LiteralExpr& expr) {
@@ -139,7 +137,7 @@ LoxValue Interpreter::evaluate(Expr& expr) {
   return expr.accept(*this);
 }
 
-void Interpreter::execute(Statement* statement)
+void Interpreter::execute(std::shared_ptr<Statement> statement)
 {
   statement->accept(*this);
 }
@@ -159,9 +157,9 @@ void Interpreter::checkSameType(Token op, LoxType o1Type, LoxType o2Type) {
   throw RuntimeError(op, "Operands must be of same type.");
 }
 
-void Interpreter::interpret(std::vector<Statement*> statements) {
+void Interpreter::interpret(const std::vector<std::shared_ptr<Statement>>& statements) {
   try {
-    for (auto* statement : statements) {
+    for (auto statement : statements) {
       execute(statement);
     }
 

@@ -4,28 +4,29 @@
 #include <cstdint>
 #include <initializer_list>
 #include <vector>
+#include <memory>
 
 #include "src/scanner/Token.h"
 #include "src/scanner/TokenType.h"
-#include "src/syntax/Expr.h"
 #include "src/parser/ParseError.h"
+#include "src/syntax/Expr.h"
+#include "src/syntax/Statement.h"
 
 class LangErrorLogger;
-class Statement;
 
 class Parser {
 public:
 	Parser(std::vector<Token>&, LangErrorLogger&);
 
-	std::vector<Statement*> parse();
+	std::vector<std::shared_ptr<Statement>> parse();
 private:
 	std::vector<Token>& tokens;
 	int32_t currentTokenIndex;
 	LangErrorLogger& logger;
 
-	std::vector<Statement*> program();
-	Statement* statement();
-	Statement* printStatement();
+	std::vector<std::shared_ptr<Statement>> program();
+	std::shared_ptr<Statement> statement();
+	std::shared_ptr<Statement> printStatement();
 
 	Expr* expression();
 	Expr* equality();

@@ -5,7 +5,6 @@
 #include "src/syntax/GroupingExpr.h"
 #include "src/syntax/LiteralExpr.h"
 
-#include "src/syntax/Statement.h"
 #include "src/syntax/PrintStatement.h"
 #include "src/syntax/ExprStatement.h"
 
@@ -14,9 +13,9 @@
 Parser::Parser(std::vector<Token>& tokens, LangErrorLogger& logger):
   tokens(tokens), currentTokenIndex(0), logger(logger) {}
 
-std::vector<Statement*> Parser::program()
+std::vector<std::shared_ptr<Statement>> Parser::program()
 {
-  std::vector<Statement*> statements;
+  std::vector<std::shared_ptr<Statement>> statements;
 
   while (!hasReachedEnd()) {
     statements.push_back(statement());
@@ -25,7 +24,7 @@ std::vector<Statement*> Parser::program()
   return statements;
 }
 
-Statement* Parser::statement()
+std::shared_ptr<Statement> Parser::statement()
 {
   if (match({ TokenType::PRINT })) {
     return printStatement();
@@ -35,16 +34,16 @@ Statement* Parser::statement()
 
   //consume(TokenType::SEMICOLON, "; expected at the end of statement.");
 
-  return reinterpret_cast<Statement*>(new ExprStatement(*expr));
+  return std::make_shared<Statement>(new ExprStatement(*expr));
 }
 
-Statement* Parser::printStatement()
+std::shared_ptr<Statement> Parser::printStatement()
 {
   Expr* right = expression();
 
   //consume(TokenType::SEMICOLON, "; expected at the end of statement.");
 
-  return reinterpret_cast<Statement*>(new PrintStatement(*right));
+  return std::make_shared<Statement>(new PrintStatement(*right));
 }
 
 Expr* Parser::expression() {
@@ -206,7 +205,7 @@ void Parser::synchronize()
   }
 }
 
-std::vector<Statement*> Parser::parse() {
+std::vector<std::shared_ptr<Statement>> Parser::parse() {
   try {
     return program();
   } catch (const ParseError& err) {

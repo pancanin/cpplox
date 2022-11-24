@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <memory>
 #include <signal.h>
 //#include <windows.h>
 
@@ -17,6 +18,7 @@
 #include "src/syntax/AstPrinter.h"
 
 #include "src/interpreter/Interpreter.h"
+#include "src/syntax/Statement.h"
 
 static void signal_callback_handler(int signum) {
     exit(signum);
@@ -66,7 +68,7 @@ void Main::run(const std::string& sourceCode) const {
   Scanner scanner(sourceCode, langErrorLogger);
   std::vector<Token> tokens = scanner.scanTokens();
   Parser parser(tokens, langErrorLogger);
-  std::vector<Statement*> statements = parser.parse();
+  auto statements = parser.parse();
   Interpreter interpreter(logger, langErrorLogger);
 
 
