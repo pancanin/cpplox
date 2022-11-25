@@ -12,8 +12,10 @@
 
 #include "src/syntax/LoxStatementVisitor.h"
 #include "src/syntax/Statement.h"
+#include "src/env/Environment.h"
 
 class PrintStatement;
+class VarStatement;
 
 class Interpreter : public LoxValueExprVisitor, public LoxStatementVisitor {
 public:
@@ -26,6 +28,7 @@ public:
 private:
   Logger& logger;
   LangErrorLogger& errorLogger;
+  Environment env;
 
   LoxValue evaluate(Expr& expr);
   void execute(std::shared_ptr<Statement>);
@@ -37,6 +40,7 @@ private:
 
   void visitPrintStatement(PrintStatement*);
   void visitExprStatement(ExprStatement*);
+  void visitVarStatement(VarStatement*);
 
   void checkNumberOperand(Token op, LoxType operandType);
   void checkStringOperand(Token op, LoxType operandType);

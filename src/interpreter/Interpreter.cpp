@@ -46,6 +46,13 @@ void Interpreter::visitExprStatement(ExprStatement* exprStatement)
   evaluate(exprStatement->_expr);
 }
 
+void Interpreter::visitVarStatement(VarStatement* statement)
+{
+  LoxValue val = evaluate(*statement->_expr);
+
+  env.declareVariable(statement->name.literal, val);
+}
+
 LoxValue Interpreter::visitUnaryExpr(UnaryExpr& expr) {
   LoxValue right = evaluate(*expr.expr);
 

@@ -7,6 +7,7 @@
 
 #include "src/syntax/PrintStatement.h"
 #include "src/syntax/ExprStatement.h"
+#include "src/syntax/VarStatement.h"
 
 #include "src/logging/LangErrorLogger.h"
 
@@ -18,10 +19,32 @@ std::vector<std::shared_ptr<Statement>> Parser::program()
   std::vector<std::shared_ptr<Statement>> statements;
 
   while (!hasReachedEnd()) {
-    statements.push_back(statement());
+    statements.push_back(declaration());
   }
 
   return statements;
+}
+
+std::shared_ptr<Statement> Parser::declaration()
+{
+  if (match({ TokenType::VAR })) {
+    return varDeclaration();
+  }
+
+  return statement();
+}
+
+std::shared_ptr<Statement> Parser::varDeclaration()
+{
+  Token name = consume(TokenType::IDENTIFIER, "Variable name expected.");
+
+  if (match({ TokenType::EQUAL })) {
+    auto expr = expression();
+
+    return std::make_shared<VarStatement>(name, expr);
+  }
+
+  return std::make_shared<VarStatement>(name);
 }
 
 std::shared_ptr<Statement> Parser::statement()

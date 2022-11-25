@@ -31,6 +31,10 @@ The result of evaluating the tree could be a value or a side-effect, i.e. storin
 type of object.
 - Statement visitor does not get loaded - maybe it is a problem with cmake.
 
+## Improvements Plan
+
+- LoxValue is copied a lot while storing and retrieving from Environment storage. Let's improve that.
+
 
 ## Lessons learned
 
