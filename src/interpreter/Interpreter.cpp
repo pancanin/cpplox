@@ -48,7 +48,11 @@ void Interpreter::visitExprStatement(ExprStatement* exprStatement)
 
 void Interpreter::visitVarStatement(VarStatement* statement)
 {
-  LoxValue val = evaluate(*statement->_expr);
+  LoxValue val;
+
+  if (statement->_expr.get() != nullptr) {
+    val = evaluate(*statement->_expr);
+  }
 
   env.declareVariable(statement->name.literal, val);
 }
