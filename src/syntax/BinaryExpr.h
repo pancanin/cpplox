@@ -1,6 +1,8 @@
 #ifndef SRC_SYNTAX_BINARYEXPR_H_
 #define SRC_SYNTAX_BINARYEXPR_H_
 
+#include <memory>
+
 #include "src/syntax/Expr.h"
 #include "src/scanner/Token.h"
 #include "src/syntax/ToStringExprVisitor.h"
@@ -9,11 +11,11 @@
 
 class BinaryExpr : public Expr {
 public:
-	BinaryExpr(Expr& left, Token operand, Expr& right): left(left), operand(operand), right(right) {}
+	BinaryExpr(std::shared_ptr<Expr> left, Token operand, std::shared_ptr<Expr> right): left(left), operand(operand), right(right) {}
 
-	Expr& left;
+	std::shared_ptr<Expr> left;
 	Token operand;
-	Expr& right;
+	std::shared_ptr<Expr> right;
 
 	std::string accept(ToStringExprVisitor& visitor) {
 		return visitor.visitBinaryExpr(*this);

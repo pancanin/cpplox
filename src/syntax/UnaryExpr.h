@@ -2,6 +2,7 @@
 #define SRC_SYNTAX_UNARYEXPR_H_
 
 #include <string>
+#include <memory>
 
 #include "src/scanner/Token.h"
 #include "src/syntax/Expr.h"
@@ -11,10 +12,10 @@
 
 class UnaryExpr : public Expr {
 public:
-	UnaryExpr(Token op, Expr& expr): op(op), expr(expr) {}
+	UnaryExpr(Token op, std::shared_ptr<Expr> expr): op(op), expr(expr) {}
 
 	Token op;
-	Expr& expr;
+	std::shared_ptr<Expr> expr;
 
 	std::string accept(ToStringExprVisitor& visitor) {
 		return visitor.visitUnaryExpr(*this);

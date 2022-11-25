@@ -31,12 +31,12 @@ LoxValue Interpreter::visitLiteralExpr(LiteralExpr& expr) {
 }
 
 LoxValue Interpreter::visitGroupingExpr(GroupingExpr& expr) {
-  return evaluate(expr.expr);
+  return evaluate(*expr.expr);
 }
 
 void Interpreter::visitPrintStatement(PrintStatement* printStatement)
 {
-  LoxValue value = evaluate(printStatement->_expr);
+  LoxValue value = evaluate(*printStatement->_exprPtr);
 
   std::cout << value.value << std::endl;
 }
@@ -47,7 +47,7 @@ void Interpreter::visitExprStatement(ExprStatement* exprStatement)
 }
 
 LoxValue Interpreter::visitUnaryExpr(UnaryExpr& expr) {
-  LoxValue right = evaluate(expr.expr);
+  LoxValue right = evaluate(*expr.expr);
 
   if (expr.op.type == TokenType::MINUS && right.type == LoxType::NUMBER) {
     double value = std::stod(right.value);
@@ -61,8 +61,8 @@ LoxValue Interpreter::visitUnaryExpr(UnaryExpr& expr) {
 }
 
 LoxValue Interpreter::visitBinaryExpr(BinaryExpr& expr) {
-  LoxValue left = evaluate(expr.left);
-  LoxValue right = evaluate(expr.right);
+  LoxValue left = evaluate(*expr.left);
+  LoxValue right = evaluate(*expr.right);
 
   if (expr.operand.type == TokenType::PLUS && (left.type == LoxType::STRING || right.type == LoxType::STRING)) {
     return LoxValue(LoxType::STRING, left.value + right.value);

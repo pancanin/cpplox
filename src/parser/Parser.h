@@ -28,13 +28,13 @@ private:
 	std::shared_ptr<Statement> statement();
 	std::shared_ptr<Statement> printStatement();
 
-	Expr* expression();
-	Expr* equality();
-	Expr* comparison();
-	Expr* term();
-	Expr* factor();
-	Expr* unary();
-	Expr* primary();
+	std::shared_ptr<Expr> expression();
+	std::shared_ptr<Expr> equality();
+	std::shared_ptr<Expr> comparison();
+	std::shared_ptr<Expr> term();
+	std::shared_ptr<Expr> factor();
+	std::shared_ptr<Expr> unary();
+	std::shared_ptr<Expr> primary();
 
 	Token getPreviousToken() const;
 	Token getCurrentToken() const;

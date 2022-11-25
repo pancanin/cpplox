@@ -3,13 +3,14 @@
 
 #include <string>
 #include <initializer_list>
+#include <memory>
 
 #include "src/syntax/ToStringExprVisitor.h"
+#include "src/syntax/Expr.h"
 
 class BinaryExpr;
 class LiteralExpr;
 class UnaryExpr;
-class Expr;
 
 class AstPrinter : public ToStringExprVisitor {
 public:
@@ -20,7 +21,7 @@ private:
 	std::string visitUnaryExpr(UnaryExpr&);
 	std::string visitGroupingExpr(GroupingExpr&);
 
-	std::string parentesize(std::string name, std::initializer_list<Expr*> expressions);
+	std::string parentesize(std::string name, std::initializer_list<std::shared_ptr<Expr>> expressions);
 };
 
 #endif /* SRC_SYNTAX_ASTPRINTER_H_ */

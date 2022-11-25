@@ -30,7 +30,7 @@ std::shared_ptr<Statement> Parser::statement()
     return printStatement();
   }
 
-  Expr* expr = expression();
+  auto expr = expression();
 
   //consume(TokenType::SEMICOLON, "; expected at the end of statement.");
 
@@ -39,15 +39,15 @@ std::shared_ptr<Statement> Parser::statement()
 
 std::shared_ptr<Statement> Parser::printStatement()
 {
-  Expr* right = expression();
+  auto right = expression();
 
   //consume(TokenType::SEMICOLON, "; expected at the end of statement.");
 
-  return std::make_shared<PrintStatement>(*right);
+  return std::make_shared<PrintStatement>(right);
 }
 
-Expr* Parser::expression() {
-  Expr* left = equality();
+std::shared_ptr<Expr> Parser::expression() {
+  auto left = equality();
 
   while (match({TokenType::COMMA})) {
     left = equality();
@@ -56,65 +56,65 @@ Expr* Parser::expression() {
   return left;
 }
 
-Expr* Parser::equality() {
-  Expr* left = comparison();
+std::shared_ptr<Expr> Parser::equality() {
+  auto left = comparison();
 
   while (match({TokenType::EQUAL_EQUAL, TokenType::BANG_EQUAL})) {
     Token op = getPreviousToken();
-    Expr* right = comparison();
-    left = new BinaryExpr(*left, op, *right);
+    auto right = comparison();
+    left = std::make_shared<BinaryExpr>(left, op, right);
   }
 
   return left;
 }
 
-Expr* Parser::comparison() {
-  Expr* left = term();
+std::shared_ptr<Expr> Parser::comparison() {
+  auto left = term();
 
   while (match({TokenType::GREATER, TokenType::GREATER_EQUAL, TokenType::LESS, TokenType::LESS_EQUAL})) {
     Token op = getPreviousToken();
-    Expr* right = term();
-    left = new BinaryExpr(*left, op, *right);
+    auto right = term();
+    left = std::make_shared<BinaryExpr>(left, op, right);
   }
 
   return left;
 }
 
-Expr* Parser::term() {
-  Expr* left = factor();
+std::shared_ptr<Expr> Parser::term() {
+  auto left = factor();
 
   while (match({TokenType::PLUS, TokenType::MINUS})) {
     Token op = getPreviousToken();
-    Expr* right = factor();
-    left = new BinaryExpr(*left, op, *right);
+    auto right = factor();
+    left = std::make_shared<BinaryExpr>(left, op, right);
   }
 
   return left;
 }
 
-Expr* Parser::factor() {
-  Expr* left = unary();
+std::shared_ptr<Expr> Parser::factor() {
+  auto left = unary();
 
   while (match({TokenType::STAR, TokenType::SLASH})) {
     Token op = getPreviousToken();
-    Expr* right = unary();
-    left = new BinaryExpr(*left, op, *right);
+    auto right = unary();
+    left = std::make_shared<BinaryExpr>(left, op, right);
   }
 
   return left;
 }
 
-Expr* Parser::unary() {
+std::shared_ptr<Expr> Parser::unary() {
   if (match({TokenType::BANG, TokenType::MINUS, TokenType::PLUS})) {
     Token op = getPreviousToken();
-    Expr* right = unary();
-    return new UnaryExpr(op, *right);
+    auto right = unary();
+    return std::make_shared<UnaryExpr>(op, right);
   }
 
   return primary();
 }
 
-Expr* Parser::primary() {
+std::shared_ptr<Expr> Parser::primary() {
   std::initializer_list<TokenType> primaryTokenTypes = { TokenType::TRUE, TokenType::FALSE, TokenType::NIL, TokenType::STRING, TokenType::NUMBER, TokenType::IDENTIFIER };
 
   if (match(primaryTokenTypes)) {
@@ -122,13 +122,13 @@ Expr* Parser::primary() {
       throw error(getCurrentToken(), "Found a primary expression after a primary expression.");
     }
 
-    return new LiteralExpr(getPreviousToken());
+    return std::make_shared<LiteralExpr>(getPreviousToken());
   }
 
   if (match({TokenType::LEFT_PAREN})) {
-    Expr* expr = expression();
+    auto expr = expression();
     consume(TokenType::RIGHT_PAREN, "missing )");
-    return new GroupingExpr(*expr);
+    return std::make_shared<GroupingExpr>(expr);
   }
 
   throw error(getCurrentToken(), "Expression expected.");
