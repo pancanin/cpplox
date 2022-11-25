@@ -34,7 +34,7 @@ std::shared_ptr<Statement> Parser::statement()
 
   //consume(TokenType::SEMICOLON, "; expected at the end of statement.");
 
-  return std::make_shared<Statement>(new ExprStatement(*expr));
+  return std::make_shared<ExprStatement>(*expr);
 }
 
 std::shared_ptr<Statement> Parser::printStatement()
@@ -43,7 +43,7 @@ std::shared_ptr<Statement> Parser::printStatement()
 
   //consume(TokenType::SEMICOLON, "; expected at the end of statement.");
 
-  return std::make_shared<Statement>(new PrintStatement(*right));
+  return std::make_shared<PrintStatement>(*right);
 }
 
 Expr* Parser::expression() {
@@ -209,7 +209,7 @@ std::vector<std::shared_ptr<Statement>> Parser::parse() {
   try {
     return program();
   } catch (const ParseError& err) {
-    logger.error(tokens[currentTokenIndex].line, "Invalid expression");
+    logger.error(tokens[currentTokenIndex].line, err.what());
     return {};
   }
 }
