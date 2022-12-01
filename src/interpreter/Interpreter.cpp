@@ -80,6 +80,11 @@ void Interpreter::visitVarStatement(VarStatement* statement)
   env->declareVariable(statement->name.literal, val);
 }
 
+void Interpreter::visitBlockStatement(BlockStatement& blockStatement)
+{
+  
+}
+
 LoxValue Interpreter::visitUnaryExpr(UnaryExpr& expr) {
   LoxValue right = evaluate(*expr.expr);
 

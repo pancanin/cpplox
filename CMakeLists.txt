@@ -40,6 +40,9 @@ add_executable(${PROJECT_NAME}
 	${DIR}/src/syntax/ExprStatement.h
 	${DIR}/src/syntax/StatementVisitor.h
 	${DIR}/src/syntax/LoxStatementVisitor.h
+	${DIR}/src/syntax/BlockStatement.h
+	${DIR}/src/syntax/BlockStatement.cpp
+
 	
 	${DIR}/src/parser/Parser.h
 	${DIR}/src/parser/Parser.cpp

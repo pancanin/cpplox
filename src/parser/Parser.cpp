@@ -9,6 +9,7 @@
 #include "src/syntax/PrintStatement.h"
 #include "src/syntax/ExprStatement.h"
 #include "src/syntax/VarStatement.h"
+#include "src/syntax/BlockStatement.h"
 
 #include "src/logging/LangErrorLogger.h"
 
@@ -24,6 +25,19 @@ std::vector<std::shared_ptr<Statement>> Parser::program()
   }
 
   return statements;
+}
+
+std::shared_ptr<Statement> Parser::block()
+{
+  if (match({ TokenType::LEFT_BRACE })) {
+    auto statement = declaration();
+
+    consume(TokenType::RIGHT_BRACE, "Expected } at end of block.");
+
+    return std::make_shared<BlockStatement>(statement);
+  }
+
+  return declaration();
 }
 
 std::shared_ptr<Statement> Parser::declaration()

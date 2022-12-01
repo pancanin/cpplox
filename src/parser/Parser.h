@@ -25,6 +25,7 @@ private:
 	LangErrorLogger& logger;
 
 	std::vector<std::shared_ptr<Statement>> program();
+	std::shared_ptr<Statement> block();
 	std::shared_ptr<Statement> declaration();
 	std::shared_ptr<Statement> varDeclaration();
 	std::shared_ptr<Statement> statement();

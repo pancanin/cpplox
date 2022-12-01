@@ -16,6 +16,7 @@
 
 class PrintStatement;
 class VarStatement;
+class BlockStatement;
 
 class Interpreter : public LoxValueExprVisitor, public LoxStatementVisitor {
 public:
@@ -42,6 +43,7 @@ private:
   void visitPrintStatement(PrintStatement*);
   void visitExprStatement(ExprStatement*);
   void visitVarStatement(VarStatement*);
+  void visitBlockStatement(BlockStatement&);
 
   void checkNumberOperand(Token op, LoxType operandType);
   void checkStringOperand(Token op, LoxType operandType);
