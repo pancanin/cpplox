@@ -4,13 +4,14 @@
 #include "src/syntax/LiteralExpr.h"
 #include "src/syntax/UnaryExpr.h"
 #include "src/syntax/GroupingExpr.h"
+#include "src/syntax/AssignmentExpr.h"
 #include "src/syntax/Expr.h"
 
 #include "src/interpreter/RuntimeError.h"
 #include "src/logging/LangErrorLogger.h"
 #include "src/logging/Logger.h"
 
-Interpreter::Interpreter(Logger& logger, LangErrorLogger& errorLogger): logger(logger), errorLogger(errorLogger) {}
+Interpreter::Interpreter(Logger& logger, LangErrorLogger& errorLogger, std::shared_ptr<Environment> env): logger(logger), errorLogger(errorLogger), env(env) {}
 
 LoxValue Interpreter::visitLiteralExpr(LiteralExpr& expr) {
   Token token = expr.value;
@@ -25,6 +26,11 @@ LoxValue Interpreter::visitLiteralExpr(LiteralExpr& expr) {
     return LoxValue(LoxType::BOOLEAN, token.literal);
   case TokenType::NIL:
     return LoxValue(LoxType::NIL, token.literal);
+  case TokenType::IDENTIFIER:
+    if (!env->declaresVariable(token.literal)) {
+      throw RuntimeError(token, "Undefined variable");
+    }
+    return env->evalVariable(token.literal);
   default:
     return LoxValue(LoxType::ANY, token.literal);
   }
@@ -32,6 +38,19 @@ LoxValue Interpreter::visitLiteralExpr(LiteralExpr& expr) {
 
 LoxValue Interpreter::visitGroupingExpr(GroupingExpr& expr) {
   return evaluate(*expr.expr);
+}
+
+LoxValue Interpreter::visitAssignExpr(AssignmentExpr& expr)
+{
+  if (!env->declaresVariable(expr.identifier.literal)) {
+    throw RuntimeError(expr.identifier, "Undefined variable");
+  }
+
+  auto val = evaluate(*expr.expr);
+
+  env->declareVariable(expr.identifier.literal, val);
+
+  return env->evalVariable(expr.identifier.literal);
 }
 
 void Interpreter::visitPrintStatement(PrintStatement* printStatement)
@@ -43,7 +62,7 @@ void Interpreter::visitPrintStatement(PrintStatement* printStatement)
 
 void Interpreter::visitExprStatement(ExprStatement* exprStatement)
 {
-  evaluate(exprStatement->_expr);
+  evaluate(*exprStatement->_expr);
 }
 
 void Interpreter::visitVarStatement(VarStatement* statement)
@@ -54,7 +73,11 @@ void Interpreter::visitVarStatement(VarStatement* statement)
     val = evaluate(*statement->_expr);
   }
 
-  env.declareVariable(statement->name.literal, val);
+  if (env->declaresVariable(statement->name.literal)) {
+    throw RuntimeError(statement->name, "Variable redeclaration.");
+  }
+
+  env->declareVariable(statement->name.literal, val);
 }
 
 LoxValue Interpreter::visitUnaryExpr(UnaryExpr& expr) {

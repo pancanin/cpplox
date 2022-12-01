@@ -5,6 +5,7 @@ class BinaryExpr;
 class LiteralExpr;
 class UnaryExpr;
 class GroupingExpr;
+class AssignmentExpr;
 
 template <typename R>
 class ExprVisitor {
@@ -13,9 +14,9 @@ public:
   virtual R visitLiteralExpr(LiteralExpr&) = 0;
   virtual R visitUnaryExpr(UnaryExpr&) = 0;
   virtual R visitGroupingExpr(GroupingExpr&) = 0;
+  virtual R visitAssignExpr(AssignmentExpr&) = 0;
 
   virtual ~ExprVisitor() = default;
 };
-
 
 #endif /* SRC_SYNTAX_EXPRVISITOR_H_ */

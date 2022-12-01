@@ -12,7 +12,6 @@ class LoxStatementVisitor;
 class VarStatement : public Statement {
 public:
   VarStatement(const Token& name, std::shared_ptr<Expr> expr);
-  VarStatement(const Token& name);
 
   void accept(LoxStatementVisitor&);
 

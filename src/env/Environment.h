@@ -8,7 +8,10 @@
 
 class Environment {
 public:
-  void declareVariable(std::string name, const LoxValue& value);
+  void declareVariable(const std::string& name, const LoxValue& value);
+  LoxValue evalVariable(const std::string& name);
+  bool declaresVariable(const std::string& name);
+  void clear();
 private:
   std::unordered_map<std::string, LoxValue> varStorage; // TODO: It is not a great idea for the LoxValue to be copied left and right...
 };

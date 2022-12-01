@@ -32,13 +32,15 @@ static void signal_callback_handler(int signum) {
 //    return TRUE;
 //}
 
-Main::Main(Logger& logger, LangErrorLogger& langErrorLogger): logger(logger), langErrorLogger(langErrorLogger) {}
+Main::Main(Logger& logger, LangErrorLogger& langErrorLogger): logger(logger), langErrorLogger(langErrorLogger), env(std::make_shared<Environment>()) {}
 
 void Main::runFile(const std::string& fileName) const {
   std::ifstream ifs(fileName);
   std::string sourceCode((std::istreambuf_iterator<char>(ifs)), (std::istreambuf_iterator<char>()));
 
   run(sourceCode);
+
+  env->clear();
 }
 
 void Main::runREPL() {
@@ -62,6 +64,8 @@ void Main::runREPL() {
 
     langErrorLogger.clearError();
   }
+
+  env->clear();
 }
 
 void Main::run(const std::string& sourceCode) const {
@@ -69,12 +73,9 @@ void Main::run(const std::string& sourceCode) const {
   std::vector<Token> tokens = scanner.scanTokens();
   Parser parser(tokens, langErrorLogger);
   auto statements = parser.parse();
-  Interpreter interpreter(logger, langErrorLogger);
-
+  Interpreter interpreter(logger, langErrorLogger, env);
 
   if (langErrorLogger.hasError()) return;
 
   interpreter.interpret(statements);
-
-  AstPrinter printer;
 }

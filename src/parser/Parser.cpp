@@ -4,6 +4,7 @@
 #include "src/syntax/UnaryExpr.h"
 #include "src/syntax/GroupingExpr.h"
 #include "src/syntax/LiteralExpr.h"
+#include "src/syntax/AssignmentExpr.h"
 
 #include "src/syntax/PrintStatement.h"
 #include "src/syntax/ExprStatement.h"
@@ -44,7 +45,7 @@ std::shared_ptr<Statement> Parser::varDeclaration()
     return std::make_shared<VarStatement>(name, expr);
   }
 
-  return std::make_shared<VarStatement>(name);
+  return std::make_shared<VarStatement>(name, std::make_shared<LiteralExpr>(Token::NULL_TOKEN));
 }
 
 std::shared_ptr<Statement> Parser::statement()
@@ -57,7 +58,7 @@ std::shared_ptr<Statement> Parser::statement()
 
   //consume(TokenType::SEMICOLON, "; expected at the end of statement.");
 
-  return std::make_shared<ExprStatement>(*expr);
+  return std::make_shared<ExprStatement>(expr);
 }
 
 std::shared_ptr<Statement> Parser::printStatement()
@@ -70,13 +71,31 @@ std::shared_ptr<Statement> Parser::printStatement()
 }
 
 std::shared_ptr<Expr> Parser::expression() {
-  auto left = equality();
+  auto left = assignment();
 
   while (match({TokenType::COMMA})) {
-    left = equality();
+    left = assignment();
   }
 
   return left;
+}
+
+std::shared_ptr<Expr> Parser::assignment()
+{
+  if (match({ TokenType::IDENTIFIER })) {
+    Token token = getPreviousToken();
+
+    if (match({ TokenType::EQUAL })) {
+      auto expr = assignment();
+
+      return std::make_shared<AssignmentExpr>(token, expr);
+    }
+    else {
+      undo();
+    }
+  }
+
+  return equality();
 }
 
 std::shared_ptr<Expr> Parser::equality() {
@@ -192,6 +211,11 @@ bool Parser::match(std::initializer_list<TokenType>& types)
 Token Parser::advance() {
   currentTokenIndex++;
   return getPreviousToken();
+}
+
+void Parser::undo()
+{
+  currentTokenIndex--;
 }
 
 Token Parser::consume(TokenType type, std::string msg) {

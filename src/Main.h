@@ -3,9 +3,11 @@
 
 #include <string>
 #include <cstdint>
+#include <memory>
 
 #include "src/logging/LangErrorLogger.h"
 #include "src/logging/Logger.h"
+#include "src/env/Environment.h"
 
 class Main {
 public:
@@ -15,6 +17,7 @@ public:
 private:
   Logger& logger;
   LangErrorLogger& langErrorLogger;
+  std::shared_ptr<Environment> env;
 
   void run(const std::string& sourceCode) const;
 };

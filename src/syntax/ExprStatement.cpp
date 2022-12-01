@@ -2,7 +2,7 @@
 
 #include "LoxStatementVisitor.h"
 
-ExprStatement::ExprStatement(Expr& expr) : _expr(expr) {}
+ExprStatement::ExprStatement(std::shared_ptr<Expr> expr) : _expr(expr) {}
 
 void ExprStatement::accept(LoxStatementVisitor& visitor)
 {

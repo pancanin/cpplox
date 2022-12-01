@@ -31,6 +31,7 @@ private:
 	std::shared_ptr<Statement> printStatement();
 
 	std::shared_ptr<Expr> expression();
+	std::shared_ptr<Expr> assignment();
 	std::shared_ptr<Expr> equality();
 	std::shared_ptr<Expr> comparison();
 	std::shared_ptr<Expr> term();
@@ -42,6 +43,7 @@ private:
 	Token getCurrentToken() const;
 	bool hasReachedEnd() const;
 	Token advance();
+	void undo();
 	bool checkIfCurrentTokenIs(TokenType) const;
 	bool match(std::initializer_list<TokenType>&&);
 	bool match(std::initializer_list<TokenType>&);

@@ -19,6 +19,8 @@ public:
   std::string literal;
   int32_t line;
   int32_t lineOffset;
+
+  static const Token NULL_TOKEN;
 };
 
 #endif /* SRC_SCANNER_TOKEN_H_ */

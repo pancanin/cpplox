@@ -19,7 +19,7 @@ class VarStatement;
 
 class Interpreter : public LoxValueExprVisitor, public LoxStatementVisitor {
 public:
-  Interpreter(Logger&, LangErrorLogger&);
+  Interpreter(Logger&, LangErrorLogger&, std::shared_ptr<Environment> env);
 
   void interpret(const std::vector<std::shared_ptr<Statement>>&);
 
@@ -28,7 +28,7 @@ public:
 private:
   Logger& logger;
   LangErrorLogger& errorLogger;
-  Environment env;
+  std::shared_ptr<Environment> env;
 
   LoxValue evaluate(Expr& expr);
   void execute(std::shared_ptr<Statement>);
@@ -37,6 +37,7 @@ private:
   LoxValue visitLiteralExpr(LiteralExpr&);
   LoxValue visitUnaryExpr(UnaryExpr&);
   LoxValue visitGroupingExpr(GroupingExpr&);
+  LoxValue visitAssignExpr(AssignmentExpr&);
 
   void visitPrintStatement(PrintStatement*);
   void visitExprStatement(ExprStatement*);
