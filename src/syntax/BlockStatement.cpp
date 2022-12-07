@@ -6,5 +6,5 @@ BlockStatement::BlockStatement(std::shared_ptr<Statement> statement): statement(
 
 void BlockStatement::accept(LoxStatementVisitor& visitor)
 {
-  visitor.visitBlockStatement(this);
+  visitor.visitBlockStatement(*this);
 }

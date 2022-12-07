@@ -4,6 +4,7 @@
 #include "src/syntax/PrintStatement.h"
 #include "src/syntax/ExprStatement.h"
 #include "src/syntax/VarStatement.h"
+#include "src/syntax/BlockStatement.h"
 
 template <typename R>
 class StatementVisitor {

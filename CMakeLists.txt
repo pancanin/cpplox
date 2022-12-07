@@ -37,12 +37,18 @@ add_executable(${PROJECT_NAME}
 	${DIR}/src/syntax/ExprVisitor.h
 	${DIR}/src/syntax/Statement.h
 	${DIR}/src/syntax/PrintStatement.h
+	${DIR}/src/syntax/PrintStatement.cpp
 	${DIR}/src/syntax/ExprStatement.h
+	${DIR}/src/syntax/ExprStatement.cpp
 	${DIR}/src/syntax/StatementVisitor.h
 	${DIR}/src/syntax/LoxStatementVisitor.h
 	${DIR}/src/syntax/BlockStatement.h
 	${DIR}/src/syntax/BlockStatement.cpp
+	${DIR}/src/syntax/VarStatement.h
+	${DIR}/src/syntax/VarStatement.cpp
 
+	${DIR}/src/env/Environment.h
+	${DIR}/src/env/Environment.cpp
 	
 	${DIR}/src/parser/Parser.h
 	${DIR}/src/parser/Parser.cpp

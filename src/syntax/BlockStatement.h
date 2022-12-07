@@ -5,6 +5,8 @@
 
 #include "Statement.h"
 
+class LoxStatementVisitor;
+
 class BlockStatement : public Statement {
 public:
   BlockStatement(std::shared_ptr<Statement> statement);

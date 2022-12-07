@@ -6,6 +6,7 @@
 #include "src/syntax/GroupingExpr.h"
 #include "src/syntax/AssignmentExpr.h"
 #include "src/syntax/Expr.h"
+#include "src/syntax/BlockStatement.h"
 
 #include "src/interpreter/RuntimeError.h"
 #include "src/logging/LangErrorLogger.h"
@@ -82,7 +83,11 @@ void Interpreter::visitVarStatement(VarStatement* statement)
 
 void Interpreter::visitBlockStatement(BlockStatement& blockStatement)
 {
-  
+  env = std::make_shared<Environment>(env);
+
+  blockStatement.statement->accept(*this);
+
+  env = env->parent;
 }
 
 LoxValue Interpreter::visitUnaryExpr(UnaryExpr& expr) {
