@@ -1,35 +1,31 @@
 # cpplox
-Interpreter for a custom scripting language
 
-## Steps
+Interpreter for a custom scripting language, similar to JS
 
-1. Scanning
-Go through the source code, character by character, and create a list of meaningful 'words'. Report any syntax errors.
-We consume greedily until we reach terminating character.
+## Demo
 
-2. Parsing
-Create an AST from the individual words that we found in Scanning phase.
-We start by matching the broadest category of our language - the expression and first attempt to match the next level precedence.
-The order is:
-1. Expression
-2. Equality
-3. Comparison
-4. Addition + Subtraction
-5. Multiplication and Division
-6. Unary
-7. Primary (literals)
+You can peek into the supported functionality in this short REPL session.
 
-3. Interpretation
-Walk the tree, but this time start with the most concrete category of expressions - primary (literals). In tree language, that means start from the leafs.
-So we go the other way, compared to the parsing stage.
-The result of evaluating the tree could be a value or a side-effect, i.e. storing a variable.
+![demo_repl](https://github.com/pancanin/cpplox/blob/main/demo_2022_12_8.PNG)
+
+
+## Steps to build and run
+
+This is a CMake based project, so you can [install CMake](https://cmake.org/install/) and do the following steps.
+
+1. Create a `build` folder in the repo root
+2. Change directory into this `build`
+3. Open a terminal and type `cmake .. -G"Your generator"`. There are [many types](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html) of generators. For windows, if you have Visual studio installed, you can use a windows generator which will generate a VS solution.
+4. Compile the actual program and run.
+-  For windows, if you are working under VS, you can use the IDE to run the project.
+- For linux, after the `cmake` command, you have to run `make`.
+
 
 ## Bugs
 
 - When the process is terminated with Ctrl + C, the program crashes. When adding Windows.h to handle the Ctrl+C, the project goes wild.
 - It would be good to warn users if they input a floating point number which overflows the supported precision in our language. For this, we have to introduce a BigDecimal
 type of object.
-- Statement visitor does not get loaded - maybe it is a problem with cmake.
 - Multiple statements on one line do not work well! It seems that only the first one is considered. Maybe I should introduce semicolon.
 
 ## Improvements Plan
