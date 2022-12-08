@@ -14,10 +14,17 @@
 
 class LangErrorLogger;
 
+/// <summary>
+/// Processes the collection of tokens and builds an AST for each statement.
+/// </summary>
 class Parser {
 public:
 	Parser(std::vector<Token>&, LangErrorLogger&);
 
+	/// <summary>
+	/// Parses the tokens and returns an AST for each statement in the source code.
+	/// </summary>
+	/// <returns>Vector of statement ASTs</returns>
 	std::vector<std::shared_ptr<Statement>> parse();
 private:
 	std::vector<Token>& tokens;

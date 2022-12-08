@@ -18,7 +18,7 @@ This is a CMake based project, so you can [install CMake](https://cmake.org/inst
 3. Open a terminal and type `cmake .. -G"Your generator"`. There are [many types](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html) of generators. For windows, if you have Visual studio installed, you can use a windows generator which will generate a VS solution.
 4. Compile the actual program and run.
 -  For windows, if you are working under VS, you can use the IDE to run the project.
-- For linux, after the `cmake` command, you have to run `make`.
+- For linux, after the `cmake` command, you have to run `make` and run the binary executable.
 
 
 ## Bugs

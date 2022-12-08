@@ -34,8 +34,8 @@ static void signal_callback_handler(int signum) {
 
 Main::Main(Logger& logger, LangErrorLogger& langErrorLogger): logger(logger), langErrorLogger(langErrorLogger), env(std::make_shared<Environment>()) {}
 
-void Main::runFile(const std::string& fileName) const {
-  std::ifstream ifs(fileName);
+void Main::runFile(const std::string& filePath) const {
+  std::ifstream ifs(filePath);
   std::string sourceCode((std::istreambuf_iterator<char>(ifs)), (std::istreambuf_iterator<char>()));
 
   run(sourceCode);

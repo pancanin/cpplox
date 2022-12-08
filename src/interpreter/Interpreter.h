@@ -18,10 +18,18 @@ class PrintStatement;
 class VarStatement;
 class BlockStatement;
 
+/// <summary>
+/// Recursively walks and evaluates each individual AST.
+/// </summary>
 class Interpreter : public LoxValueExprVisitor, public LoxStatementVisitor {
 public:
   Interpreter(Logger&, LangErrorLogger&, std::shared_ptr<Environment> env);
 
+  /// <summary>
+  /// Iterates through each statement AST and evaluates it.
+  /// The result, for now, is always a side effect - either changing the environment or printing to the console.
+  /// </summary>
+  /// <param name="statements">Collection of statement ASTs</param>
   void interpret(const std::vector<std::shared_ptr<Statement>>&);
 
   ~Interpreter() = default;
