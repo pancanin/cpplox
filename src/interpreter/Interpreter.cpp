@@ -43,13 +43,13 @@ LoxValue Interpreter::visitGroupingExpr(GroupingExpr& expr) {
 
 LoxValue Interpreter::visitAssignExpr(AssignmentExpr& expr)
 {
-  if (!env->declaresVariable(expr.identifier.literal)) {
-    throw RuntimeError(expr.identifier, "Undefined variable");
-  }
-
   auto val = evaluate(*expr.expr);
 
-  env->declareVariable(expr.identifier.literal, val);
+  bool isDeclared = env->assignVariable(expr.identifier.literal, val);
+
+  if (!isDeclared) {
+    throw RuntimeError(expr.identifier, "Undefined variable");
+  }
 
   return env->evalVariable(expr.identifier.literal);
 }

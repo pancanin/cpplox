@@ -21,7 +21,7 @@ std::vector<std::shared_ptr<Statement>> Parser::program()
   std::vector<std::shared_ptr<Statement>> statements;
 
   while (!hasReachedEnd()) {
-    statements.push_back(declaration());
+    statements.push_back(block());
   }
 
   return statements;

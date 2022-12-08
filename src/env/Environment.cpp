@@ -15,17 +15,29 @@ void Environment::declareVariable(const std::string& name, const LoxValue& value
 
 bool Environment::assignVariable(const std::string& name, const LoxValue& value)
 {
-  // Check if the variable is in the current scope
-  // Yes - Then just update it and return true
-  // No:
-  //     - Do we have a parent scope?
-  //        - Yes - Call assignVariable recursively on the parent scope
-  //        - No - return false, as this variable has not been declared
+  if (declaresVariable(name)) {
+    varStorage[name] = value;
+    return true;
+  }
+
+  if (parent != nullptr) {
+    return parent->assignVariable(name, value);
+  }
+
+  return false;
 }
 
 LoxValue Environment::evalVariable(const std::string& name)
 {
-  return varStorage[name];
+  if (declaresVariable(name)) {
+    return varStorage[name];
+  }
+
+  if (parent != nullptr) {
+    return parent->evalVariable(name);
+  }
+
+  return LoxValue();
 }
 
 bool Environment::declaresVariable(const std::string& name)

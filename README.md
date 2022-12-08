@@ -30,6 +30,7 @@ The result of evaluating the tree could be a value or a side-effect, i.e. storin
 - It would be good to warn users if they input a floating point number which overflows the supported precision in our language. For this, we have to introduce a BigDecimal
 type of object.
 - Statement visitor does not get loaded - maybe it is a problem with cmake.
+- Multiple statements on one line do not work well! It seems that only the first one is considered. Maybe I should introduce semicolon.
 
 ## Improvements Plan
 
