@@ -2,7 +2,7 @@
 
 #include "LoxStatementVisitor.h"
 
-BlockStatement::BlockStatement(std::shared_ptr<Statement> statement): statement(statement) {}
+BlockStatement::BlockStatement(std::vector<std::shared_ptr<Statement>> statements): statements(statements) {}
 
 void BlockStatement::accept(LoxStatementVisitor& visitor)
 {

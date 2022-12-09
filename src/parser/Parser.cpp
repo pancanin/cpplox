@@ -21,23 +21,10 @@ std::vector<std::shared_ptr<Statement>> Parser::program()
   std::vector<std::shared_ptr<Statement>> statements;
 
   while (!hasReachedEnd()) {
-    statements.push_back(block());
+    statements.push_back(declaration());
   }
 
   return statements;
-}
-
-std::shared_ptr<Statement> Parser::block()
-{
-  if (match({ TokenType::LEFT_BRACE })) {
-    auto statement = declaration();
-
-    consume(TokenType::RIGHT_BRACE, "Expected } at end of block.");
-
-    return std::make_shared<BlockStatement>(statement);
-  }
-
-  return declaration();
 }
 
 std::shared_ptr<Statement> Parser::declaration()
@@ -67,6 +54,9 @@ std::shared_ptr<Statement> Parser::statement()
   if (match({ TokenType::PRINT })) {
     return printStatement();
   }
+  else if (match({ TokenType::LEFT_BRACE })) {
+    return block();
+  }
 
   auto expr = expression();
 
@@ -82,6 +72,19 @@ std::shared_ptr<Statement> Parser::printStatement()
   //consume(TokenType::SEMICOLON, "; expected at the end of statement.");
 
   return std::make_shared<PrintStatement>(right);
+}
+
+std::shared_ptr<Statement> Parser::block()
+{
+  std::vector<std::shared_ptr<Statement>> statements;
+
+  while (!hasReachedEnd() && !checkIfCurrentTokenIs(TokenType::RIGHT_BRACE)) {
+    statements.push_back(declaration());
+  }
+
+  consume(TokenType::RIGHT_BRACE, "Expected } at end of block.");
+
+  return std::make_shared<BlockStatement>(statements);
 }
 
 std::shared_ptr<Expr> Parser::expression() {
@@ -191,11 +194,11 @@ std::shared_ptr<Expr> Parser::primary() {
 }
 
 Token Parser::getPreviousToken() const {
-  return tokens.at(currentTokenIndex - 1);
+  return tokens[currentTokenIndex - 1];
 }
 
 Token Parser::getCurrentToken() const {
-  return tokens.at(currentTokenIndex);
+  return tokens[currentTokenIndex];
 }
 
 bool Parser::checkIfCurrentTokenIs(TokenType type) const {

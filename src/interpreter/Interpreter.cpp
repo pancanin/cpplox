@@ -85,8 +85,10 @@ void Interpreter::visitBlockStatement(BlockStatement& blockStatement)
 {
   env = std::make_shared<Environment>(env);
 
-  blockStatement.statement->accept(*this);
-
+  for (auto statement : blockStatement.statements) {
+    statement->accept(*this);
+  }
+  
   env = env->parent;
 }
 
