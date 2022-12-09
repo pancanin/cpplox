@@ -36,6 +36,7 @@ private:
 	std::shared_ptr<Statement> varDeclaration();
 	std::shared_ptr<Statement> statement();
 	std::shared_ptr<Statement> printStatement();
+	std::shared_ptr<Statement> ifStatement();
 	std::shared_ptr<Statement> block();
 
 	std::shared_ptr<Expr> expression();

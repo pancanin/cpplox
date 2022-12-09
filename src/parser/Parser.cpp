@@ -10,6 +10,7 @@
 #include "src/syntax/ExprStatement.h"
 #include "src/syntax/VarStatement.h"
 #include "src/syntax/BlockStatement.h"
+#include "src/syntax/IfElseStatement.h"
 
 #include "src/logging/LangErrorLogger.h"
 
@@ -61,6 +62,9 @@ std::shared_ptr<Statement> Parser::statement()
   else if (match({ TokenType::LEFT_BRACE })) {
     return block();
   }
+  else if (match({ TokenType::IF })) {
+    return ifStatement();
+  }
 
   return std::make_shared<ExprStatement>(expression());
 }
@@ -72,6 +76,27 @@ std::shared_ptr<Statement> Parser::printStatement()
   checkForSemicolon();
 
   return std::make_shared<PrintStatement>(right);
+}
+
+// For now we will be supporting simple if-else. No if-if else support.
+std::shared_ptr<Statement> Parser::ifStatement()
+{
+  consume(TokenType::LEFT_PAREN, "( expected after 'if' keyword.");
+
+  auto expr = expression();
+
+  consume(TokenType::RIGHT_PAREN, ") expected after 'if' expression.");
+
+  auto stmt = statement();
+
+  if (match({ TokenType::ELSE })) {
+    auto elseStmt = statement();
+
+    // Create and return a statement with else clause
+    return std::make_shared<IfElseStatement>(expr, stmt, elseStmt);
+  }
+
+  return std::make_shared<IfElseStatement>(expr, stmt);
 }
 
 std::shared_ptr<Statement> Parser::block()

@@ -5,6 +5,7 @@
 #include "src/syntax/ExprStatement.h"
 #include "src/syntax/VarStatement.h"
 #include "src/syntax/BlockStatement.h"
+#include "src/syntax/IfElseStatement.h"
 
 template <typename R>
 class StatementVisitor {
@@ -15,6 +16,7 @@ public:
   virtual R visitExprStatement(ExprStatement*) = 0;
   virtual R visitVarStatement(VarStatement*) = 0;
   virtual R visitBlockStatement(BlockStatement&) = 0;
+  virtual R visitIfElseStatement(IfElseStatement&) = 0;
 
   virtual ~StatementVisitor() = default;
 };

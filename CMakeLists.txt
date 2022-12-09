@@ -46,6 +46,8 @@ add_executable(${PROJECT_NAME}
 	${DIR}/src/syntax/BlockStatement.cpp
 	${DIR}/src/syntax/VarStatement.h
 	${DIR}/src/syntax/VarStatement.cpp
+	${DIR}/src/syntax/IfElseStatement.h
+	${DIR}/src/syntax/IfElseStatement.cpp
 
 	${DIR}/src/env/Environment.h
 	${DIR}/src/env/Environment.cpp

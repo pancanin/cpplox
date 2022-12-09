@@ -7,6 +7,7 @@
 #include "src/syntax/AssignmentExpr.h"
 #include "src/syntax/Expr.h"
 #include "src/syntax/BlockStatement.h"
+#include "src/syntax/IfElseStatement.h"
 
 #include "src/interpreter/RuntimeError.h"
 #include "src/logging/LangErrorLogger.h"
@@ -99,6 +100,23 @@ void Interpreter::visitBlockStatement(BlockStatement& blockStatement)
   }
   
   env = env->parent;
+}
+
+void Interpreter::visitIfElseStatement(IfElseStatement& ifElseStatement)
+{
+  auto ifConditionValue = evaluate(*ifElseStatement.ifExpr);
+
+  if (ifConditionValue.type != LoxType::BOOLEAN) {
+    // The RuntimeError interface is not great for supporting different types of errors.
+    throw RuntimeError(Token::NULL_TOKEN, "Invalid if condition - expected a boolean expression.");
+  }
+
+  if (ifConditionValue.isTruthy()) {
+    execute(ifElseStatement.ifStatement);
+  }
+  else if (ifElseStatement.elseStatement != nullptr) {
+    execute(ifElseStatement.elseStatement);
+  }
 }
 
 LoxValue Interpreter::visitUnaryExpr(UnaryExpr& expr) {

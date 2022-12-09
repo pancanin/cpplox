@@ -17,6 +17,7 @@
 class PrintStatement;
 class VarStatement;
 class BlockStatement;
+class IfElseStatement;
 
 /// <summary>
 /// Recursively walks and evaluates each individual AST.
@@ -52,6 +53,7 @@ private:
   void visitExprStatement(ExprStatement*);
   void visitVarStatement(VarStatement*);
   void visitBlockStatement(BlockStatement&);
+  void visitIfElseStatement(IfElseStatement&);
 
   void checkNumberOperand(Token op, LoxType operandType);
   void checkStringOperand(Token op, LoxType operandType);
