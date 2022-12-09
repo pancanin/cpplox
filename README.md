@@ -27,6 +27,9 @@ This is a CMake based project, so you can [install CMake](https://cmake.org/inst
 - It would be good to warn users if they input a floating point number which overflows the supported precision in our language. For this, we have to introduce a BigDecimal
 type of object.
 - Multiple statements on one line do not work well! It seems that only the first one is considered. Maybe I should introduce semicolon.
+- Expressions that are not part of a statement throw a parsing error when ended with semicolon. These expressions, I concluded, have no meaning in the program,
+so they should throw. Example is a line of code like "5;" or "1 + 1;". I can improve the REPL so that we get results of the expressions directly in the console 
+and then adding semicolons would not be needed, so the current behavior is fine, but maybe it should not throw, it should silently consume the semicolon.
 
 ## Improvements Plan
 

@@ -63,6 +63,9 @@ private:
 	/// When an error occurs we want to move to the next statement. This method moves the token cursor to the next statement.
 	/// </summary>
 	void synchronize();
+
+	// Helpers
+	void checkForSemicolon();
 };
 
 #endif /* SRC_PARSER_PARSER_H_ */

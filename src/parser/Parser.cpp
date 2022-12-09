@@ -43,8 +43,12 @@ std::shared_ptr<Statement> Parser::varDeclaration()
   if (match({ TokenType::EQUAL })) {
     auto expr = expression();
 
+    checkForSemicolon();
+
     return std::make_shared<VarStatement>(name, expr);
   }
+
+  checkForSemicolon();
 
   return std::make_shared<VarStatement>(name, std::make_shared<LiteralExpr>(Token::NULL_TOKEN));
 }
@@ -58,18 +62,14 @@ std::shared_ptr<Statement> Parser::statement()
     return block();
   }
 
-  auto expr = expression();
-
-  //consume(TokenType::SEMICOLON, "; expected at the end of statement.");
-
-  return std::make_shared<ExprStatement>(expr);
+  return std::make_shared<ExprStatement>(expression());
 }
 
 std::shared_ptr<Statement> Parser::printStatement()
 {
   auto right = expression();
 
-  //consume(TokenType::SEMICOLON, "; expected at the end of statement.");
+  checkForSemicolon();
 
   return std::make_shared<PrintStatement>(right);
 }
@@ -104,6 +104,8 @@ std::shared_ptr<Expr> Parser::assignment()
 
     if (match({ TokenType::EQUAL })) {
       auto expr = assignment();
+
+      checkForSemicolon();
 
       return std::make_shared<AssignmentExpr>(token, expr);
     }
@@ -267,6 +269,11 @@ void Parser::synchronize()
 
     advance();
   }
+}
+
+void Parser::checkForSemicolon()
+{
+  consume(TokenType::SEMICOLON, "Expected ;");
 }
 
 std::vector<std::shared_ptr<Statement>> Parser::parse() {

@@ -28,7 +28,7 @@ LoxValue Interpreter::visitLiteralExpr(LiteralExpr& expr) {
   case TokenType::NIL:
     return LoxValue(LoxType::NIL, token.literal);
   case TokenType::IDENTIFIER:
-    if (!env->declaresVariable(token.literal)) {
+    if (!env->resolveVariableDeclaration(token.literal)) {
       throw RuntimeError(token, "Undefined variable");
     }
     return env->evalVariable(token.literal);
@@ -74,7 +74,7 @@ void Interpreter::visitVarStatement(VarStatement* statement)
     val = evaluate(*statement->_expr);
   }
 
-  if (env->declaresVariable(statement->name.literal)) {
+  if (env->doesCurrentEnvDeclareVariable(statement->name.literal)) {
     throw RuntimeError(statement->name, "Variable redeclaration.");
   }
 
@@ -85,8 +85,15 @@ void Interpreter::visitBlockStatement(BlockStatement& blockStatement)
 {
   env = std::make_shared<Environment>(env);
 
-  for (auto statement : blockStatement.statements) {
-    statement->accept(*this);
+  try {
+    for (auto statement : blockStatement.statements) {
+      statement->accept(*this);
+    }
+  }
+  catch (const RuntimeError& err) {
+    env = env->parent;
+
+    throw err;
   }
   
   env = env->parent;

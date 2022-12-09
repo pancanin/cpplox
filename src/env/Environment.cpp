@@ -15,7 +15,7 @@ void Environment::declareVariable(const std::string& name, const LoxValue& value
 
 bool Environment::assignVariable(const std::string& name, const LoxValue& value)
 {
-  if (declaresVariable(name)) {
+  if (doesCurrentEnvDeclareVariable(name)) {
     varStorage[name] = value;
     return true;
   }
@@ -29,7 +29,7 @@ bool Environment::assignVariable(const std::string& name, const LoxValue& value)
 
 LoxValue Environment::evalVariable(const std::string& name)
 {
-  if (declaresVariable(name)) {
+  if (doesCurrentEnvDeclareVariable(name)) {
     return varStorage[name];
   }
 
@@ -40,9 +40,18 @@ LoxValue Environment::evalVariable(const std::string& name)
   return LoxValue();
 }
 
-bool Environment::declaresVariable(const std::string& name)
+bool Environment::doesCurrentEnvDeclareVariable(const std::string& name)
 {
   return varStorage.find(name) != varStorage.end();
+}
+
+bool Environment::resolveVariableDeclaration(const std::string& name)
+{
+  if (parent == nullptr) {
+    return doesCurrentEnvDeclareVariable(name);
+  }
+
+  return parent->resolveVariableDeclaration(name);
 }
 
 void Environment::clear()

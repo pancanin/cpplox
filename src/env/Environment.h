@@ -23,12 +23,15 @@ public:
   /// <returns>Returns a boolean - if the variable is found and updated it returns true, otherwise false.</returns>
   bool assignVariable(const std::string& name, const LoxValue& value);
   LoxValue evalVariable(const std::string& name);
-  bool declaresVariable(const std::string& name);
+  bool doesCurrentEnvDeclareVariable(const std::string& name);
+  bool resolveVariableDeclaration(const std::string& name);
   void clear();
 
   std::shared_ptr<Environment> parent;
 private:
   std::unordered_map<std::string, LoxValue> varStorage; // TODO: It is not a great idea for the LoxValue to be copied left and right...
+
+  
 };
 
 #endif // !SRC_ENV_ENVIRONMENT_H
