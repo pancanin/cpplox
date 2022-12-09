@@ -21,6 +21,13 @@ This is a CMake based project, so you can [install CMake](https://cmake.org/inst
 - For linux, after the `cmake` command, you have to run `make` and run the binary executable.
 
 
+## Important classes
+
+- Main
+- Scanner
+- Parser
+- Interpreter
+
 ## Bugs
 
 - When the process is terminated with Ctrl + C, the program crashes. When adding Windows.h to handle the Ctrl+C, the project goes wild.

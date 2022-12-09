@@ -63,7 +63,9 @@ void Interpreter::visitPrintStatement(PrintStatement* printStatement)
 
 void Interpreter::visitExprStatement(ExprStatement* exprStatement)
 {
-  evaluate(*exprStatement->_expr);
+  auto val = evaluate(*exprStatement->_expr);
+
+  logger.info(val.value, true);
 }
 
 void Interpreter::visitVarStatement(VarStatement* statement)
