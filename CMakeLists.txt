@@ -48,6 +48,8 @@ add_executable(${PROJECT_NAME}
 	${DIR}/src/syntax/VarStatement.cpp
 	${DIR}/src/syntax/IfElseStatement.h
 	${DIR}/src/syntax/IfElseStatement.cpp
+	${DIR}/src/syntax/LogicalExpr.h
+	${DIR}/src/syntax/LogicalExpr.cpp
 
 	${DIR}/src/env/Environment.h
 	${DIR}/src/env/Environment.cpp

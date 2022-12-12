@@ -6,13 +6,15 @@ class LiteralExpr;
 class UnaryExpr;
 class GroupingExpr;
 class AssignmentExpr;
+class LogicalExpr;
 
 template <typename R>
 class ExprVisitor {
 public:
-  virtual R visitBinaryExpr(BinaryExpr&) = 0;
   virtual R visitLiteralExpr(LiteralExpr&) = 0;
   virtual R visitUnaryExpr(UnaryExpr&) = 0;
+  virtual R visitBinaryExpr(BinaryExpr&) = 0;
+  virtual R visitLogicalExpr(LogicalExpr&) = 0;
   virtual R visitGroupingExpr(GroupingExpr&) = 0;
   virtual R visitAssignExpr(AssignmentExpr&) = 0;
 

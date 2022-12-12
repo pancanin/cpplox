@@ -43,10 +43,12 @@ private:
   LoxValue evaluate(Expr& expr);
   void execute(std::shared_ptr<Statement>);
 
-  LoxValue visitBinaryExpr(BinaryExpr&);
+
   LoxValue visitLiteralExpr(LiteralExpr&);
   LoxValue visitUnaryExpr(UnaryExpr&);
+  LoxValue visitBinaryExpr(BinaryExpr&);
   LoxValue visitGroupingExpr(GroupingExpr&);
+  LoxValue visitLogicalExpr(LogicalExpr&);
   LoxValue visitAssignExpr(AssignmentExpr&);
 
   void visitPrintStatement(PrintStatement*);

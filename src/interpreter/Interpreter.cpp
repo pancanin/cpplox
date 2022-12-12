@@ -4,6 +4,7 @@
 #include "src/syntax/LiteralExpr.h"
 #include "src/syntax/UnaryExpr.h"
 #include "src/syntax/GroupingExpr.h"
+#include "src/syntax/LogicalExpr.h"
 #include "src/syntax/AssignmentExpr.h"
 #include "src/syntax/Expr.h"
 #include "src/syntax/BlockStatement.h"
@@ -40,6 +41,34 @@ LoxValue Interpreter::visitLiteralExpr(LiteralExpr& expr) {
 
 LoxValue Interpreter::visitGroupingExpr(GroupingExpr& expr) {
   return evaluate(*expr.expr);
+}
+
+LoxValue Interpreter::visitLogicalExpr(LogicalExpr& expr)
+{
+  auto leftVal = evaluate(*expr.left);
+
+  if (expr.operand.type == TokenType::AND) {
+    if (leftVal.isTruthy()) {
+      auto rightVal = evaluate(*expr.right);
+
+      return rightVal;
+    }
+
+    return leftVal;
+  }
+
+  else if (expr.operand.type == TokenType::OR) {
+    auto rightVal = evaluate(*expr.right);
+
+    if (leftVal.isTruthy()) {
+      return leftVal;
+    }
+    else if (rightVal.isTruthy()) {
+      return rightVal;
+    }
+  }
+
+  return LoxValue();
 }
 
 LoxValue Interpreter::visitAssignExpr(AssignmentExpr& expr)

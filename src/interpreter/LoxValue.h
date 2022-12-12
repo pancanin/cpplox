@@ -11,7 +11,17 @@ struct LoxValue {
 	LoxValue(bool boolCondition): type(LoxType::BOOLEAN), value(boolCondition ? "true" : "false") {}
 
 	bool isTruthy() const {
-		return value == "true";
+		if (type == LoxType::BOOLEAN) {
+			return value == "true";
+		}
+		else if (type == LoxType::NUMBER) {
+			return value != "0";
+		}
+		else if (type == LoxType::STRING) {
+			return !value.empty();
+		}
+
+		return false;
 	}
 
 	LoxType type;

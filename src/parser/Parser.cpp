@@ -4,6 +4,7 @@
 #include "src/syntax/UnaryExpr.h"
 #include "src/syntax/GroupingExpr.h"
 #include "src/syntax/LiteralExpr.h"
+#include "src/syntax/LogicalExpr.h"
 #include "src/syntax/AssignmentExpr.h"
 
 #include "src/syntax/PrintStatement.h"
@@ -139,7 +140,35 @@ std::shared_ptr<Expr> Parser::assignment()
     }
   }
 
-  return equality();
+  return logicalOr();
+}
+
+std::shared_ptr<Expr> Parser::logicalOr()
+{
+  auto left = logicalAnd();
+
+  while (match({ TokenType::OR })) {
+    auto token = getPreviousToken();
+    auto right = logicalAnd();
+
+    left = std::make_shared<LogicalExpr>(left, token, right);
+  }
+
+  return left;
+}
+
+std::shared_ptr<Expr> Parser::logicalAnd()
+{
+  auto left = equality();
+
+  while (match({ TokenType::AND })) {
+    auto token = getPreviousToken();
+    auto right = equality();
+
+    left = std::make_shared<LogicalExpr>(left, token, right);
+  }
+
+  return left;
 }
 
 std::shared_ptr<Expr> Parser::equality() {
