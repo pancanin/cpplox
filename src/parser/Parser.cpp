@@ -123,6 +123,20 @@ std::shared_ptr<Statement> Parser::forStatement()
     consume(TokenType::SEMICOLON, "; expected at the end of 'for' initializer.");
     condition = expression();
   }
+
+  consume(TokenType::SEMICOLON, "; expected at the end of 'for' condition.");
+
+  std::shared_ptr<Statement> increment = std::make_shared<ExprStatement>(expression());
+
+  consume(TokenType::RIGHT_PAREN, ") expected.");
+
+  auto body = block();
+  std::vector<std::shared_ptr<Statement>> bodyStatements = { body, increment };
+  auto bodyAndIncrementBlock = std::make_shared<BlockStatement>(bodyStatements);
+  auto forLoop = std::make_shared<WhileStatement>(condition, bodyAndIncrementBlock);
+  std::vector<std::shared_ptr<Statement>> statements = { initializer, forLoop };
+
+  return std::make_shared<BlockStatement>(statements);
 }
 
 // For now we will be supporting simple if-else. No if-if else support.

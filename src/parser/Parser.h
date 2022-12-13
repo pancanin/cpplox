@@ -32,14 +32,23 @@ private:
 	LangErrorLogger& logger;
 
 	std::vector<std::shared_ptr<Statement>> program();
+	std::shared_ptr<Statement> block();
 	std::shared_ptr<Statement> declaration();
+
+	/// <summary>
+	/// Special treatment of var declarations, because these are not statements.
+	/// This is legal:
+	/// if (monday) print "Ugh, already?";
+	/// 
+	/// But this is not:
+	/// if (monday) var beverage = "espresso";
+	/// </summary>
 	std::shared_ptr<Statement> varDeclaration();
 	std::shared_ptr<Statement> statement();
 	std::shared_ptr<Statement> printStatement();
 	std::shared_ptr<Statement> whileStatement();
 	std::shared_ptr<Statement> forStatement();
 	std::shared_ptr<Statement> ifStatement();
-	std::shared_ptr<Statement> block();
 
 	std::shared_ptr<Expr> expression();
 	std::shared_ptr<Expr> assignment();
@@ -60,6 +69,13 @@ private:
 	bool checkIfCurrentTokenIs(TokenType) const;
 	bool match(std::initializer_list<TokenType>&&);
 	bool match(std::initializer_list<TokenType>&);
+
+	// The idea of this method is to try to consume something and if the thing is missing throw an error.
+	// The client of this method always has to specify a message, but most of the time the message is that
+	// the token is missing but expected.
+	// One benefit of having a custom message each time is that the error is readable.
+	// We could automate/abstract this by creating a custom message with some info about line and column
+	// where the exception happened.
 	Token consume(TokenType type, std::string msg);
 
 	ParseError error(Token token, std::string msg);

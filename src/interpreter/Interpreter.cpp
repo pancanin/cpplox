@@ -247,6 +247,24 @@ LoxValue Interpreter::visitBinaryExpr(BinaryExpr& expr) {
 }
 
 LoxValue Interpreter::evaluate(Expr& expr) {
+  // If we do not use Visitor pattern here, then we have to have 'switch' or 'if-else'
+  // So we can select an appropriate method from 'Interpreter' class based on Expr.
+  // Instead, we pass the visitor to the current expression and thanks to polymorphism
+  // the appropriate method in the interpreter class is called.
+  // For example:
+  // - Current expr is of type BinaryExpr
+  // - we call 'accept' method on BinaryExpr.
+  // - The implementation of accept method of BinaryExpr:
+  // 
+  //LoxValue accept(LoxValueExprVisitor& visitor) {
+  // return visitor.visitBinaryExpr(*this);
+  //}
+  //
+  // - Interpreter (this) inherits from LoxValueExprVisitor
+  // - inside the accept method, we call visitor.visitBinaryExpr(*this);
+  // - The method is defined in Interpreter class (this) 
+  // - We execute visitBinaryExpr on the Interpreter with *this which is the BinaryExpr.
+  // - The respective method is called in Interpreter and BinaryExpr is handled.
   return expr.accept(*this);
 }
 
