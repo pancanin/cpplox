@@ -73,6 +73,8 @@ void Main::run(const std::string& sourceCode) const {
   std::vector<Token> tokens = scanner.scanTokens();
   Parser parser(tokens, langErrorLogger);
   auto statements = parser.parse();
+
+  // Provide a noop logger when code is run via file.
   Interpreter interpreter(logger, langErrorLogger, env);
 
   if (langErrorLogger.hasError()) return;

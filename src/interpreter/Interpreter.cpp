@@ -91,6 +91,17 @@ void Interpreter::visitPrintStatement(PrintStatement* printStatement)
   std::cout << value.value << std::endl;
 }
 
+void Interpreter::visitWhileStatement(WhileStatement& whileStatement)
+{
+  auto value = evaluate(*whileStatement._exprPtr);
+
+  while (value.isTruthy()) {
+    execute(whileStatement.body);
+
+    value = evaluate(*whileStatement._exprPtr);
+  }
+}
+
 void Interpreter::visitExprStatement(ExprStatement* exprStatement)
 {
   auto val = evaluate(*exprStatement->_expr);

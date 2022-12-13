@@ -50,6 +50,8 @@ add_executable(${PROJECT_NAME}
 	${DIR}/src/syntax/IfElseStatement.cpp
 	${DIR}/src/syntax/LogicalExpr.h
 	${DIR}/src/syntax/LogicalExpr.cpp
+	${DIR}/src/syntax/WhileStatement.h
+	${DIR}/src/syntax/WhileStatement.cpp
 
 	${DIR}/src/env/Environment.h
 	${DIR}/src/env/Environment.cpp

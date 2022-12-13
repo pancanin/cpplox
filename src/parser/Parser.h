@@ -36,6 +36,8 @@ private:
 	std::shared_ptr<Statement> varDeclaration();
 	std::shared_ptr<Statement> statement();
 	std::shared_ptr<Statement> printStatement();
+	std::shared_ptr<Statement> whileStatement();
+	std::shared_ptr<Statement> forStatement();
 	std::shared_ptr<Statement> ifStatement();
 	std::shared_ptr<Statement> block();
 

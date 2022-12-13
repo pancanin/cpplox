@@ -12,6 +12,7 @@
 #include "src/syntax/VarStatement.h"
 #include "src/syntax/BlockStatement.h"
 #include "src/syntax/IfElseStatement.h"
+#include "src/syntax/WhileStatement.h"
 
 #include "src/logging/LangErrorLogger.h"
 
@@ -66,6 +67,9 @@ std::shared_ptr<Statement> Parser::statement()
   else if (match({ TokenType::IF })) {
     return ifStatement();
   }
+  else if (match({ TokenType::WHILE })) {
+    return whileStatement();
+  }
 
   return std::make_shared<ExprStatement>(expression());
 }
@@ -77,6 +81,48 @@ std::shared_ptr<Statement> Parser::printStatement()
   checkForSemicolon();
 
   return std::make_shared<PrintStatement>(right);
+}
+
+std::shared_ptr<Statement> Parser::whileStatement()
+{
+  consume(TokenType::LEFT_PAREN, "( expected after loop keyword.");
+
+  auto expr = expression();
+
+  consume(TokenType::RIGHT_PAREN, ") expected after loop expression.");
+
+  consume(TokenType::LEFT_BRACE, "Expected an opening curly brace before loop body.");
+
+  auto body = block();
+
+  return std::make_shared<WhileStatement>(expr, body);
+}
+
+std::shared_ptr<Statement> Parser::forStatement()
+{
+  consume(TokenType::LEFT_PAREN, "( expected after 'for' keyword.");
+
+  std::shared_ptr<Statement> initializer;
+
+  if (match({ TokenType::VAR })) {
+    initializer = varDeclaration();
+  }
+  else if (match({ TokenType::SEMICOLON })) {
+    initializer = nullptr;
+  }
+  else {
+    initializer = std::make_shared<ExprStatement>(expression());
+  }
+
+  std::shared_ptr<Expr> condition;
+
+  if (getPreviousToken().type == TokenType::SEMICOLON) {
+    condition = expression();
+  }
+  else {
+    consume(TokenType::SEMICOLON, "; expected at the end of 'for' initializer.");
+    condition = expression();
+  }
 }
 
 // For now we will be supporting simple if-else. No if-if else support.

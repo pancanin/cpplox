@@ -6,6 +6,7 @@
 #include "src/syntax/VarStatement.h"
 #include "src/syntax/BlockStatement.h"
 #include "src/syntax/IfElseStatement.h"
+#include "src/syntax/WhileStatement.h"
 
 template <typename R>
 class StatementVisitor {
@@ -17,6 +18,7 @@ public:
   virtual R visitVarStatement(VarStatement*) = 0;
   virtual R visitBlockStatement(BlockStatement&) = 0;
   virtual R visitIfElseStatement(IfElseStatement&) = 0;
+  virtual R visitWhileStatement(WhileStatement&) = 0;
 
   virtual ~StatementVisitor() = default;
 };
