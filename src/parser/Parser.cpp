@@ -70,6 +70,9 @@ std::shared_ptr<Statement> Parser::statement()
   else if (match({ TokenType::WHILE })) {
     return whileStatement();
   }
+  else if (match({ TokenType::FOR })) {
+    return forStatement();
+  }
 
   return std::make_shared<ExprStatement>(expression());
 }
@@ -124,8 +127,6 @@ std::shared_ptr<Statement> Parser::forStatement()
     condition = expression();
   }
 
-  consume(TokenType::SEMICOLON, "; expected at the end of 'for' condition.");
-
   std::shared_ptr<Statement> increment = std::make_shared<ExprStatement>(expression());
 
   consume(TokenType::RIGHT_PAREN, ") expected.");
@@ -139,7 +140,6 @@ std::shared_ptr<Statement> Parser::forStatement()
   return std::make_shared<BlockStatement>(statements);
 }
 
-// For now we will be supporting simple if-else. No if-if else support.
 std::shared_ptr<Statement> Parser::ifStatement()
 {
   consume(TokenType::LEFT_PAREN, "( expected after 'if' keyword.");
@@ -306,8 +306,8 @@ std::shared_ptr<Expr> Parser::primary() {
     return std::make_shared<GroupingExpr>(expr);
   }
 
-  if (!isReplMode) {
-    throw error(getCurrentToken(), "Expression expected.");
+  if (getCurrentToken().type != TokenType::SEMICOLON) {
+    error(getCurrentToken(), "Expression expected.");
   }
 }
 

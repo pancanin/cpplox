@@ -33,9 +33,8 @@ This is a CMake based project, so you can [install CMake](https://cmake.org/inst
 - When the process is terminated with Ctrl + C, the program crashes. When adding Windows.h to handle the Ctrl+C, the project goes wild.
 - It would be good to warn users if they input a floating point number which overflows the supported precision in our language. For this, we have to introduce a BigDecimal
 type of object.
-- Expressions that are not part of a statement throw a parsing error when ended with semicolon. These expressions, I concluded, have no meaning in the program,
-so they should throw. Example is a line of code like "5;" or "1 + 1;". I can improve the REPL so that we get results of the expressions directly in the console 
-and then adding semicolons would not be needed, so the current behavior is fine, but maybe it should not throw, it should silently consume the semicolon.
+- The primary grammar rule is trying and failing to parse a semicolon at the end of expression.
+It should not try to parse it, it should stop.
 
 ## Improvements Plan
 
