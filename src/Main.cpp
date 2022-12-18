@@ -32,13 +32,14 @@ static void signal_callback_handler(int signum) {
 //    return TRUE;
 //}
 
-Main::Main(Logger& logger, LangErrorLogger& langErrorLogger): logger(logger), langErrorLogger(langErrorLogger), env(std::make_shared<Environment>()) {}
+Main::Main(Logger& logger, LangErrorLogger& langErrorLogger):
+  logger(logger), langErrorLogger(langErrorLogger), env(std::make_shared<Environment>()) {}
 
 void Main::runFile(const std::string& filePath) const {
   std::ifstream ifs(filePath);
   std::string sourceCode((std::istreambuf_iterator<char>(ifs)), (std::istreambuf_iterator<char>()));
 
-  run(sourceCode);
+  run(sourceCode, false);
 
   env->clear();
 }
@@ -60,7 +61,7 @@ void Main::runREPL() {
       continue;
     }
 
-    run(command);
+    run(command, true);
 
     langErrorLogger.clearError();
   }
@@ -68,10 +69,10 @@ void Main::runREPL() {
   env->clear();
 }
 
-void Main::run(const std::string& sourceCode) const {
+void Main::run(const std::string& sourceCode, bool isReplMode) const {
   Scanner scanner(sourceCode, langErrorLogger);
   std::vector<Token> tokens = scanner.scanTokens();
-  Parser parser(tokens, langErrorLogger);
+  Parser parser(tokens, langErrorLogger, isReplMode);
   auto statements = parser.parse();
 
   // Provide a noop logger when code is run via file.

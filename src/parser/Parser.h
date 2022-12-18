@@ -19,7 +19,7 @@ class LangErrorLogger;
 /// </summary>
 class Parser {
 public:
-	Parser(std::vector<Token>&, LangErrorLogger&);
+	Parser(std::vector<Token>&, LangErrorLogger&, bool isReplMode);
 
 	/// <summary>
 	/// Parses the tokens and returns an AST for each statement in the source code.
@@ -30,6 +30,7 @@ private:
 	std::vector<Token>& tokens;
 	int32_t currentTokenIndex;
 	LangErrorLogger& logger;
+	bool isReplMode;
 
 	std::vector<std::shared_ptr<Statement>> program();
 	std::shared_ptr<Statement> block();

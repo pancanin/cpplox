@@ -35,7 +35,7 @@ private:
   /// Helper method that receives source code and runs it through the interpreter. Called from runFile and runREPL.
   /// </summary>
   /// <param name="sourceCode">Programming language code in text format.</param>
-  void run(const std::string& sourceCode) const;
+  void run(const std::string& sourceCode, bool isReplMode) const;
 };
 
 #endif /* SRC_MAIN_H_ */

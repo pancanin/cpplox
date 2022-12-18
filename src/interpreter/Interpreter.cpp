@@ -256,9 +256,9 @@ LoxValue Interpreter::evaluate(Expr& expr) {
   // - we call 'accept' method on BinaryExpr.
   // - The implementation of accept method of BinaryExpr:
   // 
-  //LoxValue accept(LoxValueExprVisitor& visitor) {
-  // return visitor.visitBinaryExpr(*this);
-  //}
+  // LoxValue accept(LoxValueExprVisitor& visitor) {
+  //  return visitor.visitBinaryExpr(*this);
+  // }
   //
   // - Interpreter (this) inherits from LoxValueExprVisitor
   // - inside the accept method, we call visitor.visitBinaryExpr(*this);

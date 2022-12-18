@@ -16,8 +16,8 @@
 
 #include "src/logging/LangErrorLogger.h"
 
-Parser::Parser(std::vector<Token>& tokens, LangErrorLogger& logger):
-  tokens(tokens), currentTokenIndex(0), logger(logger) {}
+Parser::Parser(std::vector<Token>& tokens, LangErrorLogger& logger, bool isReplMode):
+  tokens(tokens), currentTokenIndex(0), logger(logger), isReplMode(isReplMode) {}
 
 std::vector<std::shared_ptr<Statement>> Parser::program()
 {
@@ -306,7 +306,9 @@ std::shared_ptr<Expr> Parser::primary() {
     return std::make_shared<GroupingExpr>(expr);
   }
 
-  throw error(getCurrentToken(), "Expression expected.");
+  if (!isReplMode) {
+    throw error(getCurrentToken(), "Expression expected.");
+  }
 }
 
 Token Parser::getPreviousToken() const {
@@ -387,7 +389,9 @@ void Parser::synchronize()
 
 void Parser::checkForSemicolon()
 {
-  consume(TokenType::SEMICOLON, "Expected ;");
+  if (!isReplMode) {
+    consume(TokenType::SEMICOLON, "Expected ;");
+  }
 }
 
 std::vector<std::shared_ptr<Statement>> Parser::parse() {
