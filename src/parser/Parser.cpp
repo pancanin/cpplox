@@ -127,11 +127,13 @@ std::shared_ptr<Statement> Parser::forStatement()
     condition = expression();
   }
 
+  consume(TokenType::SEMICOLON, "; expected at the end of 'for' condition.");
+
   std::shared_ptr<Statement> increment = std::make_shared<ExprStatement>(expression());
 
   consume(TokenType::RIGHT_PAREN, ") expected.");
 
-  auto body = block();
+  auto body = statement();
   std::vector<std::shared_ptr<Statement>> bodyStatements = { body, increment };
   auto bodyAndIncrementBlock = std::make_shared<BlockStatement>(bodyStatements);
   auto forLoop = std::make_shared<WhileStatement>(condition, bodyAndIncrementBlock);
@@ -191,7 +193,7 @@ std::shared_ptr<Expr> Parser::assignment()
     if (match({ TokenType::EQUAL })) {
       auto expr = assignment();
 
-      checkForSemicolon();
+      //checkForSemicolon();
 
       return std::make_shared<AssignmentExpr>(token, expr);
     }
