@@ -50,6 +50,8 @@ add_executable(${PROJECT_NAME}
 	${DIR}/src/syntax/IfElseStatement.cpp
 	${DIR}/src/syntax/LogicalExpr.h
 	${DIR}/src/syntax/LogicalExpr.cpp
+	${DIR}/src/syntax/CallExpr.h
+	${DIR}/src/syntax/CallExpr.cpp
 	${DIR}/src/syntax/WhileStatement.h
 	${DIR}/src/syntax/WhileStatement.cpp
 
@@ -63,6 +65,8 @@ add_executable(${PROJECT_NAME}
 	${DIR}/src/interpreter/LoxType.h
 	${DIR}/src/interpreter/LoxValueExprVisitor.h
 	
+	${DIR}/src/interpreter/LoxCallable.h
+
 	${DIR}/src/interpreter/RuntimeError.h
 	${DIR}/src/interpreter/Interpreter.h
 	${DIR}/src/interpreter/Interpreter.cpp)

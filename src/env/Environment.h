@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "src/interpreter/LoxValue.h"
+#include "src/interpreter/LoxCallable.h"
 
 class Environment {
 public:
@@ -27,11 +28,16 @@ public:
   bool resolveVariableDeclaration(const std::string& name);
   void clear();
 
+  // Function related methods
+  // The 'define' function can accept a lambda and a number of arguments, so the clients can easily construct LoxCallables
+  void define(const std::string& name, std::shared_ptr<LoxCallable> callable);
+  std::shared_ptr<LoxCallable> resolveFunction(const std::string& name);
+  bool hasEnvGotFunction(const std::string& name);
+  
   std::shared_ptr<Environment> parent;
 private:
-  std::unordered_map<std::string, LoxValue> varStorage; // TODO: It is not a great idea for the LoxValue to be copied left and right...
-
-  
+  std::unordered_map<std::string, LoxValue> varStorage;
+  std::unordered_map<std::string, std::shared_ptr<LoxCallable>> functionStorage;
 };
 
 #endif // !SRC_ENV_ENVIRONMENT_H

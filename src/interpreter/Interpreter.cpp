@@ -6,6 +6,7 @@
 #include "src/syntax/GroupingExpr.h"
 #include "src/syntax/LogicalExpr.h"
 #include "src/syntax/AssignmentExpr.h"
+#include "src/syntax/CallExpr.h"
 #include "src/syntax/Expr.h"
 #include "src/syntax/BlockStatement.h"
 #include "src/syntax/IfElseStatement.h"
@@ -14,7 +15,10 @@
 #include "src/logging/LangErrorLogger.h"
 #include "src/logging/Logger.h"
 
-Interpreter::Interpreter(Logger& logger, LangErrorLogger& errorLogger, std::shared_ptr<Environment> env): logger(logger), errorLogger(errorLogger), env(env) {}
+Interpreter::Interpreter(Logger& logger, LangErrorLogger& errorLogger, std::shared_ptr<Environment> env): logger(logger), errorLogger(errorLogger), env(env) {
+  // Define native, global functions
+  env->define("time", ) // TODO: Create a class that implements the concrete funciton
+}
 
 LoxValue Interpreter::visitLiteralExpr(LiteralExpr& expr) {
   Token token = expr.value;
@@ -82,6 +86,11 @@ LoxValue Interpreter::visitAssignExpr(AssignmentExpr& expr)
   }
 
   return env->evalVariable(expr.identifier.literal);
+}
+
+LoxValue Interpreter::visitCallExpr(CallExpr& expr)
+{
+  return LoxValue();
 }
 
 void Interpreter::visitPrintStatement(PrintStatement* printStatement)

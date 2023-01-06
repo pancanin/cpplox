@@ -6,6 +6,7 @@
 #include "src/syntax/LiteralExpr.h"
 #include "src/syntax/LogicalExpr.h"
 #include "src/syntax/AssignmentExpr.h"
+#include "src/syntax/CallExpr.h"
 
 #include "src/syntax/PrintStatement.h"
 #include "src/syntax/ExprStatement.h"
@@ -288,7 +289,28 @@ std::shared_ptr<Expr> Parser::unary() {
     return std::make_shared<UnaryExpr>(op, right);
   }
 
-  return primary();
+  return call();
+}
+
+std::shared_ptr<Expr> Parser::call()
+{
+  auto callee = primary();
+
+  if (match({ TokenType::LEFT_PAREN })) {
+    std::vector<std::shared_ptr<Expr>> arguments;
+
+    if (!checkIfCurrentTokenIs(TokenType::RIGHT_PAREN)) {
+      do {
+        arguments.push_back(expression());
+      } while (match({ TokenType::COMMA }));
+    }
+
+    Token closingParen = consume(TokenType::RIGHT_PAREN, "Missing closing parenthesis on function call.");
+
+    return std::make_shared<CallExpr>(callee, closingParen, arguments);
+  }
+  
+  return callee;
 }
 
 std::shared_ptr<Expr> Parser::primary() {

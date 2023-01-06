@@ -54,3 +54,26 @@ void Environment::clear()
 {
   varStorage.clear();
 }
+
+void Environment::define(const std::string& name, std::shared_ptr<LoxCallable> callable)
+{
+  functionStorage[name] = callable;
+}
+
+std::shared_ptr<LoxCallable> Environment::resolveFunction(const std::string& name)
+{
+  if (hasEnvGotFunction(name)) {
+    return functionStorage[name];
+  }
+
+  if (parent != nullptr) {
+    return parent->resolveFunction(name);
+  }
+
+  return nullptr;
+}
+
+bool Environment::hasEnvGotFunction(const std::string& name)
+{
+  return functionStorage.find(name) != functionStorage.end();
+}

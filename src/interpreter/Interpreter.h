@@ -19,6 +19,7 @@ class VarStatement;
 class BlockStatement;
 class IfElseStatement;
 class WhileStatement;
+class CallExpr;
 
 /// <summary>
 /// Recursively walks and evaluates each individual AST.
@@ -51,6 +52,7 @@ private:
   LoxValue visitGroupingExpr(GroupingExpr&);
   LoxValue visitLogicalExpr(LogicalExpr&);
   LoxValue visitAssignExpr(AssignmentExpr&);
+  LoxValue visitCallExpr(CallExpr&);
 
   void visitPrintStatement(PrintStatement*);
   void visitWhileStatement(WhileStatement&);

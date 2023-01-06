@@ -7,6 +7,7 @@ class UnaryExpr;
 class GroupingExpr;
 class AssignmentExpr;
 class LogicalExpr;
+class CallExpr;
 
 template <typename R>
 class ExprVisitor {
@@ -17,6 +18,7 @@ public:
   virtual R visitLogicalExpr(LogicalExpr&) = 0;
   virtual R visitGroupingExpr(GroupingExpr&) = 0;
   virtual R visitAssignExpr(AssignmentExpr&) = 0;
+  virtual R visitCallExpr(CallExpr&) = 0;
 
   virtual ~ExprVisitor() = default;
 };
