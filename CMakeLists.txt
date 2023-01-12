@@ -67,6 +67,8 @@ add_executable(${PROJECT_NAME}
 	
 	${DIR}/src/interpreter/LoxCallable.h
 
+	${DIR}/src/nativefuncs/TimeFunc.h
+
 	${DIR}/src/interpreter/RuntimeError.h
 	${DIR}/src/interpreter/Interpreter.h
 	${DIR}/src/interpreter/Interpreter.cpp)

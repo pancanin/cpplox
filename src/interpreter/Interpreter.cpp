@@ -15,9 +15,12 @@
 #include "src/logging/LangErrorLogger.h"
 #include "src/logging/Logger.h"
 
+#include "src/nativefuncs/TimeFunc.h"
+
 Interpreter::Interpreter(Logger& logger, LangErrorLogger& errorLogger, std::shared_ptr<Environment> env): logger(logger), errorLogger(errorLogger), env(env) {
   // Define native, global functions
-  env->define("time", ) // TODO: Create a class that implements the concrete funciton
+  auto timeFuncPtr = std::make_shared<TimeFunc>();
+  env->define("time", timeFuncPtr); // TODO: Create a class that implements the concrete funciton
 }
 
 LoxValue Interpreter::visitLiteralExpr(LiteralExpr& expr) {
@@ -33,11 +36,23 @@ LoxValue Interpreter::visitLiteralExpr(LiteralExpr& expr) {
     return LoxValue(LoxType::BOOLEAN, token.literal);
   case TokenType::NIL:
     return LoxValue(LoxType::NIL, token.literal);
-  case TokenType::IDENTIFIER:
-    if (!env->resolveVariableDeclaration(token.literal)) {
+  case TokenType::IDENTIFIER: {
+    bool isItAVariable = env->resolveVariableDeclaration(token.literal);
+    bool isItAFunc = env->hasEnvGotFunction(token.literal);
+
+    if (isItAVariable) {
+      return env->evalVariable(token.literal);
+    }
+    else if (isItAFunc) {
+      return LoxValue(LoxType::STRING, token.literal);
+    }
+    else if (!isItAVariable) {
       throw RuntimeError(token, "Undefined variable");
     }
-    return env->evalVariable(token.literal);
+    else if (!isItAFunc) {
+      throw RuntimeError(token, "Undefined function");
+    }
+  }
   default:
     return LoxValue(LoxType::ANY, token.literal);
   }
@@ -90,7 +105,25 @@ LoxValue Interpreter::visitAssignExpr(AssignmentExpr& expr)
 
 LoxValue Interpreter::visitCallExpr(CallExpr& expr)
 {
-  return LoxValue();
+  LoxValue callee = evaluate(*expr.callee);
+
+  if (!env->hasEnvGotFunction(callee.value)) {
+    throw RuntimeError(expr.closingBrace, "Undefined function");
+  }
+
+  std::vector<LoxValue> args;
+
+  for (auto& argExpr : expr.argumentExpressions) {
+    args.push_back(evaluate(*argExpr));
+  }
+
+  auto callable = env->resolveFunction(callee.value);
+
+  if (callable->arity() != expr.argumentExpressions.size()) {
+    throw RuntimeError(expr.closingBrace, "Argument count does not match");
+  }
+
+  return callable->call(this, args);
 }
 
 void Interpreter::visitPrintStatement(PrintStatement* printStatement)

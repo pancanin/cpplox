@@ -47,7 +47,7 @@ bool Environment::doesCurrentEnvDeclareVariable(const std::string& name)
 
 bool Environment::resolveVariableDeclaration(const std::string& name)
 {
-  return doesCurrentEnvDeclareVariable(name) || parent->resolveVariableDeclaration(name);
+  return doesCurrentEnvDeclareVariable(name) || (parent && parent->resolveVariableDeclaration(name));
 }
 
 void Environment::clear()
