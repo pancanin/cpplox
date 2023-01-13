@@ -10,17 +10,21 @@
 #include "src/syntax/Expr.h"
 #include "src/syntax/BlockStatement.h"
 #include "src/syntax/IfElseStatement.h"
+#include "src/syntax/FuncStatement.h"
 
 #include "src/interpreter/RuntimeError.h"
 #include "src/logging/LangErrorLogger.h"
 #include "src/logging/Logger.h"
 
 #include "src/nativefuncs/TimeFunc.h"
+#include "src/nativefuncs/SlurFunc.h"
 
 Interpreter::Interpreter(Logger& logger, LangErrorLogger& errorLogger, std::shared_ptr<Environment> env): logger(logger), errorLogger(errorLogger), env(env) {
   // Define native, global functions
   auto timeFuncPtr = std::make_shared<TimeFunc>();
-  env->define("time", timeFuncPtr); // TODO: Create a class that implements the concrete funciton
+  auto slurFuncPtr = std::make_shared<SlurFunc>();
+  env->define("time", timeFuncPtr);
+  env->define("slur", slurFuncPtr);
 }
 
 LoxValue Interpreter::visitLiteralExpr(LiteralExpr& expr) {
@@ -199,6 +203,12 @@ void Interpreter::visitIfElseStatement(IfElseStatement& ifElseStatement)
   else if (ifElseStatement.elseStatement != nullptr) {
     execute(ifElseStatement.elseStatement);
   }
+}
+
+void Interpreter::visitFuncStatement(FuncStatement& statement)
+{
+  // We wont check if we already have a function with this name
+  env->define(statement.name.literal, );
 }
 
 LoxValue Interpreter::visitUnaryExpr(UnaryExpr& expr) {

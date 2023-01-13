@@ -14,6 +14,7 @@
 #include "src/syntax/BlockStatement.h"
 #include "src/syntax/IfElseStatement.h"
 #include "src/syntax/WhileStatement.h"
+#include "src/syntax/FuncStatement.h"
 
 #include "src/logging/LangErrorLogger.h"
 
@@ -36,8 +37,41 @@ std::shared_ptr<Statement> Parser::declaration()
   if (match({ TokenType::VAR })) {
     return varDeclaration();
   }
+  else if (match({ TokenType::FUN })) {
+    return funcDeclaration();
+  }
 
   return statement();
+}
+
+std::shared_ptr<Statement> Parser::funcDeclaration()
+{
+  Token funcName = consume(TokenType::IDENTIFIER, "Function name expected");
+
+  std::vector<Token> argumentNames = arguments();
+
+  consume(TokenType::LEFT_BRACE, "Expected beginning of function body {");
+
+  std::shared_ptr<Statement> body = block();
+
+  return std::make_shared<FuncStatement>(funcName, argumentNames, body);
+}
+
+std::vector<Token> Parser::arguments()
+{
+  consume(TokenType::LEFT_PAREN, "Expected ( at the start of a function argument list");
+
+  std::vector<Token> arguments;
+
+  if (!checkIfCurrentTokenIs(TokenType::RIGHT_PAREN)) {
+    do {
+      arguments.push_back(consume(TokenType::IDENTIFIER, "Argument expected after comma."));
+    } while (match({ TokenType::COMMA }));
+  }
+
+  consume(TokenType::RIGHT_PAREN, "Expected ) at the end of a function argument list");
+
+  return arguments;
 }
 
 std::shared_ptr<Statement> Parser::varDeclaration()
@@ -75,7 +109,8 @@ std::shared_ptr<Statement> Parser::statement()
     return forStatement();
   }
 
-  return std::make_shared<ExprStatement>(expression());
+  auto expr = expression();
+  return std::make_shared<ExprStatement>(expr);
 }
 
 std::shared_ptr<Statement> Parser::printStatement()
@@ -306,6 +341,8 @@ std::shared_ptr<Expr> Parser::call()
     }
 
     Token closingParen = consume(TokenType::RIGHT_PAREN, "Missing closing parenthesis on function call.");
+
+    consume(TokenType::SEMICOLON, "Missing ;");
 
     return std::make_shared<CallExpr>(callee, closingParen, arguments);
   }

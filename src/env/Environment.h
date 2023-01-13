@@ -7,6 +7,7 @@
 
 #include "src/interpreter/LoxValue.h"
 #include "src/interpreter/LoxCallable.h"
+#include "src/syntax/FuncStatement.h"
 
 class Environment {
 public:
@@ -33,6 +34,8 @@ public:
   void define(const std::string& name, std::shared_ptr<LoxCallable> callable);
   std::shared_ptr<LoxCallable> resolveFunction(const std::string& name);
   bool hasEnvGotFunction(const std::string& name);
+
+  void declareFunc(std::shared_ptr<FuncStatement> funcStmt);
   
   std::shared_ptr<Environment> parent;
 private:

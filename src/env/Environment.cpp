@@ -77,3 +77,8 @@ bool Environment::hasEnvGotFunction(const std::string& name)
 {
   return functionStorage.find(name) != functionStorage.end();
 }
+
+void Environment::declareFunc(std::shared_ptr<FuncStatement> funcStmt)
+{
+
+}

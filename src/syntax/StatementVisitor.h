@@ -8,6 +8,8 @@
 #include "src/syntax/IfElseStatement.h"
 #include "src/syntax/WhileStatement.h"
 
+class FuncStatement;
+
 template <typename R>
 class StatementVisitor {
 public:
@@ -19,6 +21,7 @@ public:
   virtual R visitBlockStatement(BlockStatement&) = 0;
   virtual R visitIfElseStatement(IfElseStatement&) = 0;
   virtual R visitWhileStatement(WhileStatement&) = 0;
+  virtual R visitFuncStatement(FuncStatement&) = 0;
 
   virtual ~StatementVisitor() = default;
 };

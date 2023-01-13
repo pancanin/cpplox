@@ -8,6 +8,9 @@
 
 class Interpreter;
 
+/// <summary>
+/// Used for native funcs.
+/// </summary>
 class LoxCallable {
 public:
   virtual LoxValue call(Interpreter const * const, std::vector<LoxValue> args) = 0;

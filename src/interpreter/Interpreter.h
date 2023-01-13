@@ -20,6 +20,7 @@ class BlockStatement;
 class IfElseStatement;
 class WhileStatement;
 class CallExpr;
+class FuncStatement;
 
 /// <summary>
 /// Recursively walks and evaluates each individual AST.
@@ -60,6 +61,7 @@ private:
   void visitVarStatement(VarStatement*);
   void visitBlockStatement(BlockStatement&);
   void visitIfElseStatement(IfElseStatement&);
+  void visitFuncStatement(FuncStatement&);
 
   void checkNumberOperand(Token op, LoxType operandType);
   void checkStringOperand(Token op, LoxType operandType);

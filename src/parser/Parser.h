@@ -36,6 +36,11 @@ private:
 	std::shared_ptr<Statement> block();
 	std::shared_ptr<Statement> declaration();
 
+
+
+	std::shared_ptr<Statement> funcDeclaration();
+	std::vector<Token> arguments();
+
 	/// <summary>
 	/// Special treatment of var declarations, because these are not statements.
 	/// This is legal:
