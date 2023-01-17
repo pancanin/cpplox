@@ -208,7 +208,7 @@ void Interpreter::visitIfElseStatement(IfElseStatement& ifElseStatement)
 void Interpreter::visitFuncStatement(FuncStatement& statement)
 {
   // We wont check if we already have a function with this name
-  env->define(statement.name.literal, );
+  env->define(statement.name.literal, std::make_shared<FuncStatement>(statement));
 }
 
 LoxValue Interpreter::visitUnaryExpr(UnaryExpr& expr) {
@@ -323,6 +323,23 @@ LoxValue Interpreter::evaluate(Expr& expr) {
 void Interpreter::execute(std::shared_ptr<Statement> statement)
 {
   statement->accept(*this);
+}
+
+LoxValue Interpreter::evalUserDefinedFunc(std::vector<Token> argNames, std::vector<LoxValue> argValues, std::shared_ptr<Statement> funcBody)
+{
+  // do some argument size checking
+
+  env = std::shared_ptr<Environment>(env);
+
+  for (size_t idx = 0; idx < argNames.size(); idx++) {
+    env->declareVariable(argNames[idx].literal, argValues[idx]);
+  }
+
+  funcBody->accept(*this);
+
+  env = env->parent;
+
+  return LoxValue();
 }
 
 void Interpreter::checkNumberOperand(Token op, LoxType operandType) {

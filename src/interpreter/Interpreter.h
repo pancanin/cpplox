@@ -36,6 +36,8 @@ public:
   /// <param name="statements">Collection of statement ASTs</param>
   void interpret(const std::vector<std::shared_ptr<Statement>>&);
 
+  LoxValue evalUserDefinedFunc(std::vector<Token> argNames, std::vector<LoxValue> argValues, std::shared_ptr<Statement> funcBody);
+
   ~Interpreter() = default;
 
 private:
@@ -45,7 +47,6 @@ private:
 
   LoxValue evaluate(Expr& expr);
   void execute(std::shared_ptr<Statement>);
-
 
   LoxValue visitLiteralExpr(LiteralExpr&);
   LoxValue visitUnaryExpr(UnaryExpr&);

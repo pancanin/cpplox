@@ -13,7 +13,7 @@ class Interpreter;
 /// </summary>
 class LoxCallable {
 public:
-  virtual LoxValue call(Interpreter const * const, std::vector<LoxValue> args) = 0;
+  virtual LoxValue call(Interpreter*, std::vector<LoxValue> args) = 0;
   virtual uint32_t arity() = 0;
 };
 

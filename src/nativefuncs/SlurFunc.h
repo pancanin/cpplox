@@ -7,7 +7,7 @@
 
 class SlurFunc : public LoxCallable {
 public:
-  LoxValue call(Interpreter const* const interpreter, std::vector<LoxValue> args) {
+  LoxValue call(Interpreter* interpreter, std::vector<LoxValue> args) {
     std::unordered_map<std::string, std::string> slurs = {
       { "0", "Go 'a hell!" },
       { "1", "You prick!" },
