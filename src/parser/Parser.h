@@ -36,8 +36,6 @@ private:
 	std::shared_ptr<Statement> block();
 	std::shared_ptr<Statement> declaration();
 
-
-
 	std::shared_ptr<Statement> funcDeclaration();
 	std::vector<Token> arguments();
 

@@ -212,13 +212,7 @@ std::shared_ptr<Statement> Parser::block()
 }
 
 std::shared_ptr<Expr> Parser::expression() {
-  auto left = assignment();
-
-  while (match({TokenType::COMMA})) {
-    left = assignment();
-  }
-
-  return left;
+  return assignment();
 }
 
 std::shared_ptr<Expr> Parser::assignment()
