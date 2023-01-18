@@ -108,6 +108,9 @@ std::shared_ptr<Statement> Parser::statement()
   else if (match({ TokenType::FOR })) {
     return forStatement();
   }
+  else if (match({ TokenType::RETURN })) {
+    return returnStatement();
+  }
 
   auto expr = expression();
   return std::make_shared<ExprStatement>(expr);
@@ -196,6 +199,18 @@ std::shared_ptr<Statement> Parser::ifStatement()
   }
 
   return std::make_shared<IfElseStatement>(expr, stmt);
+}
+
+std::shared_ptr<Statement> Parser::returnStatement()
+{
+  Token returnKwd = getPreviousToken();
+  std::shared_ptr<Expr> returnExpr;
+
+  if (match({ TokenType::SEMICOLON })) {
+    return std::make_shared<Statement>(returnKwd, returnExpr);
+  }
+
+  return std::make_shared<Statement>(returnKwd, expression());
 }
 
 std::shared_ptr<Statement> Parser::block()

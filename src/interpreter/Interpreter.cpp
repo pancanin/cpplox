@@ -11,6 +11,7 @@
 #include "src/syntax/BlockStatement.h"
 #include "src/syntax/IfElseStatement.h"
 #include "src/syntax/FuncStatement.h"
+#include "src/syntax/ReturnStatement.h"
 
 #include "src/interpreter/RuntimeError.h"
 #include "src/logging/LangErrorLogger.h"
@@ -209,6 +210,11 @@ void Interpreter::visitFuncStatement(FuncStatement& statement)
 {
   // We wont check if we already have a function with this name
   env->define(statement.name.literal, std::make_shared<FuncStatement>(statement));
+}
+
+void Interpreter::visitReturnStatement(ReturnStatement& returnStmt)
+{
+
 }
 
 LoxValue Interpreter::visitUnaryExpr(UnaryExpr& expr) {

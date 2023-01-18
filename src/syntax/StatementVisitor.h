@@ -9,6 +9,7 @@
 #include "src/syntax/WhileStatement.h"
 
 class FuncStatement;
+class ReturnStatement;
 
 template <typename R>
 class StatementVisitor {
@@ -22,6 +23,7 @@ public:
   virtual R visitIfElseStatement(IfElseStatement&) = 0;
   virtual R visitWhileStatement(WhileStatement&) = 0;
   virtual R visitFuncStatement(FuncStatement&) = 0;
+  virtual R visitReturnStatement(ReturnStatement&) = 0;
 
   virtual ~StatementVisitor() = default;
 };

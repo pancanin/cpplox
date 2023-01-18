@@ -53,7 +53,7 @@ private:
 	std::shared_ptr<Statement> whileStatement();
 	std::shared_ptr<Statement> forStatement();
 	std::shared_ptr<Statement> ifStatement();
-
+	std::shared_ptr<Statement> returnStatement();
 	std::shared_ptr<Expr> expression();
 	std::shared_ptr<Expr> assignment();
 	std::shared_ptr<Expr> logicalOr();
