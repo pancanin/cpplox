@@ -67,6 +67,9 @@ private:
   void checkNumberOperand(Token op, LoxType operandType);
   void checkStringOperand(Token op, LoxType operandType);
   void checkSameType(Token op, LoxType o1Type, LoxType o2Type);
+
+  void enterNewScope();
+  void exitScope();
 };
 
 #endif /* SRC_INTERPRETER_INTERPRETER_H_ */

@@ -12,7 +12,6 @@
 class Environment {
 public:
   Environment();
-  Environment(std::shared_ptr<Environment> parent);
 
   void declareVariable(const std::string& name, const LoxValue& value);
 
@@ -33,14 +32,18 @@ public:
   // The 'define' function can accept a lambda and a number of arguments, so the clients can easily construct LoxCallables
   void define(const std::string& name, std::shared_ptr<LoxCallable> callable);
   std::shared_ptr<LoxCallable> resolveFunction(const std::string& name);
-  bool hasEnvGotFunction(const std::string& name);
+  bool hasFunction(const std::string& name);
 
   void declareFunc(std::shared_ptr<FuncStatement> funcStmt);
+
+  void setParent(std::shared_ptr<Environment> parentEnv);
   
   std::shared_ptr<Environment> parent;
 private:
   std::unordered_map<std::string, LoxValue> varStorage;
   std::unordered_map<std::string, std::shared_ptr<LoxCallable>> functionStorage;
+
+  bool hasCurrentEnvGotFunction(const std::string& name);
 };
 
 #endif // !SRC_ENV_ENVIRONMENT_H

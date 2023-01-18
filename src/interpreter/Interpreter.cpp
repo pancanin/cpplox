@@ -42,7 +42,7 @@ LoxValue Interpreter::visitLiteralExpr(LiteralExpr& expr) {
     return LoxValue(LoxType::NIL, token.literal);
   case TokenType::IDENTIFIER: {
     bool isItAVariable = env->resolveVariableDeclaration(token.literal);
-    bool isItAFunc = env->hasEnvGotFunction(token.literal);
+    bool isItAFunc = env->hasFunction(token.literal);
 
     if (isItAVariable) {
       return env->evalVariable(token.literal);
@@ -111,7 +111,7 @@ LoxValue Interpreter::visitCallExpr(CallExpr& expr)
 {
   LoxValue callee = evaluate(*expr.callee);
 
-  if (!env->hasEnvGotFunction(callee.value)) {
+  if (!env->hasFunction(callee.value)) {
     throw RuntimeError(expr.closingBrace, "Undefined function");
   }
 
@@ -172,7 +172,7 @@ void Interpreter::visitVarStatement(VarStatement* statement)
 
 void Interpreter::visitBlockStatement(BlockStatement& blockStatement)
 {
-  env = std::make_shared<Environment>(env);
+  enterNewScope();
 
   try {
     for (auto statement : blockStatement.statements) {
@@ -185,7 +185,7 @@ void Interpreter::visitBlockStatement(BlockStatement& blockStatement)
     throw err;
   }
   
-  env = env->parent;
+  exitScope();
 }
 
 void Interpreter::visitIfElseStatement(IfElseStatement& ifElseStatement)
@@ -329,7 +329,7 @@ LoxValue Interpreter::evalUserDefinedFunc(std::vector<Token> argNames, std::vect
 {
   // do some argument size checking
 
-  env = std::shared_ptr<Environment>(env);
+  enterNewScope();
 
   for (size_t idx = 0; idx < argNames.size(); idx++) {
     env->declareVariable(argNames[idx].literal, argValues[idx]);
@@ -337,7 +337,7 @@ LoxValue Interpreter::evalUserDefinedFunc(std::vector<Token> argNames, std::vect
 
   funcBody->accept(*this);
 
-  env = env->parent;
+  exitScope();
 
   return LoxValue();
 }
@@ -355,6 +355,20 @@ void Interpreter::checkStringOperand(Token op, LoxType operandType) {
 void Interpreter::checkSameType(Token op, LoxType o1Type, LoxType o2Type) {
   if (o1Type == o2Type) return;
   throw RuntimeError(op, "Operands must be of same type.");
+}
+
+void Interpreter::enterNewScope()
+{
+  auto current = env;
+  env = std::make_shared<Environment>();
+  env->setParent(current);
+}
+
+void Interpreter::exitScope()
+{
+  if (env->parent != nullptr) {
+    env = env->parent;
+  }
 }
 
 void Interpreter::interpret(const std::vector<std::shared_ptr<Statement>>& statements) {

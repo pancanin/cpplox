@@ -4,10 +4,6 @@ Environment::Environment(): parent(nullptr)
 {
 }
 
-Environment::Environment(std::shared_ptr<Environment> parent): parent(parent)
-{
-}
-
 void Environment::declareVariable(const std::string& name, const LoxValue& value)
 {
   varStorage[name] = value;
@@ -62,7 +58,7 @@ void Environment::define(const std::string& name, std::shared_ptr<LoxCallable> c
 
 std::shared_ptr<LoxCallable> Environment::resolveFunction(const std::string& name)
 {
-  if (hasEnvGotFunction(name)) {
+  if (hasCurrentEnvGotFunction(name)) {
     return functionStorage[name];
   }
 
@@ -73,12 +69,26 @@ std::shared_ptr<LoxCallable> Environment::resolveFunction(const std::string& nam
   return nullptr;
 }
 
-bool Environment::hasEnvGotFunction(const std::string& name)
+bool Environment::hasCurrentEnvGotFunction(const std::string& name)
 {
   return functionStorage.find(name) != functionStorage.end();
 }
 
+bool Environment::hasFunction(const std::string& name)
+{
+  if (hasCurrentEnvGotFunction(name)) {
+    return true;
+  }
+
+  return parent != nullptr && parent->hasFunction(name);
+}
+
 void Environment::declareFunc(std::shared_ptr<FuncStatement> funcStmt)
 {
+  functionStorage[funcStmt->name.literal] = funcStmt;
+}
 
+void Environment::setParent(std::shared_ptr<Environment> parentEnv)
+{
+  this->parent = parentEnv;
 }
