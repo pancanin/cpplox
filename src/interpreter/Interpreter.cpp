@@ -20,6 +20,8 @@
 #include "src/nativefuncs/TimeFunc.h"
 #include "src/nativefuncs/SlurFunc.h"
 
+#include "src/interpreter/Return.h"
+
 Interpreter::Interpreter(Logger& logger, LangErrorLogger& errorLogger, std::shared_ptr<Environment> env): logger(logger), errorLogger(errorLogger), env(env) {
   // Define native, global functions
   auto timeFuncPtr = std::make_shared<TimeFunc>();
@@ -153,7 +155,7 @@ void Interpreter::visitExprStatement(ExprStatement* exprStatement)
 {
   auto val = evaluate(*exprStatement->_expr);
 
-  logger.info(val.value, true);
+  //logger.info(val.value, true);
 }
 
 void Interpreter::visitVarStatement(VarStatement* statement)
@@ -214,7 +216,7 @@ void Interpreter::visitFuncStatement(FuncStatement& statement)
 
 void Interpreter::visitReturnStatement(ReturnStatement& returnStmt)
 {
-
+  throw Return(evaluate(*returnStmt.expr));
 }
 
 LoxValue Interpreter::visitUnaryExpr(UnaryExpr& expr) {
@@ -341,11 +343,16 @@ LoxValue Interpreter::evalUserDefinedFunc(std::vector<Token> argNames, std::vect
     env->declareVariable(argNames[idx].literal, argValues[idx]);
   }
 
-  funcBody->accept(*this);
+  try {
+    funcBody->accept(*this);
+    exitScope();
 
-  exitScope();
-
-  return LoxValue();
+    return LoxValue();
+  }
+  catch (const Return& retVal) {
+    exitScope();
+    return retVal.value;
+  }
 }
 
 void Interpreter::checkNumberOperand(Token op, LoxType operandType) {

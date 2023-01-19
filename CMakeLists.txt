@@ -54,6 +54,12 @@ add_executable(${PROJECT_NAME}
 	${DIR}/src/syntax/CallExpr.cpp
 	${DIR}/src/syntax/WhileStatement.h
 	${DIR}/src/syntax/WhileStatement.cpp
+	${DIR}/src/syntax/FuncStatement.h
+	${DIR}/src/syntax/FuncStatement.cpp
+	${DIR}/src/syntax/ReturnStatement.h
+	${DIR}/src/syntax/ReturnStatement.cpp
+
+	${DIR}/src/interpreter/Return.h
 
 	${DIR}/src/env/Environment.h
 	${DIR}/src/env/Environment.cpp

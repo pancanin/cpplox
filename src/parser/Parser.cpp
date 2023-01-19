@@ -15,6 +15,7 @@
 #include "src/syntax/IfElseStatement.h"
 #include "src/syntax/WhileStatement.h"
 #include "src/syntax/FuncStatement.h"
+#include "src/syntax/ReturnStatement.h"
 
 #include "src/logging/LangErrorLogger.h"
 
@@ -207,10 +208,14 @@ std::shared_ptr<Statement> Parser::returnStatement()
   std::shared_ptr<Expr> returnExpr;
 
   if (match({ TokenType::SEMICOLON })) {
-    return std::make_shared<Statement>(returnKwd, returnExpr);
+    return std::make_shared<ReturnStatement>(returnKwd, returnExpr);
   }
 
-  return std::make_shared<Statement>(returnKwd, expression());
+  auto expr = expression();
+
+  consume(TokenType::SEMICOLON, "Expected ;");
+
+  return std::make_shared<ReturnStatement>(returnKwd, expr);
 }
 
 std::shared_ptr<Statement> Parser::block()
@@ -350,8 +355,6 @@ std::shared_ptr<Expr> Parser::call()
     }
 
     Token closingParen = consume(TokenType::RIGHT_PAREN, "Missing closing parenthesis on function call.");
-
-    consume(TokenType::SEMICOLON, "Missing ;");
 
     return std::make_shared<CallExpr>(callee, closingParen, arguments);
   }
