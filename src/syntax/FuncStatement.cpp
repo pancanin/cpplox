@@ -16,10 +16,15 @@ void FuncStatement::accept(LoxStatementVisitor& visitor)
 
 LoxValue FuncStatement::call(Interpreter* interpreter, std::vector<LoxValue> args)
 {
-  return interpreter->evalUserDefinedFunc(argumentNames, args, funcBody);
+  return interpreter->evalUserDefinedFunc(argumentNames, args, funcBody, closure);
 }
 
 uint32_t FuncStatement::arity()
 {
   return argumentNames.size();
+}
+
+void FuncStatement::setClosure(std::shared_ptr<Environment> closure)
+{
+  this->closure = closure;
 }

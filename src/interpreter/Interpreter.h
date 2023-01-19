@@ -37,7 +37,7 @@ public:
   /// <param name="statements">Collection of statement ASTs</param>
   void interpret(const std::vector<std::shared_ptr<Statement>>&);
 
-  LoxValue evalUserDefinedFunc(std::vector<Token> argNames, std::vector<LoxValue> argValues, std::shared_ptr<Statement> funcBody);
+  LoxValue evalUserDefinedFunc(std::vector<Token> argNames, std::vector<LoxValue> argValues, std::shared_ptr<Statement> funcBody, std::shared_ptr<Environment> closure);
 
   ~Interpreter() = default;
 
@@ -45,6 +45,7 @@ private:
   Logger& logger;
   LangErrorLogger& errorLogger;
   std::shared_ptr<Environment> env;
+  std::shared_ptr<Environment> tempEnv;
 
   LoxValue evaluate(Expr& expr);
   void execute(std::shared_ptr<Statement>);
@@ -72,6 +73,9 @@ private:
 
   void enterNewScope();
   void exitScope();
+
+  void setEnv(std::shared_ptr<Environment>);
+  void restoreEnv();
 };
 
 #endif /* SRC_INTERPRETER_INTERPRETER_H_ */

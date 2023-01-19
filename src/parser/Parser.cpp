@@ -114,6 +114,9 @@ std::shared_ptr<Statement> Parser::statement()
   }
 
   auto expr = expression();
+
+  consume(TokenType::SEMICOLON, "Semicolon expected");
+
   return std::make_shared<ExprStatement>(expr);
 }
 

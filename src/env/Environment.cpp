@@ -53,7 +53,15 @@ void Environment::clear()
 
 void Environment::define(const std::string& name, std::shared_ptr<LoxCallable> callable)
 {
-  functionStorage[name] = callable;
+  // Go to the global environment - all functions will be stored in the global env
+  // in order to enable things like 
+  Environment* root = this;
+
+  while (root->parent != nullptr) {
+    root = root->parent.get();
+  }
+
+  root->functionStorage[name] = callable;
 }
 
 std::shared_ptr<LoxCallable> Environment::resolveFunction(const std::string& name)
@@ -81,11 +89,6 @@ bool Environment::hasFunction(const std::string& name)
   }
 
   return parent != nullptr && parent->hasFunction(name);
-}
-
-void Environment::declareFunc(std::shared_ptr<FuncStatement> funcStmt)
-{
-  functionStorage[funcStmt->name.literal] = funcStmt;
 }
 
 void Environment::setParent(std::shared_ptr<Environment> parentEnv)

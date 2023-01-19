@@ -1,5 +1,7 @@
 #include "Interpreter.h"
 
+#include <exception>
+
 #include "src/syntax/BinaryExpr.h"
 #include "src/syntax/LiteralExpr.h"
 #include "src/syntax/UnaryExpr.h"
@@ -182,10 +184,10 @@ void Interpreter::visitBlockStatement(BlockStatement& blockStatement)
       statement->accept(*this);
     }
   }
-  catch (const RuntimeError& err) {
-    env = env->parent;
+  catch (const std::exception& err) {
+    exitScope();
 
-    throw err;
+    throw;
   }
   
   exitScope();
@@ -211,6 +213,8 @@ void Interpreter::visitIfElseStatement(IfElseStatement& ifElseStatement)
 void Interpreter::visitFuncStatement(FuncStatement& statement)
 {
   // We wont check if we already have a function with this name
+  statement.setClosure(env);
+
   env->define(statement.name.literal, std::make_shared<FuncStatement>(statement));
 }
 
@@ -333,9 +337,11 @@ void Interpreter::execute(std::shared_ptr<Statement> statement)
   statement->accept(*this);
 }
 
-LoxValue Interpreter::evalUserDefinedFunc(std::vector<Token> argNames, std::vector<LoxValue> argValues, std::shared_ptr<Statement> funcBody)
+LoxValue Interpreter::evalUserDefinedFunc(std::vector<Token> argNames, std::vector<LoxValue> argValues, std::shared_ptr<Statement> funcBody, std::shared_ptr<Environment> closure)
 {
   // do some argument size checking
+
+  setEnv(closure);
 
   enterNewScope();
 
@@ -346,11 +352,13 @@ LoxValue Interpreter::evalUserDefinedFunc(std::vector<Token> argNames, std::vect
   try {
     funcBody->accept(*this);
     exitScope();
+    restoreEnv();
 
     return LoxValue();
   }
   catch (const Return& retVal) {
     exitScope();
+    restoreEnv();
     return retVal.value;
   }
 }
@@ -382,6 +390,17 @@ void Interpreter::exitScope()
   if (env->parent != nullptr) {
     env = env->parent;
   }
+}
+
+void Interpreter::setEnv(std::shared_ptr<Environment> funcEnv)
+{
+  this->tempEnv = this->env;
+  this->env = funcEnv;
+}
+
+void Interpreter::restoreEnv()
+{
+  this->env = this->tempEnv;
 }
 
 void Interpreter::interpret(const std::vector<std::shared_ptr<Statement>>& statements) {
