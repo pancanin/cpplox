@@ -16,6 +16,7 @@
 #include "src/syntax/WhileStatement.h"
 #include "src/syntax/FuncStatement.h"
 #include "src/syntax/ReturnStatement.h"
+#include "src/syntax/ClassStatement.h"
 
 #include "src/logging/LangErrorLogger.h"
 
@@ -39,15 +40,18 @@ std::shared_ptr<Statement> Parser::declaration()
     return varDeclaration();
   }
   else if (match({ TokenType::FUN })) {
-    return funcDeclaration();
+    return funcDeclaration("function");
+  }
+  else if (match({ TokenType::CLASS })) {
+    return classDeclaration();
   }
 
   return statement();
 }
 
-std::shared_ptr<Statement> Parser::funcDeclaration()
+std::shared_ptr<Statement> Parser::funcDeclaration(const std::string& type)
 {
-  Token funcName = consume(TokenType::IDENTIFIER, "Function name expected");
+  Token funcName = consume(TokenType::IDENTIFIER, type + " name expected");
 
   std::vector<Token> argumentNames = arguments();
 
@@ -55,7 +59,7 @@ std::shared_ptr<Statement> Parser::funcDeclaration()
 
   std::shared_ptr<Statement> body = block();
 
-  return std::make_shared<FuncStatement>(funcName, argumentNames, body);
+  return std::make_shared<FuncStatement>(type, funcName, argumentNames, body);
 }
 
 std::vector<Token> Parser::arguments()
@@ -73,6 +77,23 @@ std::vector<Token> Parser::arguments()
   consume(TokenType::RIGHT_PAREN, "Expected ) at the end of a function argument list");
 
   return arguments;
+}
+
+std::shared_ptr<Statement> Parser::classDeclaration()
+{
+  Token name = consume(TokenType::IDENTIFIER, "Class name expected.");
+
+  consume(TokenType::LEFT_BRACE, "Expected { before class definition.");
+
+  std::vector<std::shared_ptr<Statement>> methods;
+
+  while (!checkIfCurrentTokenIs(TokenType::RIGHT_BRACE)) {
+    methods.push_back(funcDeclaration("method"));
+  }
+
+  consume(TokenType::RIGHT_BRACE, "Expected } after class definition.");
+
+  return std::make_shared<ClassStatement>(name, methods);
 }
 
 std::shared_ptr<Statement> Parser::varDeclaration()

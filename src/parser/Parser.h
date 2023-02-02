@@ -36,7 +36,7 @@ private:
 	std::shared_ptr<Statement> block();
 	std::shared_ptr<Statement> declaration();
 
-	std::shared_ptr<Statement> funcDeclaration();
+	std::shared_ptr<Statement> funcDeclaration(const std::string& type);
 	std::vector<Token> arguments();
 
 	/// <summary>
@@ -47,6 +47,7 @@ private:
 	/// But this is not:
 	/// if (monday) var beverage = "espresso";
 	/// </summary>
+	std::shared_ptr<Statement> classDeclaration();
 	std::shared_ptr<Statement> varDeclaration();
 	std::shared_ptr<Statement> statement();
 	std::shared_ptr<Statement> printStatement();

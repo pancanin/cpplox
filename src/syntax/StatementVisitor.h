@@ -10,6 +10,7 @@
 
 class FuncStatement;
 class ReturnStatement;
+class ClassStatement;
 
 template <typename R>
 class StatementVisitor {
@@ -24,6 +25,7 @@ public:
   virtual R visitWhileStatement(WhileStatement&) = 0;
   virtual R visitFuncStatement(FuncStatement&) = 0;
   virtual R visitReturnStatement(ReturnStatement&) = 0;
+  virtual R visitClassStatement(ClassStatement&) = 0;
 
   virtual ~StatementVisitor() = default;
 };

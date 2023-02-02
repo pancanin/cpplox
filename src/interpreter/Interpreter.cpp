@@ -213,6 +213,11 @@ void Interpreter::visitIfElseStatement(IfElseStatement& ifElseStatement)
 void Interpreter::visitFuncStatement(FuncStatement& statement)
 {
   // We wont check if we already have a function with this name
+
+  // Here we are passing a reference to the current environment.
+  // This means that if variables are added or reassigned, it will be reflected in the closure, which is not desired.
+  // As one solution, we could make a copy of the environment and pass it to the function.
+  // Another solution is to do semantic analysis and
   statement.setClosure(env);
 
   env->define(statement.name.literal, std::make_shared<FuncStatement>(statement));
@@ -221,6 +226,11 @@ void Interpreter::visitFuncStatement(FuncStatement& statement)
 void Interpreter::visitReturnStatement(ReturnStatement& returnStmt)
 {
   throw Return(evaluate(*returnStmt.expr));
+}
+
+void Interpreter::visitClassStatement(ClassStatement& classStmt)
+{
+
 }
 
 LoxValue Interpreter::visitUnaryExpr(UnaryExpr& expr) {
@@ -361,6 +371,11 @@ LoxValue Interpreter::evalUserDefinedFunc(std::vector<Token> argNames, std::vect
     restoreEnv();
     return retVal.value;
   }
+}
+
+void Interpreter::resolve(Expr& expr, uint32_t distance)
+{
+  locals[&expr] = distance;
 }
 
 void Interpreter::checkNumberOperand(Token op, LoxType operandType) {

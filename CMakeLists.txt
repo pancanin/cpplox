@@ -76,6 +76,9 @@ add_executable(${PROJECT_NAME}
 	${DIR}/src/nativefuncs/TimeFunc.h
 	${DIR}/src/nativefuncs/SlurFunc.h
 
+	${DIR}/src/semantic/Resolver.h
+	${DIR}/src/semantic/Resolver.cpp
+
 	${DIR}/src/interpreter/RuntimeError.h
 	${DIR}/src/interpreter/Interpreter.h
 	${DIR}/src/interpreter/Interpreter.cpp)

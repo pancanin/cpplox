@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <memory>
+#include <unordered_map>
+#include <cstdint>
 
 #include "src/scanner/Token.h"
 #include "src/interpreter/LoxValueExprVisitor.h"
@@ -22,6 +24,8 @@ class WhileStatement;
 class CallExpr;
 class FuncStatement;
 class ReturnStatement;
+class ClassStatement;
+class Expr;
 
 /// <summary>
 /// Recursively walks and evaluates each individual AST.
@@ -39,6 +43,8 @@ public:
 
   LoxValue evalUserDefinedFunc(std::vector<Token> argNames, std::vector<LoxValue> argValues, std::shared_ptr<Statement> funcBody, std::shared_ptr<Environment> closure);
 
+  void resolve(Expr&, uint32_t distance);
+
   ~Interpreter() = default;
 
 private:
@@ -46,6 +52,7 @@ private:
   LangErrorLogger& errorLogger;
   std::shared_ptr<Environment> env;
   std::shared_ptr<Environment> tempEnv;
+  std::unordered_map<Expr*, int32_t> locals;
 
   LoxValue evaluate(Expr& expr);
   void execute(std::shared_ptr<Statement>);
@@ -66,6 +73,7 @@ private:
   void visitIfElseStatement(IfElseStatement&);
   void visitFuncStatement(FuncStatement&);
   void visitReturnStatement(ReturnStatement&);
+  void visitClassStatement(ClassStatement&);
 
   void checkNumberOperand(Token op, LoxType operandType);
   void checkStringOperand(Token op, LoxType operandType);

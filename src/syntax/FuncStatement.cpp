@@ -3,7 +3,8 @@
 #include "src/syntax/LoxStatementVisitor.h"
 #include "src/interpreter/Interpreter.h"
 
-FuncStatement::FuncStatement(Token& name, std::vector<Token>& args, std::shared_ptr<Statement> body):
+FuncStatement::FuncStatement(const std::string& type, Token& name, std::vector<Token>& args, std::shared_ptr<Statement> body):
+  type(type),
   name(name),
   argumentNames(args),
   funcBody(body)
@@ -26,5 +27,5 @@ uint32_t FuncStatement::arity()
 
 void FuncStatement::setClosure(std::shared_ptr<Environment> closure)
 {
-  this->closure = closure;
+  this->closure = std::make_shared<Environment>(*closure);
 }

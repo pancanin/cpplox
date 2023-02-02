@@ -7,6 +7,7 @@
 
 #include "src/interpreter/LoxValue.h"
 #include "src/interpreter/LoxCallable.h"
+#include "src/interpreter/LoxClass.h"
 
 class Environment {
 public:
@@ -39,6 +40,8 @@ public:
 private:
   std::unordered_map<std::string, LoxValue> varStorage;
   std::unordered_map<std::string, std::shared_ptr<LoxCallable>> functionStorage;
+  // Maybe the below storage wont be needed as we can reuse functionStorage.
+  //std::unordered_map<std::string, std::shared_ptr<LoxClass>> classStorage;
 
   bool hasCurrentEnvGotFunction(const std::string& name);
 };
