@@ -88,7 +88,7 @@ std::shared_ptr<Statement> Parser::classDeclaration()
   std::vector<std::shared_ptr<Statement>> methods;
 
   while (!checkIfCurrentTokenIs(TokenType::RIGHT_BRACE)) {
-    methods.push_back(funcDeclaration("method"));
+    methods.push_back(declaration());
   }
 
   consume(TokenType::RIGHT_BRACE, "Expected } after class definition.");

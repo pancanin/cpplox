@@ -35,13 +35,14 @@ public:
   bool hasFunction(const std::string& name);
 
   void setParent(std::shared_ptr<Environment> parentEnv);
+
+  void declareClass(std::shared_ptr<LoxClass> klass);
   
   std::shared_ptr<Environment> parent;
 private:
   std::unordered_map<std::string, LoxValue> varStorage;
   std::unordered_map<std::string, std::shared_ptr<LoxCallable>> functionStorage;
-  // Maybe the below storage wont be needed as we can reuse functionStorage.
-  //std::unordered_map<std::string, std::shared_ptr<LoxClass>> classStorage;
+  std::unordered_map<std::string, std::shared_ptr<LoxClass>> classStorage;
 
   bool hasCurrentEnvGotFunction(const std::string& name);
 };

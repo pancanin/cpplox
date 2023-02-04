@@ -95,3 +95,8 @@ void Environment::setParent(std::shared_ptr<Environment> parentEnv)
 {
   this->parent = parentEnv;
 }
+
+void Environment::declareClass(std::shared_ptr<LoxClass> klass)
+{
+  classStorage[klass->name] = klass;
+}

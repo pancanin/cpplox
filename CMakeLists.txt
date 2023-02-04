@@ -58,6 +58,8 @@ add_executable(${PROJECT_NAME}
 	${DIR}/src/syntax/FuncStatement.cpp
 	${DIR}/src/syntax/ReturnStatement.h
 	${DIR}/src/syntax/ReturnStatement.cpp
+	${DIR}/src/syntax/ClassStatement.h
+	${DIR}/src/syntax/ClassStatement.cpp
 
 	${DIR}/src/interpreter/Return.h
 
@@ -75,6 +77,10 @@ add_executable(${PROJECT_NAME}
 
 	${DIR}/src/nativefuncs/TimeFunc.h
 	${DIR}/src/nativefuncs/SlurFunc.h
+
+	${DIR}/src/interpreter/LoxClass.h
+
+	${DIR}/src/interpreter/LoxInstance.h
 
 	${DIR}/src/semantic/Resolver.h
 	${DIR}/src/semantic/Resolver.cpp

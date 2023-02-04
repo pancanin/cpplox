@@ -14,6 +14,7 @@
 #include "src/syntax/IfElseStatement.h"
 #include "src/syntax/FuncStatement.h"
 #include "src/syntax/ReturnStatement.h"
+#include "src/syntax/ClassStatement.h"
 
 #include "src/interpreter/RuntimeError.h"
 #include "src/logging/LangErrorLogger.h"
@@ -230,7 +231,8 @@ void Interpreter::visitReturnStatement(ReturnStatement& returnStmt)
 
 void Interpreter::visitClassStatement(ClassStatement& classStmt)
 {
-
+  env->declareVariable(classStmt.name.literal, LoxValue(LoxType::STRING, classStmt.name.literal));
+  env->declareClass(std::make_shared<LoxClass>(classStmt.name));
 }
 
 LoxValue Interpreter::visitUnaryExpr(UnaryExpr& expr) {
