@@ -100,3 +100,16 @@ void Environment::declareClass(std::shared_ptr<LoxClass> klass)
 {
   classStorage[klass->name] = klass;
 }
+
+std::shared_ptr<LoxClass> Environment::getClass(const std::string& className)
+{
+  if (classStorage.find(className) != classStorage.end()) {
+    return classStorage[className];
+  }
+
+  if (this->parent == nullptr) {
+    return nullptr;
+  }
+
+  return this->parent->getClass(className);
+}

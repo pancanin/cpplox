@@ -81,6 +81,7 @@ add_executable(${PROJECT_NAME}
 	${DIR}/src/interpreter/LoxClass.h
 
 	${DIR}/src/interpreter/LoxInstance.h
+	${DIR}/src/interpreter/LoxInstance.cpp
 
 	${DIR}/src/semantic/Resolver.h
 	${DIR}/src/semantic/Resolver.cpp

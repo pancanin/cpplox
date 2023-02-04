@@ -117,7 +117,16 @@ LoxValue Interpreter::visitCallExpr(CallExpr& expr)
 {
   LoxValue callee = evaluate(*expr.callee);
 
-  if (!env->hasFunction(callee.value)) {
+  bool hasFunc = env->hasFunction(callee.value);
+
+  std::shared_ptr<LoxClass> klass = env->getClass(callee.value);
+
+  if (klass) {
+    auto inst = klass->instantiate(this, {});
+    return LoxValue(LoxType::STRING, inst->to_string());
+  }
+
+  if (!env->hasFunction(callee.value) && !klass) {
     throw RuntimeError(expr.closingBrace, "Undefined function");
   }
 
@@ -232,7 +241,7 @@ void Interpreter::visitReturnStatement(ReturnStatement& returnStmt)
 void Interpreter::visitClassStatement(ClassStatement& classStmt)
 {
   env->declareVariable(classStmt.name.literal, LoxValue(LoxType::STRING, classStmt.name.literal));
-  env->declareClass(std::make_shared<LoxClass>(classStmt.name));
+  env->declareClass(std::make_shared<LoxClass>(classStmt.name.literal));
 }
 
 LoxValue Interpreter::visitUnaryExpr(UnaryExpr& expr) {

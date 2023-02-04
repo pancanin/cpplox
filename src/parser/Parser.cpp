@@ -369,18 +369,23 @@ std::shared_ptr<Expr> Parser::call()
 {
   auto callee = primary();
 
-  if (match({ TokenType::LEFT_PAREN })) {
-    std::vector<std::shared_ptr<Expr>> arguments;
+  while (true) {
+    if (match({ TokenType::LEFT_PAREN })) {
+      std::vector<std::shared_ptr<Expr>> arguments;
 
-    if (!checkIfCurrentTokenIs(TokenType::RIGHT_PAREN)) {
-      do {
-        arguments.push_back(expression());
-      } while (match({ TokenType::COMMA }));
+      if (!checkIfCurrentTokenIs(TokenType::RIGHT_PAREN)) {
+        do {
+          arguments.push_back(expression());
+        } while (match({ TokenType::COMMA }));
+      }
+
+      Token closingParen = consume(TokenType::RIGHT_PAREN, "Missing closing parenthesis on function call.");
+
+      return std::make_shared<CallExpr>(callee, closingParen, arguments);
     }
+    else if (match({ TokenType::DOT })) {
 
-    Token closingParen = consume(TokenType::RIGHT_PAREN, "Missing closing parenthesis on function call.");
-
-    return std::make_shared<CallExpr>(callee, closingParen, arguments);
+    }
   }
   
   return callee;

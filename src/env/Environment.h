@@ -37,6 +37,7 @@ public:
   void setParent(std::shared_ptr<Environment> parentEnv);
 
   void declareClass(std::shared_ptr<LoxClass> klass);
+  std::shared_ptr<LoxClass> getClass(const std::string& className);
   
   std::shared_ptr<Environment> parent;
 private:
