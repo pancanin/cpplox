@@ -7,7 +7,8 @@ enum class LoxType {
 	NIL,
 	BOOLEAN,
 	NUMBER,
-	STRING
+	STRING,
+	OBJECT
 };
 
 

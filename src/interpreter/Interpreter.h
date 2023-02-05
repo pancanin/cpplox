@@ -26,6 +26,7 @@ class FuncStatement;
 class ReturnStatement;
 class ClassStatement;
 class Expr;
+class GetExpr;
 
 /// <summary>
 /// Recursively walks and evaluates each individual AST.
@@ -64,6 +65,7 @@ private:
   LoxValue visitLogicalExpr(LogicalExpr&);
   LoxValue visitAssignExpr(AssignmentExpr&);
   LoxValue visitCallExpr(CallExpr&);
+  LoxValue visitGetExpr(GetExpr&);
 
   void visitPrintStatement(PrintStatement*);
   void visitWhileStatement(WhileStatement&);

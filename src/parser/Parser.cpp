@@ -7,6 +7,7 @@
 #include "src/syntax/LogicalExpr.h"
 #include "src/syntax/AssignmentExpr.h"
 #include "src/syntax/CallExpr.h"
+#include "src/syntax/GetExpr.h"
 
 #include "src/syntax/PrintStatement.h"
 #include "src/syntax/ExprStatement.h"
@@ -384,7 +385,11 @@ std::shared_ptr<Expr> Parser::call()
       return std::make_shared<CallExpr>(callee, closingParen, arguments);
     }
     else if (match({ TokenType::DOT })) {
-
+      Token propName = consume(TokenType::IDENTIFIER, "Expect property name after .");
+      return std::make_shared<GetExpr>(callee, propName);
+    }
+    else {
+      break;
     }
   }
   

@@ -10,6 +10,7 @@
 #include "src/syntax/AssignmentExpr.h"
 #include "src/syntax/CallExpr.h"
 #include "src/syntax/Expr.h"
+#include "src/syntax/GetExpr.h"
 #include "src/syntax/BlockStatement.h"
 #include "src/syntax/IfElseStatement.h"
 #include "src/syntax/FuncStatement.h"
@@ -123,7 +124,7 @@ LoxValue Interpreter::visitCallExpr(CallExpr& expr)
 
   if (klass) {
     auto inst = klass->instantiate(this, {});
-    return LoxValue(LoxType::STRING, inst->to_string());
+    return LoxValue(inst);
   }
 
   if (!env->hasFunction(callee.value) && !klass) {
@@ -143,6 +144,13 @@ LoxValue Interpreter::visitCallExpr(CallExpr& expr)
   }
 
   return callable->call(this, args);
+}
+
+LoxValue Interpreter::visitGetExpr(GetExpr& getExpr)
+{
+  LoxValue objectVal = evaluate(*getExpr.objectExpr);
+
+  return objectVal;
 }
 
 void Interpreter::visitPrintStatement(PrintStatement* printStatement)
