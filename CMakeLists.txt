@@ -60,6 +60,8 @@ add_executable(${PROJECT_NAME}
 	${DIR}/src/syntax/ReturnStatement.cpp
 	${DIR}/src/syntax/ClassStatement.h
 	${DIR}/src/syntax/ClassStatement.cpp
+	${DIR}/src/syntax/GetExpr.h
+	${DIR}/src/syntax/GetExpr.cpp
 
 	${DIR}/src/interpreter/Return.h
 

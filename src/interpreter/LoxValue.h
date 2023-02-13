@@ -11,7 +11,7 @@ struct LoxValue {
 	LoxValue() : type(LoxType::NIL) {}
 	LoxValue(LoxType type, const std::string& value): type(type), value(value) {}
 	LoxValue(bool boolCondition): type(LoxType::BOOLEAN), value(boolCondition ? "true" : "false") {}
-	LoxValue(std::shared_ptr<LoxInstance> inst) : type(LoxType::OBJECT), value(""), instance(inst) {}
+	LoxValue(std::shared_ptr<LoxInstance> inst) : type(LoxType::OBJECT), value(inst->to_string()), instance(inst) {}
 
 	bool isTruthy() const {
 		if (type == LoxType::BOOLEAN) {

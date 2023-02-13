@@ -86,15 +86,15 @@ std::shared_ptr<Statement> Parser::classDeclaration()
 
   consume(TokenType::LEFT_BRACE, "Expected { before class definition.");
 
-  std::vector<std::shared_ptr<Statement>> methods;
+  std::vector<std::shared_ptr<Statement>> methodsAndVars;
 
   while (!checkIfCurrentTokenIs(TokenType::RIGHT_BRACE)) {
-    methods.push_back(declaration());
+    methodsAndVars.push_back(declaration());
   }
 
   consume(TokenType::RIGHT_BRACE, "Expected } after class definition.");
 
-  return std::make_shared<ClassStatement>(name, methods);
+  return std::make_shared<ClassStatement>(name, methodsAndVars);
 }
 
 std::shared_ptr<Statement> Parser::varDeclaration()
