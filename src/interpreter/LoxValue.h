@@ -5,13 +5,14 @@
 #include <memory>
 
 #include "src/interpreter/LoxType.h"
-#include "src/interpreter/LoxInstance.h"
+
+class LoxInstance;
 
 struct LoxValue {
-	LoxValue() : type(LoxType::NIL) {}
-	LoxValue(LoxType type, const std::string& value): type(type), value(value) {}
-	LoxValue(bool boolCondition): type(LoxType::BOOLEAN), value(boolCondition ? "true" : "false") {}
-	LoxValue(std::shared_ptr<LoxInstance> inst) : type(LoxType::OBJECT), value(inst->to_string()), instance(inst) {}
+	LoxValue() : type(LoxType::NIL), value(""), instance(nullptr) {}
+	LoxValue(LoxType type, const std::string& value): type(type), value(value), instance(nullptr) {}
+	LoxValue(bool boolCondition): type(LoxType::BOOLEAN), value(boolCondition ? "true" : "false"), instance(nullptr) {}
+	LoxValue(LoxInstance* inst);
 
 	bool isTruthy() const {
 		if (type == LoxType::BOOLEAN) {
@@ -32,7 +33,7 @@ struct LoxValue {
 
 	LoxType type;
 	std::string value;
-	std::shared_ptr<LoxInstance> instance;
+	LoxInstance* instance;
 };
 
 #endif /* SRC_INTERPRETER_LOXVALUE_H_ */

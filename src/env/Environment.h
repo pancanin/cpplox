@@ -11,6 +11,7 @@
 
 class Environment {
 public:
+  friend class Interpreter;
   Environment();
 
   void declareVariable(const std::string& name, const LoxValue& value);

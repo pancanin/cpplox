@@ -124,7 +124,7 @@ LoxValue Interpreter::visitCallExpr(CallExpr& expr)
 
   if (klass) {
     auto inst = klass->instantiate(this, {});
-    return LoxValue(inst);
+    return LoxValue(inst.get());
   }
 
   if (!env->hasFunction(callee.value) && !klass) {
@@ -149,8 +149,9 @@ LoxValue Interpreter::visitCallExpr(CallExpr& expr)
 LoxValue Interpreter::visitGetExpr(GetExpr& getExpr)
 {
   LoxValue objectVal = evaluate(*getExpr.objectExpr);
+  LoxValue val = objectVal.instance->get(getExpr.propertyName.literal);
 
-  return objectVal;
+  return val;
 }
 
 void Interpreter::visitPrintStatement(PrintStatement* printStatement)
@@ -249,7 +250,7 @@ void Interpreter::visitReturnStatement(ReturnStatement& returnStmt)
 void Interpreter::visitClassStatement(ClassStatement& classStmt)
 {
   env->declareVariable(classStmt.name.literal, LoxValue(LoxType::STRING, classStmt.name.literal));
-  env->declareClass(std::make_shared<LoxClass>(classStmt.name.literal));
+  env->declareClass(std::make_shared<LoxClass>(classStmt.name.literal, classStmt.methods));
 }
 
 LoxValue Interpreter::visitUnaryExpr(UnaryExpr& expr) {
@@ -390,6 +391,22 @@ LoxValue Interpreter::evalUserDefinedFunc(std::vector<Token> argNames, std::vect
     restoreEnv();
     return retVal.value;
   }
+}
+
+void Interpreter::initInstanceState(LoxInstance* inst)
+{
+  auto env = std::make_shared<Environment>();
+  setEnv(env);
+
+  for (auto stmt : inst->klass.methods) {
+    stmt->accept(*this);
+  }
+
+  for (auto& [key, val] : env->varStorage) {
+    inst->set(key, val);
+  }
+
+  restoreEnv();
 }
 
 void Interpreter::resolve(Expr& expr, uint32_t distance)

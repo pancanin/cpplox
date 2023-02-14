@@ -43,6 +43,7 @@ public:
   void interpret(const std::vector<std::shared_ptr<Statement>>&);
 
   LoxValue evalUserDefinedFunc(std::vector<Token> argNames, std::vector<LoxValue> argValues, std::shared_ptr<Statement> funcBody, std::shared_ptr<Environment> closure);
+  void initInstanceState(LoxInstance*);
 
   void resolve(Expr&, uint32_t distance);
 

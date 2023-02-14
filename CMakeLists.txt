@@ -77,10 +77,14 @@ add_executable(${PROJECT_NAME}
 	
 	${DIR}/src/interpreter/LoxCallable.h
 
+	${DIR}/src/interpreter/LoxValue.h
+	${DIR}/src/interpreter/LoxValue.cpp
+
 	${DIR}/src/nativefuncs/TimeFunc.h
 	${DIR}/src/nativefuncs/SlurFunc.h
 
 	${DIR}/src/interpreter/LoxClass.h
+	${DIR}/src/interpreter/LoxClass.cpp
 
 	${DIR}/src/interpreter/LoxInstance.h
 	${DIR}/src/interpreter/LoxInstance.cpp

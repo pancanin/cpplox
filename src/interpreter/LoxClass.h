@@ -3,18 +3,17 @@
 
 #include <string>
 #include <memory>
+#include <vector>
 
 #include "LoxCallable.h"
 #include "LoxInstance.h"
+#include "src/syntax/Statement.h"
 
 class LoxClass {
 public:
-  LoxClass(const std::string& name) : name(name) {}
+  LoxClass(const std::string& name, std::vector<std::shared_ptr<Statement>> methods) : name(name), methods(methods) {}
 
-  std::shared_ptr<LoxInstance> instantiate(Interpreter* interpreter, std::vector<LoxValue> args) {
-    auto instance = std::make_shared <LoxInstance>(*this);
-    return instance;
-  }
+  std::shared_ptr<LoxInstance> instantiate(Interpreter* interpreter, std::vector<LoxValue> args);
 
   uint32_t arity() {
     return 0; // Later, with ctors, there could be more
@@ -25,6 +24,7 @@ public:
   }
 
   std::string name;
+  std::vector<std::shared_ptr<Statement>> methods;
 };
 
 #endif // !INTERPRETER_LOX_CLASS_H

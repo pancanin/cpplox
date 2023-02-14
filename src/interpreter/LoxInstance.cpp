@@ -11,7 +11,12 @@ LoxInstance::LoxInstance(LoxClass& klass): klass(klass) {}
 	 return klass.name + " instance!";
  }
 
- LoxValue* LoxInstance::get(const std::string& name)
+ LoxValue LoxInstance::get(const std::string& name)
  {
 	 return fields[name];
+ }
+
+ void LoxInstance::set(const std::string& name, const LoxValue& val)
+ {
+	 fields[name] = val;
  }
